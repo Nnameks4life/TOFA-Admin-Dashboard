@@ -65,6 +65,7 @@ const CreateProducts = () => {
       e.preventDefault();
       const jsonData = {
         productName: productDetails.productName,
+        currency: "NGN",
         parentCategory: productDetails.parentCategory,
         unitForMinOrder: productDetails.unitForMinOrder,
         unitForSupplyCapacity: productDetails.unitForSupplyCapacity,
@@ -75,7 +76,7 @@ const CreateProducts = () => {
         productDescription: productDetails.productDescription,
         supplyCapacity: productDetails.supplyCapacity,
         specification: getSpecifications(),
-        country: getCountry(),
+        countries: getCountry(),
       }
 
       const formData = new FormData()
@@ -94,8 +95,9 @@ const CreateProducts = () => {
             "Content-Type": "multipart/form-data",
           },
         });
-
+        alert ("success")
         console.log(result)
+      
     } catch (err) {
       if (err.response.data.errors[0].field) {
         console.log(err.response.data.errors)
@@ -128,7 +130,7 @@ const CreateProducts = () => {
   };
 
   const [specification, setSpecification] = useState([
-    { details: "", fulldetails: "" },
+    { Type: "", Color: "" },
   ]);
   const [country, setCountry] = useState([{ countryName: "", price: "" }]);
 
@@ -142,7 +144,7 @@ const CreateProducts = () => {
   // };
 
   const handleAddFields = () => {
-    setSpecification([...specification, { details: "", fulldetails: "" }]);
+    setSpecification([...specification, { Type: "", Color: "" }]);
   };
 
   const handleAddCountry = () => {
@@ -206,13 +208,30 @@ const CreateProducts = () => {
 
                 <div className="col-4 ">
                   <label className="form-label">Parent Category</label>
-                  <input
+
+
+                  <select className="form-control"
+                    name="parentCategory"
+                    aria-describedby="Default select example"
+                    onChange={handleProductChange}
+                    placeholder='parent category'
+                    >
+                      <option>CONSTRUCTION_MATERIAL</option>
+                      <option>FOOD_AND_BEVERAGE</option>
+                      <option>APPAREL</option>
+                      <option>HOME_AND_FURNITURE</option>
+                      <option> BEAUTY_AND_PERSONAL_CARE</option>
+                      <option>PACKAGING_AND_SUPPLY</option>
+                      <option>  MINERALS_AND_METALLURGY</option>
+                      <option>  AGRICULTURE</option>
+                  </select>
+                  {/* <input
                     name="parentCategory"
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
                     onChange={handleProductChange}
-                  />
+                  /> */}
                   {formErrors.parentCategory && (
                     <p className="text-danger">{formErrors.parentCategory}</p>
                   )}
@@ -337,18 +356,17 @@ const CreateProducts = () => {
                   {specification.map((info, index) => (
                     <div key={index} className="root my-2">
                       <input
-                        text="details"
-                        name="details"
-                        value={specification.details}
-                        variant="filled"
+                        type='text'
+                        name="Type"
+                        value={specification.Type}
                         placeholder="type"
                         className="mx-1 form-control specification-keys"
                       />
 
                       <input
-                        text="full details"
-                        name="fulldetails"
-                        value={specification.fulldetails}
+                        type='text'
+                        name="Color"
+                        value={specification.Color}
                         variant="filled"
                         placeholder="value"
                         className="mx-1 form-control specification-values"
@@ -376,8 +394,8 @@ const CreateProducts = () => {
                   {country.map((info, index) => (
                     <div key={index} className="root my-2">
                       <input
-                        text="details"
-                        name="details"
+                        type='text'
+                        name="countryName"
                         value={country.countryName}
                         variant="filled"
                         placeholder="country name"
@@ -386,7 +404,7 @@ const CreateProducts = () => {
 
                       <input
                         type="text"
-                        name="country"
+                        name="price"
                         value={country.price}
                         variant="filled"
                         placeholder="price"

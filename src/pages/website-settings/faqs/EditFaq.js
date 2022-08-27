@@ -21,11 +21,14 @@ const EditFaq = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const { result } = await axios
+      const { data:result } = await axios
         .post("/faq", {
           question: faq.question,
-          answer: faq.answer,
-        })
+          answer: faq.answer, 
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }, )
         console.log(result)
     } catch (err) {
         if(err.response.data.errors[0].field) {

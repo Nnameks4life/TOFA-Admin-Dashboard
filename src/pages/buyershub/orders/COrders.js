@@ -1,9 +1,55 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { axios } from '../../components/baseUrl'
 import Navbar from '../../components/navbar/Navbar'
 import Sidebar from '../../components/sidebar/Sidebar'
 
 const COrders = () => {
 
+    const [formErrors, setFormErrors] = useState({})
+    const [customError, setCustomError] = useState("")
+    const [orders, setOrders] = useState({
+    quantity:"",
+    country:"",
+    address:"",
+    paymentTerm:"",
+    grade:"",
+    specification:""
+  })
+
+  const handleOrderChange = (e) => {
+    setOrders({...orders, [e.target.name]: e.target.value})
+  }
+
+  const handleSubmit = async(e) => {
+    try {
+      e.preventDefault()
+     const {data: result} = await axios.post("/order/local", {
+        quantity:orders.quantity,
+      country:orders.country,
+      address:orders.address,
+      paymentTerm:orders.paymentTerm,
+      grade:orders.grade,
+      specification:orders.specification,
+  
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      })
+      console.log(result)
+    } catch (err) {
+       if (err.response.data.errors[0].field) {
+           setFormErrors(err.response.data.errors.reduce (function(obj, err) {
+               obj[err.field] = err.message;
+               return obj;
+           }, {}))
+       } else {
+           console.log(err.response.data.errors[0].message)
+           setCustomError(err.response.data.errors[0].message)
+           alert(customError)
+       }
+    }
+
+}
  
   return (
     <>
@@ -34,85 +80,83 @@ const COrders = () => {
 
             <div className="row" style={{textAlign:'left'}}>
               <div className="col-4 mb-3">
-                <label className="form-label">Product Name:</label>
+                <label className="form-label">Quantity</label>
                 <input
                  
-                  name="productName"
-                  type="text"
-                  className="form-control"
-                  aria-describedby="emailHelp"
-                  
-                />
-              </div>
-              <div className="col-4 mb-3">
-                <label className="form-label">Payment Term</label>
-                <input
-                  
-                  name="price"
+                  name="quantity"
                   type="number"
                   className="form-control"
                   aria-describedby="emailHelp"
-                
+                  onChange={handleOrderChange}
                 />
+                {formErrors.quantity && (<p className="text-danger">{formErrors.quantity}</p>)}
               </div>
               <div className="col-4 mb-3">
-                <label className="form-label">Quantity</label>
+                <label className="form-label">Payment Term</label>
+                <select className="form-control"
+                    name="paymentTerm"
+                    aria-describedby="Default select example"
+                    onChange={handleOrderChange}
+                    placeholder='parent category'
+                    >
+                      <option>CAD</option>
+                      <option>DP</option>
+                      <option>LC</option>
+                      <option>TT</option>
+                  </select>
+                {formErrors.paymentTerm && (<p className="text-danger">{formErrors.paymentTerm}</p>)}
+              </div>
+              <div className="col-4 mb-3">
+                <label className="form-label">Grade</label>
                 <input
                
-                  name="currency"
+                  name="grade"
                   type="text"
                   className="form-control"
                   aria-describedby="emailHelp"
-                  
+                  onChange={handleOrderChange}
                 />
+                {formErrors.grade && (<p className="text-danger">{formErrors.grade}</p>)}
               </div>
             </div>
 
             <div className="row" style={{textAlign:'left'}}>
-              <div className="col-4 mb-3">
-                <label className="form-label">Port</label>
+              <div className="col-8 mb-3">
+                <label className="form-label">Address</label>
                 <input
-                  name="specification"
-                 
+                  name="address"
+                  onChange={handleOrderChange}
                   type="text"
                   className="form-control"
                   aria-describedby="emailHelp"
                   
                 />
+                {formErrors.address && (<p className="text-danger">{formErrors.address}</p>)}
               </div>
               <div className="col-4  mb-3">
-                <label className="form-label">Shipping</label>
-                <input
-                  name="status"
-                 
-                  type="text"
-                  className="form-control"
-                  aria-describedby="emailHelp"
-                 
-                />
-              </div>
-              <div className="col-4 mb-3">
                 <label className="form-label">Country</label>
                 <input
-                  name="country"
-              
+                  name="country" 
                   type="text"
                   className="form-control"
                   aria-describedby="emailHelp"
-                  
+                  onChange={handleOrderChange}
                 />
+                {formErrors.country && (<p className="text-danger">{formErrors.country}</p>)}
               </div>
+              
             </div>
 
             <div className="mb-3" style={{textAlign:'left'}}>
-              <label className="form-label">Product Requirement</label>
+              <label className="form-label">Specification</label>
               <textarea
-                name="description"
-               
+                name="specification"
+                onChange={handleOrderChange}
                 type="text"
                 className="form-control"
                 
               />
+              {formErrors.specification && (<p className="text-danger">{formErrors.specification}</p>)}
             </div>
             {/* <div className="mb-3" style={{textAlign:'left'}}>
             
@@ -127,7 +171,7 @@ const COrders = () => {
             </div> */}
 
             <div style={{textAlign:'left'}} >
-            <button className="btn btn-dark" >Submit</button>
+            <button className="btn btn-dark" onClick={handleSubmit}>Submit</button>
             </div>
           </form>
            

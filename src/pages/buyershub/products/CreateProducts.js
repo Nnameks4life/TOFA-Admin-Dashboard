@@ -4,7 +4,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { axios } from "../../components/baseUrl";
-import DropFileInput from "../../components/DropFileInput";
+// import DropFileInput from "../../components/DropFileInput";
 // import OtherImages from "./OtherImages";
 
 const CreateProducts = () => {
@@ -427,6 +427,7 @@ const CreateProducts = () => {
                     <p className="text-danger">{formErrors.country}</p>
                   )}
                 </div>
+
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>

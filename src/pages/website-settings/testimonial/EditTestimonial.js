@@ -20,14 +20,17 @@ const handleChange = (e) => {
     setTestimonial({...testimonial, [e.target.name]: e.target.value})
 }
 
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     try{
         e.preventDefault()
-        const {result} = axios.post("/testimonial", {
+        const {data: result} = await axios.post("/testimonial", {
             name:testimonial.name,
             company:testimonial.company,
             message:testimonial.message,
-        })
+            headers: {
+                "Content-Type": "multipart/form-data",
+              },
+        }, )
         console.log(result)
     } catch (err) {
        if (err.response.data.errors[0].field) {
@@ -78,17 +81,17 @@ const handleSubmit = (e) => {
                                     <form>
                                         <div className="form-group">
                                             <label htmlFor="inputText3" className="col-form-label">Name</label>
-                                            <input id="inputText3" name='question'  type="text" className="form-control" onChange={handleChange}/>
+                                            <input id="inputText3" name='name'  type="text" className="form-control" onChange={handleChange}/>
                                             {formErrors.name && (<p className="text-danger">{formErrors.name}</p>)}
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="inputText3" className="col-form-label">Company</label>
-                                            <input id="inputText3" name='question'  type="text" className="form-control" onChange={handleChange}/>
+                                            <input id="inputText3" name='company'  type="text" className="form-control" onChange={handleChange}/>
                                             {formErrors.company && (<p className="text-danger">{formErrors.company}</p>)}
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="exampleFormControlTextarea1">Message</label>
-                                            <textarea className="form-control" name='answer' id="exampleFormControlTextarea1" rows="3" onChange={handleChange}/>
+                                            <textarea className="form-control" name='message' id="exampleFormControlTextarea1" rows="3" onChange={handleChange}/>
                                             {formErrors.message && (<p className="text-danger">{formErrors.message}</p>)}
                                         </div>
                                         <div className="form-group">
@@ -102,74 +105,15 @@ const handleSubmit = (e) => {
 
             </div>
 
-            {/* <!-- footer --> */}
-             {/* <div className="footer">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                            Copyright © 2018 Concept. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
-                        </div>
-                        <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                            <div className="text-md-right footer-links d-none d-sm-block">
-                                <a href="jav">About</a>
-                                <a href="jav">Support</a>
-                                <a href="jav;">Contact Us</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>  */}
-            {/* <!-- end footer --> */}
+          
 
         </div>
-        {/* <!-- end main wrapper --> */}
+
 
     </div>
-    {/* <!-- end main wrapper --> */}
+  
 
 
-    {/* <!-- Optional JavaScript -->
-    <!-- jquery 3.3.1 -->
-    <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-    <!-- bootstap bundle js -->
-    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-    <!-- slimscroll js -->
-    <script src="assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-    <script src="../assets/vendor/multi-select/js/jquery.multi-select.js"></script>
-    <!-- main js -->
-    <script src="assets/libs/js/main-js.js"></script>
-    <!-- chart chartist js -->
-    <script src="assets/vendor/charts/chartist-bundle/chartist.min.js"></script>
-    <!-- sparkline js -->
-    <script src="assets/vendor/charts/sparkline/jquery.sparkline.js"></script>
-    <!-- morris js -->
-    <script src="assets/vendor/charts/morris-bundle/raphael.min.js"></script>
-    <script src="assets/vendor/charts/morris-bundle/morris.js"></script>
-    <!-- chart c3 js -->
-    <script src="assets/vendor/charts/c3charts/c3.min.js"></script>
-    <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
-    <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
-    <script src="assets/libs/js/dashboard-ecommerce.js"></script>
-    <!-- Data tables -->
-    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script src="assets/vendor/datatables/js/dataTables.bootstrap4.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
-    <script src="assets/vendor/datatables/js/buttons.bootstrap4.min.js"></script>
-    <script src="assets/vendor/datatables/js/data-table.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.datatables.net/rowgroup/1.0.4/js/dataTables.rowGroup.min.js"></script>
-    <script src="https://cdn.datatables.net/select/1.2.7/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
-    <!-- Form validation -->
-    <script src="../assets/vendor/parsley/parsley.js"></script>
-    <script>
-    $('#form').parsley();
-    </script> */}
    
 </>
  

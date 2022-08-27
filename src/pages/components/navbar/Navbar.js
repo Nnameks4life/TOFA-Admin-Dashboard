@@ -1,5 +1,9 @@
 import React from 'react';
+import avatar5 from '../../../assets/avatar-5.jpg'
 import avatar1 from '../../../assets/avatar-1.jpg'
+import avatar3 from '../../../assets/avatar-3.jpg'
+import avatar2 from '../../../assets/avatar-2.jpg'
+import avatar4 from '../../../assets/avatar-4.jpg'
 
 const Navbar = () => {
   return (
@@ -26,7 +30,7 @@ const Navbar = () => {
                                         <div className="list-group">
                                             <a href="comingsoon" className="list-group-item list-group-item-action active">
                                                 <div className="notification-info">
-                                                    <div className="notification-list-user-img"><img src="assets/images/avatar-2.jpg" alt="tobad" className="user-avatar-md rounded-circle"/></div>
+                                                    <div className="notification-list-user-img"><img src={avatar2} alt="tobad" className="user-avatar-md rounded-circle"/></div>
                                                     <div className="notification-list-user-block"><span className="notification-list-user-name">Jeremy Rakestraw</span>accepted your invitation to join the team.
                                                         <div className="notification-date">2 min ago</div>
                                                     </div>
@@ -34,7 +38,7 @@ const Navbar = () => {
                                             </a>
                                             <a href="comingsoon" className="list-group-item list-group-item-action">
                                                 <div className="notification-info">
-                                                    <div className="notification-list-user-img"><img src="assets/images/avatar-3.jpg" alt="tobad" className="user-avatar-md rounded-circle"/></div>
+                                                    <div className="notification-list-user-img"><img src={avatar3} alt="tobad" className="user-avatar-md rounded-circle"/></div>
                                                     <div className="notification-list-user-block"><span className="notification-list-user-name">John Abraham</span>is now following you
                                                         <div className="notification-date">2 days ago</div>
                                                     </div>
@@ -42,7 +46,7 @@ const Navbar = () => {
                                             </a>
                                             <a href="comingsoon" className="list-group-item list-group-item-action">
                                                 <div className="notification-info">
-                                                    <div className="notification-list-user-img"><img src="assets/images/avatar-4.jpg" alt="tob" className="user-avatar-md rounded-circle"/></div>
+                                                    <div className="notification-list-user-img"><img src={avatar4} alt="tob" className="user-avatar-md rounded-circle"/></div>
                                                     <div className="notification-list-user-block"><span className="notification-list-user-name">Monaan Pechi</span> is watching your main repository
                                                         <div className="notification-date">2 min ago</div>
                                                     </div>
@@ -50,7 +54,7 @@ const Navbar = () => {
                                             </a>
                                             <a href="comingsoon" className="list-group-item list-group-item-action">
                                                 <div className="notification-info">
-                                                    <div className="notification-list-user-img"><img src="assets/images/avatar-5.jpg" alt="tob" className="user-avatar-md rounded-circle"/></div>
+                                                    <div className="notification-list-user-img"><img src={avatar5} alt="tob" className="user-avatar-md rounded-circle"/></div>
                                                     <div className="notification-list-user-block"><span className="notification-list-user-name">Jessica Caruso</span>accepted your invitation to join the team.
                                                         <div className="notification-date">2 min ago</div>
                                                     </div>

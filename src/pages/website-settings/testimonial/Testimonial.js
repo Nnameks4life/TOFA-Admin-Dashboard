@@ -1,26 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { axios } from "../../components/baseUrl";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 
 const Testimonial = () => {
-  // const handleChange = () => {
-  //     'use strict';
-  //     window.addEventListener('load', function() {
-  //         // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  //         var forms = document.getElementsByClassNameName('needs-validation');
-  //         // Loop over them and prevent submission
-  //         var validation = Array.prototype.filter.call(forms, function(form) {
-  //             form.addEventListener('submit', function(event) {
-  //                 if (form.checkValidity() === false) {
-  //                     event.preventDefault();
-  //                     event.stopPropagation();
-  //                 }
-  //                 form.classNameList.add('was-validated');
-  //             }, false);
-  //         });
-  //     }, false);
-  // })();
-  // }
+
+  const [testimonial, setTestimonial] = useState([])
+
+  const getData = async () => {
+    try {
+      axios.get("/testimonial").then((response) => {
+        console.log(response.data);
+        setTestimonial(response.data.data);
+      });
+    } catch (error) {
+      console.log(error.response.data.erros);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // const handleDelete = (testimonialID) => {
+  //   axios.delete(`/testimonial/${testimonialID}`).then(() => {
+  //     getData();
+  //   });
+  // };
+
+  const showDetails = (testimonialID) => {
+    axios.get(`/testimonial/${testimonialID}`).then(() => {
+      getData();
+    });
+  };
+
   return (
     <>
       {/* <!-- main wrapper --> */}
@@ -65,24 +78,76 @@ const Testimonial = () => {
                           <th scope="col">Name</th>
                           <th scope="col">Company</th>
                           <th scope="col">Message</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>
-                            <a href="edit-faq.html">Edit</a> |
-                            <a href="comingsoon">Delete</a>
+                        {testimonial.map((item) => {
+                          return (
+                            <tr key={item.id}>
+                            <td>{item.id}</td>
+                            <td>{item.name}</td>
+                            <td>{item.company}</td>
+                            <td>{item.message}</td>
+                            <td>
+                            {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
+                                  Delete
+                                </button> */}
+                            <button
+                                  onClick={() => showDetails(item.id)}
+                                  type="button"
+                                  className="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#exampleModal"
+                                >
+                                  View
+                                </button>
+
+                            <div
+                                  className="modal fade"
+                                  id="exampleModal"
+                                  tabIndex="-1"
+                                  aria-labelledby="exampleModalLabel"
+                                  aria-hidden="true"
+                                >
+                                  <div className="modal-dialog">
+                                    <div className="modal-content">
+                                      <div className="modal-header">
+                                        <h5
+                                          className="modal-title"
+                                          id="exampleModalLabel"
+                                        >
+                                         TESTIMONIAL
+                                        </h5>
+                                        <button
+                                          type="button"
+                                          className="btn-close"
+                                          data-bs-dismiss="modal"
+                                          aria-label="Close"
+                                        ></button>
+                                      </div>
+                                      <div className="modal-body">
+                                        <p>{item.name}</p>
+                                        <p>{item.company}</p>
+                                        <p>{item.message}</p>
+                                        </div>
+                                      <div className="modal-footer">
+                                        <button
+                                          type="button"
+                                          className="btn btn-secondary"
+                                          data-bs-dismiss="modal"
+                                        >
+                                          Close
+                                        </button>
+                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                           </td>
-                        </tr>
+                          </tr>
+                          )
+                        })}
                       </tbody>
                     </table>
                   </div>

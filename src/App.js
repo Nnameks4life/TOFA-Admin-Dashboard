@@ -22,6 +22,7 @@ import Banners from './pages/website-settings/bannners/Banners';
 import Disputes from './pages/buyershub/disputes/Disputes';
 import Inquiries from './pages/buyershub/inquiries/Inquiries';
 import Applicants from './pages/tofaacademy/applicants/Applicants';
+import EditProducts from "./pages/buyershub/products/EditProducts";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
       <Route exact path='/disputes' element={<Disputes/>} />
       <Route exact path='/inquiry' element={<Inquiries/>} />
       <Route exact path='/applicants' element={<Applicants/>} />
+      <Route exact path='/editproduct' element={<EditProducts/>} />
       
     </Routes>
     </BrowserRouter>

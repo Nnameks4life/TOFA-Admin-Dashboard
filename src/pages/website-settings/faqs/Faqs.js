@@ -1,10 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { axios } from "../../components/baseUrl";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import './faq.css'
+import "./faq.css";
 
 const Faqs = () => {
+  const [faq, setFaq] = useState([]);
 
+  const getData = async () => {
+    try {
+      axios.get("/faq").then((response) => {
+        console.log(response.data);
+        setFaq(response.data.data);
+      });
+    } catch (error) {
+      console.log(error.response.data.erros);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const handleDelete = (faqID) => {
+    axios.delete(`/faq/${faqID}`).then(() => {
+      getData();
+    });
+  };
+
+  const showDetails = (faqID) => {
+    axios.get(`/product/${faqID}`).then(() => {
+      getData();
+    });
+  };
 
   return (
     <>
@@ -22,7 +50,7 @@ const Faqs = () => {
             {/* <!-- pageheader --> */}
             <div className="row">
               <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                <div className="page-header" style={{textAlign:'left'}}>
+                <div className="page-header" style={{ textAlign: "left" }}>
                   <h2 className="pageheader-title">
                     Frequently Asked Questions
                   </h2>
@@ -31,7 +59,6 @@ const Faqs = () => {
               <div
                 className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
                 align="right"
-                
               >
                 <a href="/editfaq" className="btn btn-dark">
                   New FAQ
@@ -42,9 +69,17 @@ const Faqs = () => {
             <div className="row">
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div className="card">
-                  <h5 className="card-header font-bold" style={{textAlign:'left'}}>All FAQ's</h5>
+                  <h5
+                    className="card-header font-bold"
+                    style={{ textAlign: "left" }}
+                  >
+                    All FAQ's
+                  </h5>
                   <div className="card-body">
-                    <table className="table table-bordered" style={{textAlign:'left'}}>
+                    <table
+                      className="table table-bordered"
+                      style={{ textAlign: "left" }}
+                    >
                       <thead>
                         <tr>
                           <th scope="col">#</th>
@@ -54,21 +89,70 @@ const Faqs = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>
-                            <a href="edit-faq.html">Edit</a> |
-                            <a href="comingsoon">Delete</a>
-                          </td>
-                        </tr>
+                        {faq.map((item) => {
+                          return (
+                            <tr key={item.id}>
+                              <td>{item.id}</td>
+                              <td>{item.question}</td>
+                              <td>{item.answer}</td>
+                              <td>
+                                <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
+                                  Delete
+                                </button>
+                                <button
+                                  onClick={() => showDetails(item.id)}
+                                  type="button"
+                                  className="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#exampleModal"
+                                >
+                                  View
+                                </button>
+
+                                <div
+                                  className="modal fade"
+                                  id="exampleModal"
+                                  tabIndex="-1"
+                                  aria-labelledby="exampleModalLabel"
+                                  aria-hidden="true"
+                                >
+                                  <div className="modal-dialog">
+                                    <div className="modal-content">
+                                      <div className="modal-header">
+                                        <h5
+                                          className="modal-title"
+                                          id="exampleModalLabel"
+                                        >
+                                         FAQ
+                                        </h5>
+                                        <button
+                                          type="button"
+                                          className="btn-close"
+                                          data-bs-dismiss="modal"
+                                          aria-label="Close"
+                                        ></button>
+                                      </div>
+                                      <div className="modal-body">
+                                        <p>{item.answer}</p>
+                                        <p>{item.question}</p>
+                                        </div>
+                                      <div className="modal-footer">
+                                        <button
+                                          type="button"
+                                          className="btn btn-secondary"
+                                          data-bs-dismiss="modal"
+                                        >
+                                          Close
+                                        </button>
+                                        
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                   </div>
@@ -98,7 +182,6 @@ const Faqs = () => {
         </div>
         {/* <!-- end main wrapper --> */}
       </div>
-     
     </>
   );
 };

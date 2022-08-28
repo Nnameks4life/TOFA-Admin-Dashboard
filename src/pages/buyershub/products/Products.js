@@ -1,46 +1,84 @@
-import React, {useEffect } from "react";
-// import { useFetch } from '../../../useFetch'
-import { axios } from '../../components/baseUrl'
+import React, { useEffect, useState } from "react";
+// import { useFetch } from "../../../useFetch";
+import { axios } from "../../components/baseUrl";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import './products.css'
+import "./products.css";
 
-import {datatabless} from '../../website-settings/commodityInsight/DummyData';
+// import {datatabless} from '../../website-settings/commodityInsight/DummyData';
 
-import 'jquery/dist/jquery.min.js';
- 
+import "jquery/dist/jquery.min.js";
+
 //Datatable Modules
-import "datatables.net-dt/js/dataTables.dataTables"
-import "datatables.net-dt/css/jquery.dataTables.min.css"
-import $ from 'jquery'; 
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import $ from "jquery";
+import { Link } from "react-router-dom";
 
 const Products = () => {
+  const [product, setProduct] = useState([]);
 
+  const getData = async () => {
+    try {
+      axios.get("/product").then((response) => {
+        console.log(response.data);
+        setProduct(response.data.data);
+      });
+    } catch (error) {
+      console.log(error.response.data.erros);
+    }
+  };
 
-  //  const {data, loading, error} = useFetch("/order")
+  const setToLocalStorage = (id, productName,minPricePerUnit, maxPricePerUnit,supplyCapacity, currency,minDuration, subCategory) => {
+    // localStorage.setItem("id", id);
+    // localStorage.setItem("answer", answer);
+   
+    localStorage.setItem("productNname", productName);
+    localStorage.setItem("minPricePerUnit", minPricePerUnit);
+    localStorage.setItem("maxPricePerUnit", maxPricePerUnit);
+    localStorage.setItem("supplyCapacity", supplyCapacity);
+    localStorage.setItem("currency", currency);
+    localStorage.setItem("minDuration", minDuration);
+    localStorage.setItem("subCategory", subCategory);
+  };
+
+  //  const {data, error} = useFetch("/product")
 
   //  if (loading) return <h1>LOADING ....</h1>
 
   //  if (error) console.log(error)
 
-  const handleDelete = (productID) => {
-    axios.delete(`/product/${productID}`).then(() => {
+  // const handleDelete = (productID) => {
+  //   axios.delete(`/product/${productID}`).then(() => {
 
-    })
-  }
+  //   })
+  // }
 
   useEffect(() => {
-    // getData()
-  }, [])
+    getData();
+  }, []);
 
-  useEffect(()=>{
+  const handleDelete = (productID) => {
+    axios.delete(`/product/${productID}`).then(() => {
+      getData();
+    });
+  };
+
+  const showDetails = (productID) => {
+    
+      axios.get(`/product/${productID}`).then((response) => {
+        getData()
+      });
+  };
+
+  useEffect(() => {
     //initialize datatable
-$(document).ready(function () {
-    setTimeout(function(){
-    $('#example').DataTable();
-     } ,1000);
-});
-},[])
+    $(document).ready(function() {
+      setTimeout(function() {
+        $("#example").DataTable();
+      }, 1000);
+    });
+  }, []);
 
   return (
     <>
@@ -133,7 +171,6 @@ $(document).ready(function () {
                               </button>
                             </div>
                           </div>
-
                         </div>
                       </div>
                       <div className="container">
@@ -144,10 +181,10 @@ $(document).ready(function () {
                         >
                           <thead>
                             <tr>
-                              <th>ID</th>
+                              {/* <th>ID</th> */}
                               <th>Product Name</th>
 
-                              <th>Currency</th>
+                              <th>Parent Category</th>
                               <th>Supply Capacity</th>
                               <th>Duration</th>
                               <th>Description</th>
@@ -155,22 +192,116 @@ $(document).ready(function () {
 
                               <th>Sub Category</th>
                               <th>Action</th>
+                              <th>Actionn-two</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {datatabless.map((item) => {
+                            {product.map((item) => {
                               return (
                                 <tr key={item.id}>
+                                  {/* <td>{item.id}</td> */}
                                   <td>{item.id}</td>
-                                  <td>{item.commodityname}</td>
-                                  <td>{item.country}</td>
-                                  <td>{item.price}</td>
-                                  <td>{item.origin}</td>
-                                  <td>{item.specification}</td>
-                                  <td>{item.description}</td>
-                                  <td>{item.status}</td>
-                                  <td><a href='delete' onClick={() => handleDelete(item.id)}>{item.delete} </a> | <a href='view'>{item.view} </a>  </td>
+                                  <td>{item.productName}</td>
+                                  <td>{item.minPricePerUnit}</td>
+                                  <td>{item.maxPricePerUnit}</td>
+                                  <td>{item.currency}</td>
+                                  <td>{item.supplyCapacity}</td>
+                                  <td>{item.minDuration}</td>
+                                  <td>{item.subCategory}</td>
+                                  <td>
+                                    <button
+                                      type="button"
+                                      className="btn btn-danger"
+                                      data-dismiss="modal"
+                                      onClick={() => handleDelete(item.id)}
+                                    >
+                                      delete
+                                    </button>{" "}
+                                    |{" "}
+                                    <button
+                                      onClick={(e) => showDetails(item.id)}
+                                      type="button"
+                                      class="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
+                                    >
+                                      view{" "}
+                                    </button>
                                   
+                                    <div
+                                      class="modal fade"
+                                      id="exampleModal"
+                                      tabindex="-1"
+                                      aria-labelledby="exampleModalLabel"
+                                      aria-hidden="true"
+                                    >
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5
+                                              class="modal-title"
+                                              id="exampleModalLabel"
+                                            >
+                                              Product Information
+                                            </h5>
+                                            <button
+                                              type="button"
+                                              class="btn-close"
+                                              data-bs-dismiss="modal"
+                                              aria-label="Close"
+                                            ></button>
+                                          </div>
+                                          <div align='right'>
+                                       <Link to='/editproduct'> 
+                          <button
+                            className="btn btn-success"
+                            onClick={() =>
+                              setToLocalStorage(
+                                item.productName,
+                                item.minPricePerUnit,
+                                item.maxPricePerUnit,
+                                item.supplyCapacity,
+                                item.currency,
+                                item.minDuration,
+                                item.subCategory,
+                                
+                              )
+                            }
+                          >
+                            Edit
+                          </button>
+                          </Link>
+                       
+                                          </div>
+                                          <div className="d-flex ">
+                                          <div class="modal-body">Category: {item.subCategory}</div>
+                                          <div class="modal-body">Minimum Price: {item.minPricePerUnit}</div>
+                                          </div>
+                                          <div className="d-flex">
+                                          <div class="modal-body">Maximum Price Per Unit: {item.maxPricePerUnit}</div>
+                                          <div class="modal-body">Currency: {item.currency}</div>
+                                          </div>
+                                          <div className="d-flex">
+                                          <div class="modal-body">Supply Capacity: {item.supplyCapacity}</div>
+                                          <div class="modal-body">Minmum Duration: {item.minDuration}</div>
+                                          </div>
+                                          <div className="mx-auto">
+                                          <div class="modal-body">Subcategory: {item.subCategory}</div>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button
+                                              type="button"
+                                              class="btn btn-secondary"
+                                              data-bs-dismiss="modal"
+                                            >
+                                              Close
+                                            </button>
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </td>
                                 </tr>
                               );
                             })}

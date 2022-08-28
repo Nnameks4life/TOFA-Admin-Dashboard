@@ -25,28 +25,18 @@ setCommodity({...commodity, [e.target.name]: e.target.value})
       countries:getCountry(), 
       briefHistory:commodity.briefHistory, 
     }
-    const formData = new FormData()
-      for (const property in jsonData) {
-        formData.append(`${property}`, jsonData[property]);
-      }
-
-      // for (let i = 0; i < e.target.otherImages.files.length; i++) {
-      //   formData.append("otherImages", e.target.otherImages.files[i]);
-      // }
-      // formData.append("featuredImage", e.target.featuredImage.files[0]);
-
+    // const formData = new FormData()
+    //   for (const property in jsonData) {
+    //     formData.append(`${property}`, jsonData[property]);
+    //   }
       const { data: result } = await axios
-        .post("/commodity", formData, {
+        .post("/commodity", jsonData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
         alert ("success")
         console.log(result)
-
-
-
-
     // const {data} = axios.post("./commodity", {
     //   name: commodity.name,
     //   country:getCountry(), 
@@ -80,7 +70,7 @@ setCommodity({...commodity, [e.target.name]: e.target.value})
   for (let i = 0; i < countries.length; i++) {
     const countryName = countries[i].value;
     // const price = prices[i].value;
-    if (countryName) country.push({ countryName});
+    if (countryName) country.push( countryName);
   }
   return JSON.stringify(country);
 };
@@ -110,7 +100,7 @@ const handleRemoveCountry = (index) => {
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
           <div>
-            <form className="mx-5 my-5" onSubmit={handleSubmit}>
+            <form className="mx-5 my-5">
               <div className="d-flex justify-content-between">
                 <h2> Create Commodity Insight</h2>
                 {/* <Link to="/commodityInsight">
@@ -174,13 +164,8 @@ const handleRemoveCountry = (index) => {
                   )}
                 </div>
               </div>
-
-              
-
-         
-            
               <div>
-                <h4>Brief History</h4>
+                <h4>Commodity Information</h4>
                 <Editor
                   name='briefHistory'
                   onInit={(evt, editor) => (editorRef.current = editor)}
@@ -202,7 +187,7 @@ const handleRemoveCountry = (index) => {
               </div>
 
               <div style={{ textAlign: "start" }}>
-                <button className="btn btn-dark" type="submit">Submit</button>
+                <button className="btn btn-dark" onClick={handleSubmit}>Submit</button>
               </div>
              
             </form>

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { axios } from "../../components/baseUrl";
 import Navbar from "../../components/navbar/Navbar";
+import { Link } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
 import "./faq.css";
 
 const Faqs = () => {
   const [faq, setFaq] = useState([]);
+  const [viewFaq, setViewFaq] = useState([]);
 
   const getData = async () => {
     try {
@@ -16,6 +18,12 @@ const Faqs = () => {
     } catch (error) {
       console.log(error.response.data.erros);
     }
+  };
+
+  const setToLocalStorage = (id, question, answer) => {
+    localStorage.setItem("id", id);
+    localStorage.setItem("answer", answer);
+    localStorage.setItem("question", question);
   };
 
   useEffect(() => {
@@ -30,7 +38,7 @@ const Faqs = () => {
 
   const showDetails = (faqID) => {
     axios.get(`/product/${faqID}`).then(() => {
-      getData();
+      setViewFaq()
     });
   };
 
@@ -125,16 +133,27 @@ const Faqs = () => {
                                         >
                                          FAQ
                                         </h5>
-                                        <button
-                                          type="button"
-                                          className="btn-close"
-                                          data-bs-dismiss="modal"
-                                          aria-label="Close"
-                                        ></button>
-                                      </div>
+                                       
+                                       
+                                        <Link to="/editfaq">
+                          <button
+                            className="btn btn-success"
+                            onClick={() =>
+                              setToLocalStorage(
+                                item.id,
+                                item.question,
+                                item.answer
+                              )
+                            }
+                          >
+                            Edit
+                          </button>
+                          </Link>
+                          </div>
+                                      
                                       <div className="modal-body">
-                                        <p>{item.answer}</p>
-                                        <p>{item.question}</p>
+                                        <p>{viewFaq.answer}</p>
+                                        <p>{viewFaq.question}</p>
                                         </div>
                                       <div className="modal-footer">
                                         <button
@@ -149,6 +168,8 @@ const Faqs = () => {
                                     </div>
                                   </div>
                                 </div>
+
+
                               </td>
                             </tr>
                           );

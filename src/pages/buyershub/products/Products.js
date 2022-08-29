@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 
 const Products = () => {
   const [product, setProduct] = useState([]);
+  const [viewProduct, setViewProduct] = useState([])
 
   const getData = async () => {
     try {
@@ -42,17 +43,7 @@ const Products = () => {
     localStorage.setItem("subCategory", subCategory);
   };
 
-  //  const {data, error} = useFetch("/product")
 
-  //  if (loading) return <h1>LOADING ....</h1>
-
-  //  if (error) console.log(error)
-
-  // const handleDelete = (productID) => {
-  //   axios.delete(`/product/${productID}`).then(() => {
-
-  //   })
-  // }
 
   useEffect(() => {
     getData();
@@ -64,10 +55,9 @@ const Products = () => {
     });
   };
 
-  const showDetails = (productID) => {
-    
+  const showDetails = (productID) => { 
       axios.get(`/product/${productID}`).then((response) => {
-        getData()
+        setViewProduct(response.data.data)
       });
   };
 
@@ -182,16 +172,16 @@ const Products = () => {
                           <thead>
                             <tr>
                               {/* <th>ID</th> */}
+                              <th>Product ID</th>
+
                               <th>Product Name</th>
+                              <th>Min Price Per Unit</th>
+                              <th>maxPricePerUnit</th>
+                              <th>currency</th>
+                              <th>supplyCapacity</th>
 
-                              <th>Parent Category</th>
-                              <th>Supply Capacity</th>
-                              <th>Duration</th>
-                              <th>Description</th>
-                              <th>Specification</th>
-
-                              <th>Sub Category</th>
-                              <th>Action</th>
+                              <th>minDuration</th>
+                              <th>subCategory</th>
                               <th>Actionn-two</th>
                             </tr>
                           </thead>
@@ -274,19 +264,20 @@ const Products = () => {
                        
                                           </div>
                                           <div className="d-flex ">
-                                          <div class="modal-body">Category: {item.subCategory}</div>
-                                          <div class="modal-body">Minimum Price: {item.minPricePerUnit}</div>
+                                          <div class="modal-body">Product Name: {viewProduct.productName}</div>
+                                          <div class="modal-body">Category: {viewProduct.subCategory}</div>
+                                          <div class="modal-body">Minimum Price: {viewProduct.minPricePerUnit}</div>
                                           </div>
                                           <div className="d-flex">
-                                          <div class="modal-body">Maximum Price Per Unit: {item.maxPricePerUnit}</div>
-                                          <div class="modal-body">Currency: {item.currency}</div>
+                                          <div class="modal-body">Maximum Price Per Unit: {viewProduct.maxPricePerUnit}</div>
+                                          <div class="modal-body">Currency: {viewProduct.currency}</div>
                                           </div>
                                           <div className="d-flex">
-                                          <div class="modal-body">Supply Capacity: {item.supplyCapacity}</div>
-                                          <div class="modal-body">Minmum Duration: {item.minDuration}</div>
+                                          <div class="modal-body">Supply Capacity: {viewProduct.supplyCapacity}</div>
+                                          <div class="modal-body">Minmum Duration: {viewProduct.minDuration}</div>
                                           </div>
                                           <div className="mx-auto">
-                                          <div class="modal-body">Subcategory: {item.subCategory}</div>
+                                          <div class="modal-body">Subcategory: {viewProduct.subCategory}</div>
                                           </div>
                                           <div class="modal-footer">
                                             <button
@@ -301,6 +292,9 @@ const Products = () => {
                                         </div>
                                       </div>
                                     </div>
+
+
+
                                   </td>
                                 </tr>
                               );

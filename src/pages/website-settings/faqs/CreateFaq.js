@@ -1,33 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
 import { useNavigate } from "react-router-dom";
 
-const EditFaq = () => {
-  const [id, setId] = useState(0);
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+const CreateFaq = () => {
+    const [formErrors, setFormErrors] = useState({})
+    const [customError, setCustomError] = useState("")
+    const [faq, setFaq] = useState({
+    answer: "",
+    question: "",
+  });
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setId(localStorage.getItem("id"));
-    setQuestion(localStorage.getItem("question"));
-    setAnswer(localStorage.getItem("answer"));
-  }, []);
-
-  const handleUpdate = (e, faqID) => {
-    e.preventDefault();
-    axios
-      .put(
-        `/faq/${faqID}`,
-        { answer: answer, question: question }
-      )
-      .then(() => {
-        navigate("/faq");
-      });
+  const handleChange = (e) => {
+    setFaq({ ...faq, [e.target.name]: e.target.value });
   };
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const { data:result } = await axios
+        .post("/faq", {
+          question: faq.question,
+          answer: faq.answer, 
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }, )
+        console.log(result)
+    } catch (err) {
+        if(err.response.data.errors[0].field) {
+            setFormErrors(err.response.data.errors.reduce(function (obj, err) {
+              obj[err.field] = err.message;
+              return obj;
+            }, {}))
+        } else {
+            console.log(err.response.data.errors[0].message)
+              setCustomError(err.response.data.errors[0].message)
+              alert(customError)
+        }
+    } 
+    if (formErrors.question || formErrors.answer ) {
+    navigate("/faq")
+  }
+};
 
   return (
     <div>
@@ -69,11 +87,13 @@ const EditFaq = () => {
                             Question
                           </label>
                           <input
+                            id="inputText3"
+                            name="question"
                             type="text"
                             className="form-control"
-                            value={question}
-                            onChange={(e) => setQuestion(e.target.value)}
+                            onChange={handleChange}
                           />
+                          {formErrors.question && (<p className="text-danger">{formErrors.question}</p>)}
                         </div>
                         <div className="form-group">
                           <label htmlFor="exampleFormControlTextarea1">
@@ -81,17 +101,22 @@ const EditFaq = () => {
                           </label>
                           <textarea
                             className="form-control"
-                            value={answer}
-                            onChange={(e) => setAnswer(e.target.value)}
+                            name="answer"
+                            id="exampleFormControlTextarea1"
+                            rows="3"
+                            onChange={handleChange}
                           />
+                          {formErrors.answer && (<p className="text-danger">{formErrors.answer}</p>)}
                         </div>
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          onClick={handleUpdate}
-                        >
-                          Update
-                        </button>
+                        <div className="form-group">
+                          <a
+                            href="comingsoon"
+                            className="btn btn-dark"
+                            onClick={handleSubmit}
+                          >
+                            Save FAQ
+                          </a>
+                        </div>
                       </form>
                     </div>
                   </div>
@@ -107,4 +132,4 @@ const EditFaq = () => {
   );
 };
 
-export default EditFaq;
+export default CreateFaq;

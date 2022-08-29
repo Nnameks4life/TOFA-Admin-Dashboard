@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
 // import IconButton from "@mui/material/IconButton";
 // import DeleteIcon from "@mui/icons-material/Delete";
@@ -9,59 +9,56 @@ import { axios } from "../../components/baseUrl";
 // import OtherImages from "./OtherImages";
 
 const EditProducts = () => {
+  const [id, setId] = useState(0);
+  const [productName, setProductName] = useState("")
+  const [parentCategory, setParentCategory] = useState("")
+  const [unitForMinOrder, setUnitForMinOrder] = useState("")
+  const [supplyCapacity, setSupplyCapacity] = useState("")
+  const [unitForSupplyCapacity, setUnitForSupplyCapacity] = useState("")
+  const [minDuration, setMinDuration] = useState("")
+  const [maxDuration, setMaxDuration] = useState("")
+  const [category, setCategory] = useState("")
+  const [subCategory, setSubCategory] = useState("")
+  const [productDescription, setProductDescription] = useState("")
+  
 
-    const [id, setId] = useState(0)
-    const [productDetails, setProductDetails] = useState({
-        productName: "",
-        parentCategory: "",
-        unitForMinOrder: "",
-        supplyCapacity: "",
-        unitForSupplyCapacity: "",
-        minDuration: "",
-        maxDuration: "",
-        category: "",
-        subCategory: "",
-        specification: "",
-        productDescription: "",
+
+  const navigate = useNavigate();
+
+  const handleUpdate = (e, productID) => {
+    e.preventDefault();
+    axios
+      .put(`product/${productID}`, {
+        productName:productName,
+        parentCategory: parentCategory,
+        unitForMinOrder: unitForMinOrder,
+        supplyCapacity: supplyCapacity,
+        unitForSupplyCapacity: unitForSupplyCapacity,
+        minDuration: minDuration,
+        maxDuration: maxDuration,
+        category: category,
+        subCategory: subCategory,
+        productDescription: productDescription,
+      })
+      .then(() => {
+        navigate("/product");
       });
+  };
 
-      const handleProductChange = (e) => {
-          setProductDetails({...productDetails, [e.target.name]: e.target.value})
-      }
+  useEffect(() => {
+    setId(localStorage.getItem("id"));
+    setProductName(localStorage.getItem("productName"));
+    setParentCategory(localStorage.getItem("parentCategory"));
+    setUnitForMinOrder(localStorage.getItem("unitForMinOrder"));
+    setSupplyCapacity(localStorage.getItem("supplyCapacity"));
+    setUnitForSupplyCapacity(localStorage.getItem("unitForSupplyCapacity"));
+    setMinDuration(localStorage.getItem("minDuration"));
+    setMaxDuration(localStorage.getItem("maxDuration"));
+    setCategory(localStorage.getItem("category"));
+    setSubCategory(localStorage.getItem("subCategory"));
+    setProductDescription(localStorage.getItem("productDescription"));
+  }, []);
 
-   
-
-
-  const navigate = useNavigate()
-
-  useEffect(() =>{
-     setId(localStorage.getItem("id"));
-     setProductDetails(localStorage.getItem("parentCategory","productName", "unitForSupplyCapacity", "unitForMinOrder",
-     "unitForSupplyCapacity", "minDuration", "maxDuration", "category", "subCategory", "countryName", "productDescription","otherImages", "featuredImage" ));
-  }, [])
-
-  const handleUpdate = (e) => {
-    e.preventDefault()
-    axios.put(`product/${id}`,
-    {
-    productName: productDetails.productName,
-    currency: "NGN",
-    parentCategory: productDetails.parentCategory,
-    unitForMinOrder: productDetails.unitForMinOrder,
-    unitForSupplyCapacity: productDetails.unitForSupplyCapacity,
-    minDuration: productDetails.minDuration,
-    maxDuration: productDetails.maxDuration,
-    category: productDetails.category,
-    subCategory: productDetails.subCategory,
-    productDescription: productDetails.productDescription,
-    supplyCapacity: productDetails.supplyCapacity,
-    // specification: getSpecifications(),
-    // countries: getCountry(),
-  }
-).then(() =>{
-navigate('/products')
-})
-  }
 
   return (
     <>
@@ -76,42 +73,41 @@ navigate('/products')
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
           <div>
-            <form className="mx-5 my-5" >
-              
-
+            <form className="mx-5 my-5">
               <div className="row my-3" style={{ textAlign: "left" }}>
                 <div className="col-4 ">
                   <label className="form-label">Product Name:</label>
                   <input
-                    name="productName"
+                    
+                    value={productName}
+                    onChange={(e) => setProductName(e.target.value)}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleProductChange}
                   />
-                 
                 </div>
 
                 <div className="col-4 ">
                   <label className="form-label">Parent Category</label>
 
-
-                  <select className="form-control"
-                    name="parentCategory"
+                  <select
+                    className="form-control"
+                    value={parentCategory}
+                    onChange={(e) => setParentCategory(e.target.value)}
                     aria-describedby="Default select example"
-                    onChange={handleProductChange}
-                    placeholder='parent category'
-                    >
-                      <option>CONSTRUCTION_MATERIAL</option>
-                      <option>FOOD_AND_BEVERAGE</option>
-                      <option>APPAREL</option>
-                      <option>HOME_AND_FURNITURE</option>
-                      <option> BEAUTY_AND_PERSONAL_CARE</option>
-                      <option>PACKAGING_AND_SUPPLY</option>
-                      <option>  MINERALS_AND_METALLURGY</option>
-                      <option>  AGRICULTURE</option>
+                    
+                    placeholder="parent category"
+                  >
+                    <option>CONSTRUCTION_MATERIAL</option>
+                    <option>FOOD_AND_BEVERAGE</option>
+                    <option>APPAREL</option>
+                    <option>HOME_AND_FURNITURE</option>
+                    <option> BEAUTY_AND_PERSONAL_CARE</option>
+                    <option>PACKAGING_AND_SUPPLY</option>
+                    <option> MINERALS_AND_METALLURGY</option>
+                    <option> AGRICULTURE</option>
                   </select>
-                  
+
                   {/* {formErrors.parentCategory && (
                     <p className="text-danger">{formErrors.parentCategory}</p>
                   )} */}
@@ -121,51 +117,45 @@ navigate('/products')
                   <label className="form-label">Supply Capacity</label>
                   <input
                     type="number"
-                    name="supplyCapacity"
+                    value={supplyCapacity}
                     className="form-control"
-                    onChange={handleProductChange}
+                    onChange={(e) => setSupplyCapacity(e.target.value)}
                   ></input>
-                 
                 </div>
-
-               
               </div>
 
               <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-4 mb-3">
                   <label className="form-label">Unit of Min order</label>
                   <input
-                    name="unitForMinOrder"
+                    value={unitForMinOrder}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleProductChange}
+                    onChange={(e) => setUnitForMinOrder(e.target.value)}
                   />
-                 
                 </div>
 
                 <div className="col-4  mb-3">
                   <label className="form-label">Unit of Supply Capacity</label>
                   <input
-                    name="unitForSupplyCapacity"
+                    value={unitForSupplyCapacity}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleProductChange}
+                    onChange={(e) => setUnitForSupplyCapacity(e.target.value)}
                   />
-               
                 </div>
 
                 <div className="col-4 mb-3">
                   <label className="form-label">Min Duration</label>
                   <input
-                    name="minDuration"
+                    value={minDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleProductChange}
+                    onChange={(e) => setMinDuration(e.target.value)}
                   />
-               
                 </div>
               </div>
 
@@ -173,36 +163,34 @@ navigate('/products')
                 <div className="col-4  mb-3">
                   <label className="form-label">Max Duration</label>
                   <input
-                    name="maxDuration"
+                    value={maxDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleProductChange}
+                    onChange={(e) => setMaxDuration(e.target.value)}
                   />
-               
                 </div>
 
                 <div className="col-4 mb-3">
                   <label className="form-label">Category</label>
                   <input
-                    name="category"
+                    value={category}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleProductChange}
+                    onChange={(e) => setCategory(e.target.value)}
                   />
                 </div>
 
                 <div className="col-4 mb-3">
                   <label className="form-label">Sub Category</label>
                   <input
-                    name="subCategory"
+                    value={subCategory}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleProductChange}
+                    onChange={(e) => setSubCategory(e.target.value)}
                   />
-              
                 </div>
               </div>
               <div className="row">
@@ -239,7 +227,7 @@ navigate('/products')
                       </div>
                     </div>
                   ))} */}
-                  {/* {formErrors.specification && (
+                {/* {formErrors.specification && (
                     <p className="text-danger">{formErrors.specification}</p>
                   )} */}
                 {/* </div> */}
@@ -278,38 +266,35 @@ navigate('/products')
                       </div>
                     </div>
                   ))} */}
-                  {/* {formErrors.country && (
+                {/* {formErrors.country && (
                     <p className="text-danger">{formErrors.country}</p>
                   )} */}
                 {/* </div> */}
-
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
                 <label className="form-label">Description</label>
                 <textarea
-                  name="productDescription"
+                  value={productDescription}
                   type="text"
                   className="form-control"
-                  onChange={handleProductChange}
+                  onChange={(e) => setProductDescription(e.target.value)}
                 />
                 {/* {formErrors.productDescription && (
                   <p className="text-danger">{formErrors.productDescription}</p>
                 )} */}
               </div>
 
-              
+              <div className="row">
+                <div className="col-6 box">
+                  <h3 className="header">Featured Images</h3>
 
-                <div className="row">
-                  <div className="col-6 box">
-                    <h3 className="header">Featured Images</h3>
-
-                    {/* <DropFileInput
+                  {/* <DropFileInput
                       onFileChange={(files) => onFileChange(files)}
                     /> */}
-                  <input type="file" name="featuredImage" />
-                  </div>
-                  <div className="col-6 mx-auto">
+                  <input type="file" />
+                </div>
+                <div className="col-6 mx-auto">
                   {/* <div className="mb-3" style={{ textAlign: "left" }}>
                 <label className="form-label d-block">Other Images</label>
                 <input
@@ -320,7 +305,7 @@ navigate('/products')
                   onChange={onSelectFile}
                 /> */}
 
-                {/* <div className="iamges d-flex">
+                  {/* <div className="iamges d-flex">
                   {selectedImages &&
                     selectedImages.map((image, index) => {
                       return (
@@ -330,7 +315,7 @@ navigate('/products')
                           style={{ position: "relative" }}
                         >
                           <img src={image} alt="" /> */}
-                          {/* <button
+                  {/* <button
                             onClick={() =>
                               setSelectedImages(
                                 selectedImages.filter((e) => e !== image)
@@ -339,7 +324,7 @@ navigate('/products')
                           >
                             delete image
                           </button> */}
-                          {/* <div
+                  {/* <div
                             className="bin-icon"
                             style={{
                               position: "absolute",
@@ -347,8 +332,8 @@ navigate('/products')
                               left: "0",
                               color: "red",
                             }} */}
-                          {/* > */}
-                            {/* <IconButton
+                  {/* > */}
+                  {/* <IconButton
                               className="text-danger"
                               aria-label="delete"
                               size="small"
@@ -368,21 +353,16 @@ navigate('/products')
                 </div>
                   </div> */}
                 </div>
-
-
-                
               </div>
 
               <div style={{ textAlign: "left" }}>
-              
-
                 <button
-          type="submit"
-          className="btn btn-dark"
-        onClick={handleUpdate}
-        >
-          Update
-        </button>
+                  type="submit"
+                  className="btn btn-dark"
+                  onClick={handleUpdate}
+                >
+                  Update
+                </button>
               </div>
             </form>
           </div>

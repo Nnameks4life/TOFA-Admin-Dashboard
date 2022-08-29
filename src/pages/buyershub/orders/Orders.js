@@ -1,10 +1,10 @@
-import React, { useEffect} from "react";
+import React, { useState, useEffect} from "react";
 // import { useFetch } from '../../../useFetch'
 // import { axios } from '../../components/baseUrl'
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 
-import {datatabless} from '../../website-settings/commodityInsight/DummyData';
+// import {datatabless} from '../../website-settings/commodityInsight/DummyData';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 import 'jquery/dist/jquery.min.js';
@@ -13,10 +13,23 @@ import 'jquery/dist/jquery.min.js';
 import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.min.css"
 import $ from 'jquery'; 
+import { axios } from "../../components/baseUrl";
 
 const Orders = () => {
 
+  const [order, setOrder] = useState([]);
+  const [viewOrder, setViewOrder] = useState([]);
 
+  const getData = async () => {
+    try {
+      axios.get("/order").then((response) => {
+        console.log(response.data);
+        setOrder(response.data.data);
+      });
+    } catch (error) {
+      console.log(error.response.data.erros);
+    }
+  };
   // const [search, setSearch] = useState();
 
   useEffect(()=>{
@@ -28,11 +41,29 @@ $(document).ready(function () {
 });
 },[])
 
-  //  const {data, loading, error} = useFetch("/order")
+useEffect(() => {
+  getData();
+}, []);
 
-  //  if (loading) return <h1>LOADING ....</h1>
+// const setToLocalStorage = (id, name, company, message) => {
+//   localStorage.setItem("id", id);
+//   localStorage.setItem("name", name);
+//   localStorage.setItem("company", company);
+//   localStorage.setItem("message", message);
+// };
 
-  //  if (error) console.log(error)
+const handleDelete = (orderID) => {
+  axios.delete(`/order/${orderID}`).then((response) => {
+    setViewOrder(response.data.data)
+  });
+};
+
+const showDetails = (orderID) => { 
+    axios.get(`/order/${orderID}`).then((response) => {
+      setViewOrder(response.data.data)
+    });
+};
+
 
   return (
     <>
@@ -204,28 +235,122 @@ $(document).ready(function () {
                           <thead>
                             <tr>
                                 <th>ID</th>
-                              <th>Commodity Name</th>
+                              <th>Quantity</th>
                               <th>Country</th>
-                              <th>Price</th>
-                              <th>Origin</th>
+                              <th>Address</th>
+                              <th>paymentTerm</th>
+                              <th>Grade</th>
                               <th>Specification</th>
-                              <th>Description</th>
                               <th>Status</th>
                             </tr>
                           </thead>
                           <tbody>
-                         { datatabless.map((item) => {
+                         { order.map((item) => {
                          return (
                       
                               <tr>
                                   <td>{item.id}</td>
-                                  <td>{item.commodityname}</td>
+                                  <td>{item.quantity}</td>
                                   <td>{item.country}</td>
-                                  <td>{item.price}</td>
-                                  <td>{item.origin}</td>
+                                  <td>{item.address}</td>
+                                  
+                                  <td>{item.paymentTerm}</td>
+                                  <td>{item.grade}</td>
                                   <td>{item.specification}</td>
-                                  <td>{item.description}</td>
-                                  <td>{item.status}</td>
+                                  <td>
+                                  <button
+                                      type="button"
+                                      className="btn btn-danger"
+                                      data-dismiss="modal"
+                                      onClick={() => handleDelete(item.id)}
+                                    >
+                                      delete
+                                    </button>{" "}
+                                    |{" "}
+                                    <button
+                                      onClick={(e) => showDetails(item.id)}
+                                      type="button"
+                                      class="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
+                                    >
+                                      view{" "}
+                                    </button>
+                                  
+                                    <div
+                                      class="modal fade"
+                                      id="exampleModal"
+                                      tabindex="-1"
+                                      aria-labelledby="exampleModalLabel"
+                                      aria-hidden="true"
+                                    >
+                                      <div class="modal-dialog">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5
+                                              class="modal-title"
+                                              id="exampleModalLabel"
+                                            >
+                                              Product Information
+                                            </h5>
+                                            <button
+                                              type="button"
+                                              class="btn-close"
+                                              data-bs-dismiss="modal"
+                                              aria-label="Close"
+                                            ></button>
+                                          </div>
+                                          {/* <div align='right'>
+                                       <Link to='/editproduct'> 
+                          <button
+                            className="btn btn-success"
+                            onClick={() =>
+                              setToLocalStorage(
+                                item.quantity,
+                                item.country,
+                                item.address,
+                                item.paymentTerm,
+                                item.grade,
+                                item.specification,
+                                
+                                
+                              )
+                            }
+                          >
+                            Edit
+                          </button>
+                          </Link>
+                       
+                                          </div> */}
+                                          <div className="d-flex ">
+                                          <div class="modal-body">Product Name: {viewOrder.quantity}</div>
+                                          <div class="modal-body">Category: {viewOrder.country}</div>
+                                          <div class="modal-body">Minimum Price: {viewOrder.address}</div>
+                                          </div>
+                                          <div className="d-flex">
+                                          <div class="modal-body">Maximum Price Per Unit: {viewOrder.paymentTerm}</div>
+                                          <div class="modal-body">Currency: {viewOrder.grade}</div>
+                                          </div>
+                                          <div className="d-flex">
+                                          <div class="modal-body">Supply Capacity: {viewOrder.specification}</div>
+                                       
+                                          </div>
+                                         
+                                          <div class="modal-footer">
+                                            <button
+                                              type="button"
+                                              class="btn btn-secondary"
+                                              data-bs-dismiss="modal"
+                                            >
+                                              Close
+                                            </button>
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                  </td>
                                 
                               </tr>
                         

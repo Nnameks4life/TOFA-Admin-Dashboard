@@ -1,36 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
-import { useNavigate } from "react-router-dom";
 // import { useNavigate} from 'react-router-dom';
 
-const EditTestimonial = () => {
-    const [id, setId] = useState(0)
-    const [name, setName] = useState("");
-  const [company, setCompany] = useState(""); 
-  const [message, setMessage] = useState(""); 
+const CreateTestimonial = () => {
+  const [formErrors, setFormErrors] = useState({});
+  const [customError, setCustomError] = useState("");
+  const [testimonial, setTestimonial] = useState({
+    name: "",
+    company: "",
+    message: "",
+  });
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  useEffect(() =>{
-     setId(localStorage.getItem("id"));
-     setName(localStorage.getItem("name"));
-     setCompany(localStorage.getItem("company"));
-     setMessage(localStorage.getItem("message"));
-  }, [])
+  const handleChange = (e) => {
+    setTestimonial({ ...testimonial, [e.target.name]: e.target.value });
+  };
 
-  const handleUpdate = (e, testimonialID) => {
-e.preventDefault()
-axios.put(`testimonial/${testimonialID}`,
-{name:name,
-company:company,
-message:message
-}
-).then(() =>{
-navigate('/testimonial')
-})
-  }
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const { data: result } = await axios.post("/testimonial", {
+        name: testimonial.name,
+        company: testimonial.company,
+        message: testimonial.message,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(result);
+    } catch (err) {
+      if (err.response.data.errors[0].field) {
+        setFormErrors(
+          err.response.data.errors.reduce(function(obj, err) {
+            obj[err.field] = err.message;
+            return obj;
+          }, {})
+        );
+      } else {
+        console.log(err.response.data.errors[0].message);
+        setCustomError(err.response.data.errors[0].message);
+        alert(customError);
+      }
+    }
+  };
 
   return (
     <div>
@@ -60,7 +75,7 @@ navigate('/testimonial')
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <div className="card">
                     <h5 className="card-header font-bold">
-                      Edit Testimonial
+                      Create Testimonial
                     </h5>
                     <div className="card-body">
                       <form>
@@ -72,13 +87,15 @@ navigate('/testimonial')
                             Name
                           </label>
                           <input
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            id="inputText3"
+                            name="name"
                             type="text"
                             className="form-control"
-                            
+                            onChange={handleChange}
                           />
-                         
+                          {formErrors.name && (
+                            <p className="text-danger">{formErrors.name}</p>
+                          )}
                         </div>
                         <div className="form-group">
                           <label
@@ -88,13 +105,15 @@ navigate('/testimonial')
                             Company
                           </label>
                           <input
-                           
+                            id="inputText3"
+                            name="company"
                             type="text"
                             className="form-control"
-                            value={company}
-                            onChange={(e) => setCompany(e.target.value)}
+                            onChange={handleChange}
                           />
-                         
+                          {formErrors.company && (
+                            <p className="text-danger">{formErrors.company}</p>
+                          )}
                         </div>
                         <div className="form-group">
                           <label htmlFor="exampleFormControlTextarea1">
@@ -102,21 +121,23 @@ navigate('/testimonial')
                           </label>
                           <textarea
                             className="form-control"
-                            
+                            name="message"
+                            id="exampleFormControlTextarea1"
                             rows="3"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            onChange={handleChange}
                           />
-                        
+                          {formErrors.message && (
+                            <p className="text-danger">{formErrors.message}</p>
+                          )}
                         </div>
                         <div className="form-group">
-                        <button
-          type="submit"
-          className="btn btn-primary"
-        onClick={handleUpdate}
-        >
-          Update
-        </button>
+                          <a
+                            href="comingsoon"
+                            className="btn btn-dark"
+                            onClick={handleSubmit}
+                          >
+                            Save Testimonial
+                          </a>
                         </div>
                       </form>
                     </div>
@@ -131,4 +152,4 @@ navigate('/testimonial')
   );
 };
 
-export default EditTestimonial;
+export default CreateTestimonial;

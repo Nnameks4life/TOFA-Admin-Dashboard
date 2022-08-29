@@ -10,9 +10,9 @@ import Login from './pages/login/Login';
 import Overview from './pages/overview/Overview';
 import CommodityInsight from './pages/website-settings/commodityInsight/CommodityInsight';
 import NewCommodity from './pages/website-settings/commodityInsight/NewCommodity';
-import EditFaq from './pages/website-settings/faqs/EditFaq';
+import CreateFaq from './pages/website-settings/faqs/CreateFaq';
 import Faqs from './pages/website-settings/faqs/Faqs';
-import EditTest from './pages/website-settings/testimonial/EditTestimonial';
+import CreateTestimonial from './pages/website-settings/testimonial/CreateTestimonial';
 import Testimonial from './pages/website-settings/testimonial/Testimonial';
 import Users from './pages/users/Users';
 import Products from './pages/buyershub/products/Products';
@@ -23,6 +23,10 @@ import Disputes from './pages/buyershub/disputes/Disputes';
 import Inquiries from './pages/buyershub/inquiries/Inquiries';
 import Applicants from './pages/tofaacademy/applicants/Applicants';
 import EditProducts from "./pages/buyershub/products/EditProducts";
+import Buyers from "./pages/buyershub/buyers/Buyers";
+import EditFaq from "./pages/website-settings/faqs/EditFaq";
+import EditTestimonial from "./pages/website-settings/testimonial/EditTestimonial";
+import EditCommodity from "./pages/website-settings/commodityInsight/EditCommodity";
 
 function App() {
   return (
@@ -33,7 +37,7 @@ function App() {
       <Route exact path='/user' element={<Users/>} />
       <Route exact path='/sidebar' element={<Sidebar/>} />
       <Route exact path='/faq' element={<Faqs/>} />
-      <Route exact path='/editfaq' element={<EditFaq/>} />
+      <Route exact path='/createfaq' element={<CreateFaq/>} />
       <Route exact path='/commodityInsight' element={<CommodityInsight/>} />
       <Route exact path='/newcommodity' element={<NewCommodity/>} />
       <Route exact path='/orders' element={<Orders/>} />
@@ -44,13 +48,17 @@ function App() {
       <Route exact path='/testimonial' element={<Testimonial/>} />
       <Route exact path='/products' element={<Products/>} />
       <Route exact path='/createproduct' element={<CreateProducts/>} />
-      <Route exact path='/edittest' element={<EditTest/>} />
+      <Route exact path='/createtestimonial' element={<CreateTestimonial/>} />
       <Route exact path='/createbanner' element={<CreateBanner/>} />
       <Route exact path='/banners' element={<Banners/>} />
       <Route exact path='/disputes' element={<Disputes/>} />
       <Route exact path='/inquiry' element={<Inquiries/>} />
       <Route exact path='/applicants' element={<Applicants/>} />
       <Route exact path='/editproduct' element={<EditProducts/>} />
+      <Route exact path='/buyers' element={<Buyers/>} />
+      <Route exact path='/editfaq' element={<EditFaq/>} />
+      <Route exact path='/edittestimonial' element={<EditTestimonial/>} />
+      <Route exact path='/editcommodity' element={<EditCommodity/>} />
       
     </Routes>
     </BrowserRouter>

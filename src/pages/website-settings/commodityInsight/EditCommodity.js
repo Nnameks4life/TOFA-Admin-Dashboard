@@ -1,90 +1,41 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from 'react'
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import { axios } from "../../components/baseUrl";
+import { useNavigate } from 'react-router-dom';
+import { axios } from '../../components/baseUrl';
 
-const NewCommodity = () => {
-  const editorRef = useRef();
- const [commodity, setCommodity] = useState({
-   name:"",
-   
- })
- const [briefHistory, setBriefHistory] = useState("");
+const EditCommodity = () => {
 
- const [formErrors, setFormErrors] = useState({});
-  const [customError, setCustomError] = useState("");
+    const editorRef = useRef();
 
-  // const getText = () => {
-  //   document.getElementById("mytextarea");
-  // }
+    const [id, setId] = useState(0)
+    const [name, setName] = useState("");
+    const [briefHistory, setBriefHistory] = useState("");
+  const [countries, setCountries] = useState(""); 
 
-  const handleEditor = () => {
-    setBriefHistory(editorRef.current.getContent())
-  }
+  useEffect(() => {
+    setId(localStorage.getItem("id"));
+    setCountries(localStorage.getItem("countries"));
+    setName(localStorage.getItem("name"));
+    setBriefHistory(localStorage.getItem("briefHistory"));
+ }, [])
 
- const handleChange = (e) => {
-setCommodity({...commodity, [e.target.name]: e.target.value})
- }
- const handleSubmit = async(e) => {
-   try{
-    e.preventDefault()
-    const jsonData = {
-      name: commodity.name,
-      countries:getCountry(), 
-      briefHistory:briefHistory, 
+ const navigate = useNavigate()
+
+    const handleUpdate = (e, commodityID) => {
+        e.preventDefault()
+        axios.put(`/commodity/${commodityID}`,
+        {name:name,
+        countries:countries,
+        briefHistory: briefHistory,
+        }
+        ).then(() =>{
+        navigate('/commodityinsight')
+        })
     }
-    // const formData = new FormData()
-    //   for (const property in jsonData) {
-    //     formData.append(`${property}`, jsonData[property]);
-    //   }
-      const { data: result } = await axios
-        .post("/commodity", jsonData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        alert ("success")
-        console.log(result)
-    // const {data} = axios.post("./commodity", {
-    //   name: commodity.name,
-    //   country:getCountry(), 
-    //   briefHistory:commodity.briefHistory,
-    // })
-    // console.log(data)
-  } catch (err) {
-    if (err.response.data.errors[0].field) {
-      console.log(err.response.data.errors)
-      setFormErrors(
-        err.response.data.errors.reduce(function(obj, err) {
-          obj[err.field] = err.message;
-          return obj;
-        }, {})
-      );
-    } else {
-      console.log(err.response.data.errors[0].message);
-      setCustomError(err.response.data.errors[0].message);
-      alert(customError);
-    }
-  }
- 
- }
 
- const getCountry = () => {
-  const countries = document.getElementsByClassName("country-keys");
-  // const prices = document.getElementsByClassName("country-values");
-
-  const country = [];
-  // [{ countryName: string, price: string }]
-  for (let i = 0; i < countries.length; i++) {
-    const countryName = countries[i].value;
-    // const price = prices[i].value;
-    if (countryName) country.push( countryName);
-  }
-  return JSON.stringify(country);
-};
-
-const [country, setCountry] = useState([{ countryName: "" }]);
+    const [country, setCountry] = useState([{ countryName: "" }]);
 
  const handleAddCountry = () => {
   setCountry([...country, { countryName: ""}]);
@@ -95,8 +46,6 @@ const handleRemoveCountry = (index) => {
   countryValues.splice(index, 1);
   setCountry(countryValues);
 };
-
-
 
   return (
     <>
@@ -111,7 +60,7 @@ const handleRemoveCountry = (index) => {
           <div>
             <form className="mx-5 my-5">
               <div className="d-flex justify-content-between">
-                <h2> Create Commodity Insight</h2>
+                <h2> Edit Commodity Insight</h2>
                 {/* <Link to="/commodityInsight">
                 <button className="btn btn-primary m-3">Show Commodity</button>
               </Link> */}
@@ -120,7 +69,7 @@ const handleRemoveCountry = (index) => {
                   align="right"
                 >
                   <a href="/commodityInsight" className="btn btn-dark">
-                    Show Commodity
+                    Back
                   </a>
                 </div>
               </div>
@@ -129,15 +78,13 @@ const handleRemoveCountry = (index) => {
                 <div className="col-6 mt-2">
                   <label className="form-label">Commodity Name:</label>
                   <input
-                    name="name"
+                    value={name}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
-                    onChange={handleChange}
+                    onChange={(e) => setName(e.target.value)}
                   />
-                   {formErrors.name && (
-                    <p className="text-danger">{formErrors.name}</p>
-                  )}
+                  
                 </div>
                
                 <div className="col-6">
@@ -162,28 +109,21 @@ const handleRemoveCountry = (index) => {
                           className="fa-solid fa-minus mx-1"
                           onClick={() => handleRemoveCountry(index)}
                         ></i>
-                         {formErrors.country && (
-                    <p className="text-danger">{formErrors.country}</p>
-                  )}
+                         
                       </div>
                     </div>
                   ))}
-                  {formErrors.country && (
-                    <p className="text-danger">{formErrors.country}</p>
-                  )}
+                 
                 </div>
               </div>
               <div>
                 <h4>Commodity Information</h4>
                 <Editor
-                  id='mytextarea'
-                  name="briefHistory"
+                  value={briefHistory}
                   onInit={(evt, editor) => (editorRef.current = editor)}
-                  onChange={handleEditor}
+                  onChange={(e) => setBriefHistory(e.target.value)}
                 />
-                 {formErrors.briefHistory && (
-                    <p className="text-danger">{formErrors.briefHistory}</p>
-                  )}
+                
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
@@ -197,7 +137,7 @@ const handleRemoveCountry = (index) => {
               </div>
 
               <div style={{ textAlign: "start" }}>
-                <button className="btn btn-dark" onClick={handleSubmit}>Submit</button>
+                <button className="btn btn-dark" onClick={handleUpdate}>Submit</button>
               </div>
              
             </form>
@@ -210,4 +150,25 @@ const handleRemoveCountry = (index) => {
   );
 };
 
-export default NewCommodity;
+export default EditCommodity;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,14 +1,8 @@
-import React, {useEffect } from "react";
+import React, {useEffect, useState } from "react";
 // import { useFetch } from '../../../useFetch'
 import { axios } from '../../components/baseUrl'
-// import Navbar from "../../components/navbar/Navbar";
-// import Sidebar from "../../components/sidebar/Sidebar";
-
 import {applicantDatatabless} from '../Dummydata';
-
 import 'jquery/dist/jquery.min.js';
- 
-//Datatable Modules
 import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.min.css"
 import $ from 'jquery'; 
@@ -18,20 +12,33 @@ import Sidebar from "../../components/sidebar/Sidebar";
 const Applicants = () => {
 
 
+  const [applicants, setApplicants] = useState([]);
+
+  const getData = async () => {
+    try {
+      axios.get("/applicant").then((response) => {
+        console.log(response.data);
+        setApplicants(response.data.data);
+      });
+    } catch (error) {
+      console.log(error.response.data.erros);
+    }
+  };
+
   //  const {data, loading, error} = useFetch("/order")
 
   //  if (loading) return <h1>LOADING ....</h1>
 
   //  if (error) console.log(error)
 
-  const handleDelete = (productID) => {
-    axios.delete(`/product/${productID}`).then(() => {
+  const handleDelete = (applicantID) => {
+    axios.delete(`/product/${applicantID}`).then(() => {
 
     })
   }
 
   useEffect(() => {
-    // getData()
+    getData()
   }, [])
 
   useEffect(()=>{

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import { axios } from "../../components/baseUrl";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
+import { Link } from "react-router-dom";
 
 const Testimonial = () => {
-
-  const [testimonial, setTestimonial] = useState([])
+  const [testimonial, setTestimonial] = useState([]);
+  const [viewTestimonial, setViewTestimonial] = useState([]);
 
   const getData = async () => {
     try {
@@ -16,6 +17,13 @@ const Testimonial = () => {
     } catch (error) {
       console.log(error.response.data.erros);
     }
+  };
+
+  const setToLocalStorage = (id, name, company, message) => {
+    localStorage.setItem("id", id);
+    localStorage.setItem("name", name);
+    localStorage.setItem("company", company);
+    localStorage.setItem("message", message);
   };
 
   useEffect(() => {
@@ -30,7 +38,7 @@ const Testimonial = () => {
 
   const showDetails = (testimonialID) => {
     axios.get(`/testimonial/${testimonialID}`).then(() => {
-      getData();
+      setViewTestimonial()
     });
   };
 
@@ -50,10 +58,8 @@ const Testimonial = () => {
             {/* <!-- pageheader --> */}
             <div className="row">
               <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                <div className="page-header" style={{textAlign:'left'}}>
-                  <h2 className="pageheader-title">
-                   Testimonials
-                  </h2>
+                <div className="page-header" style={{ textAlign: "left" }}>
+                  <h2 className="pageheader-title">Testimonials</h2>
                 </div>
               </div>
               <div
@@ -69,7 +75,12 @@ const Testimonial = () => {
             <div className="row">
               <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div className="card">
-                  <h5 className="card-header font-bold" style={{textAlign:'left'}}>All Testimonial</h5>
+                  <h5
+                    className="card-header font-bold"
+                    style={{ textAlign: "left" }}
+                  >
+                    All Testimonial
+                  </h5>
                   <div className="card-body">
                     <table className="table table-bordered">
                       <thead>
@@ -85,15 +96,15 @@ const Testimonial = () => {
                         {testimonial.map((item) => {
                           return (
                             <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.name}</td>
-                            <td>{item.company}</td>
-                            <td>{item.message}</td>
-                            <td>
-                            {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
+                              <td>{item.id}</td>
+                              <td>{item.name}</td>
+                              <td>{item.company}</td>
+                              <td>{item.message}</td>
+                              <td>
+                                {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
                                   Delete
                                 </button> */}
-                            <button
+                                <button
                                   onClick={() => showDetails(item.id)}
                                   type="button"
                                   className="btn btn-primary"
@@ -103,7 +114,7 @@ const Testimonial = () => {
                                   View
                                 </button>
 
-                            <div
+                                <div
                                   className="modal fade"
                                   id="exampleModal"
                                   tabIndex="-1"
@@ -117,20 +128,30 @@ const Testimonial = () => {
                                           className="modal-title"
                                           id="exampleModalLabel"
                                         >
-                                         TESTIMONIAL
+                                          TESTIMONIAL
                                         </h5>
-                                        <button
-                                          type="button"
-                                          className="btn-close"
-                                          data-bs-dismiss="modal"
-                                          aria-label="Close"
-                                        ></button>
+                                       
+                                        <Link to="/edittestimonial">
+                                          <button
+                                            className="btn btn-success"
+                                            onClick={() =>
+                                              setToLocalStorage(
+                                                item.id,
+                                                item.name,
+                                                item.company,
+                                                item.message
+                                              )
+                                            }
+                                          >
+                                            Edit
+                                          </button>
+                                        </Link>
                                       </div>
                                       <div className="modal-body">
-                                        <p>{item.name}</p>
-                                        <p>{item.company}</p>
-                                        <p>{item.message}</p>
-                                        </div>
+                                        <p>{viewTestimonial.name}</p>
+                                        <p>{viewTestimonial.company}</p>
+                                        <p>{viewTestimonial.message}</p>
+                                      </div>
                                       <div className="modal-footer">
                                         <button
                                           type="button"
@@ -139,14 +160,13 @@ const Testimonial = () => {
                                         >
                                           Close
                                         </button>
-                                        
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-                          </td>
-                          </tr>
-                          )
+                              </td>
+                            </tr>
+                          );
                         })}
                       </tbody>
                     </table>
@@ -177,7 +197,6 @@ const Testimonial = () => {
         </div>
         {/* <!-- end main wrapper --> */}
       </div>
-     
     </>
   );
 };

@@ -127,7 +127,7 @@ const Sidebar = () => {
                         </a>
                       </li>
                       <li className="nav-item">
-                        <a className="nav-link" href="multiselect.html">
+                        <a className="nav-link" href="/buyers">
                           Buyers
                         </a>
                       </li>

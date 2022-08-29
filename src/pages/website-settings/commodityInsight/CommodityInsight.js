@@ -1,41 +1,67 @@
-import React, {  useEffect} from "react";
+import React, { useEffect, useState } from "react";
 // import  { useReactToPrint } from 'react-to-print';
 // import { useFetch } from "../../../useFetch";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
-import {datatabless} from './DummyData';
+// import { datatabless } from "./DummyData";
+import { Link } from "react-router-dom";
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
-import 'jquery/dist/jquery.min.js';
- 
+import "jquery/dist/jquery.min.js";
+
 //Datatable Modules
-import "datatables.net-dt/js/dataTables.dataTables"
-import "datatables.net-dt/css/jquery.dataTables.min.css"
-import $ from 'jquery'; 
-
-
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import $ from "jquery";
+import { axios } from "../../components/baseUrl";
 
 const CommodityInsight = () => {
-//   const { error, loading, data } = useFetch();
-//   const [totalItems, setTotalItems] = useState(0)
-//   const [currentPage, setCurrentPage] = useState()
-//   const ITEMS_PER_PAGE = 50
+  const [commodity, setCommodity] = useState([]);
+  const [viewCommodity, setViewCommodity] = useState([]);
 
+  const getData = async () => {
+    try {
+    axios.get("/commodity").then((response) => {
+        console.log(response.data);
+        setCommodity(response.data.data);
+      });
+    } catch (error) {
+      console.log(error.response.data.erros);
+    }
+  };
 
+  const setToLocalStorage = ( country, name, briefHistory) => {
+    
+    localStorage.setItem("name", name);
+    localStorage.setItem("briefHistory", briefHistory);
+    localStorage.setItem("country", country);
+  };
 
+  useEffect(() => {
+    getData();
+  }, []);
 
+  const handleDelete = (commodityID) => {
+    axios.delete(`/commodity/${commodityID}`).then((response) => {
+      setViewCommodity(response.data.data)
+    });
+  };
 
+  const showDetails = (commodityID) => {
+    axios.get(`/commodity/${commodityID}`).then((response) => {
+      setViewCommodity(response.data.data);
+    });
+  };
 
-useEffect(()=>{
+  useEffect(() => {
     //initialize datatable
-$(document).ready(function () {
-    setTimeout(function(){
-    $('#example').DataTable();
-     } ,1000);
-});
-},[])
-
+    $(document).ready(function() {
+      setTimeout(function() {
+        $("#example").DataTable();
+      }, 1000);
+    });
+  }, []);
 
   return (
     <div>
@@ -79,7 +105,6 @@ $(document).ready(function () {
                     >
                       All Commodities
                     </h4>
-                
                   </div>
                 </div>
               </div>
@@ -98,63 +123,139 @@ $(document).ready(function () {
                       </p>
                     </div>
                     <div className="d-flex mx-2">
-                        {/* <button className="mx-2">Excel</button> */}
-                        <button>Copy</button>
-                        <button className="mx-2">PDF</button>
-                        <ReactHTMLTableToExcel
-                            id="test-table-xls-button"
-                            className="download-table-xls-button"
-                            table="table-to-xls"
-                            filename="tablexls"
-                            sheet="tablexls"
-                            buttonText="Excel"
-                        />
+                      {/* <button className="mx-2">Excel</button> */}
+                      <button>Copy</button>
+                      <button className="mx-2">PDF</button>
+                      <ReactHTMLTableToExcel
+                        id="test-table-xls-button"
+                        className="download-table-xls-button"
+                        table="table-to-xls"
+                        filename="tablexls"
+                        sheet="tablexls"
+                        buttonText="Excel"
+                      />
                     </div>
                     <div className="card-body">
                       <div className="table-responsive">
-                          
-                          <div className="container">
-                        <table
-                         id="example"
-                          className="table table-hover table-bordered"
-                          style={{ width: "100%", textAlign: "left" }}
-                        >
-                          <thead>
-                            <tr>
-                                <th>ID</th>
-                              <th>Commodity Name</th>
-                              <th>Country</th>
-                              <th>Price</th>
-                              <th>Origin</th>
-                              <th>Specification</th>
-                              <th>Description</th>
-                              <th>Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                         { datatabless.map((item) => {
-                         return (
-                      
+                        <div className="container">
+                          <table
+                            id="example"
+                            className="table table-hover table-bordered"
+                            style={{ width: "100%", textAlign: "left" }}
+                          >
+                            <thead>
                               <tr>
-                                  <td>{item.id}</td>
-                                  <td>{item.commodityname}</td>
-                                  <td>{item.country}</td>
-                                  <td>{item.price}</td>
-                                  <td>{item.origin}</td>
-                                  <td>{item.specification}</td>
-                                  <td>{item.description}</td>
-                                  <td>{item.status}</td>
-                                
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>briefHistory</th>
+                                <th>Action</th>
+                               
                               </tr>
-                        
-                          )
-                        })}
-                           
-                           </tbody>
-                        </table>
+                            </thead>
+                            <tbody>
+                              {commodity.map((item) => {
+                                return (
+                                  <tr key={item.id}>
+                                
+                                    <td>{item.id}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.briefHistory}</td>
+                               
+
+                                    <td>
+                                      <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                        data-dismiss="modal"
+                                        onClick={() => handleDelete(item.id)}
+                                      >
+                                        delete
+                                      </button>{" "}
+                                      |{" "}
+                                      <button
+                                        onClick={(e) => showDetails(item.id)}
+                                        type="button"
+                                        className="btn btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"
+                                      >
+                                        view{" "}
+                                      </button>
+                                      <div
+                                        className="modal fade"
+                                        id="exampleModal"
+                                        tabIndex="-1"
+                                        aria-labelledby="exampleModalLabel"
+                                        aria-hidden="true"
+                                      >
+                                        <div className="modal-dialog">
+                                          <div className="modal-content">
+                                            <div className="modal-header">
+                                              <h5
+                                                className="modal-title"
+                                                id="exampleModalLabel"
+                                              >
+                                                Product Information
+                                              </h5>
+                                              <button
+                                                type="button"
+                                                className="btn-close"
+                                                data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                              ></button>
+                                            </div>
+                                            <div align="right">
+                                              <Link to='/editcommodity'> 
+                          <button
+                            className="btn btn-success"
+                            onClick={() =>
+                              setToLocalStorage(
+                                item.name,
+                                item.briefHistory,
+                                item.country,
+                                
+                                
+                              )
+                            }
+                          >
+                            Edit
+                          </button>
+                          </Link>
+                                            </div>
+                                            <div className="d-flex ">
+                                              <div className="modal-body">
+                                                Commodity Name: {viewCommodity.name}
+                                              </div>
+                                              <div className="modal-body">
+                                                Country: {viewCommodity.country}
+                                              </div>
+                                            </div>
+                                            <div className="d-flex">
+                                              <div className="modal-body">
+                                                brief History:{" "}
+                                                {viewCommodity.briefHistory}
+                                              </div>
+                                            </div>
+
+                                            <div className="modal-footer">
+                                              <button
+                                                type="button"
+                                                className="btn btn-secondary"
+                                                data-bs-dismiss="modal"
+                                              >
+                                                Close
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
                         </div>
-
-
                       </div>
                     </div>
                   </div>
@@ -185,8 +286,6 @@ $(document).ready(function () {
           {/* <!-- end main wrapper --> */}
         </div>
         {/* <!-- end main wrapper --> */}
-
-        
       </>
     </div>
   );

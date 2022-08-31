@@ -2,56 +2,69 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const EditFaq = () => {
   const [id, setId] = useState(null);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-//   const [formErrors, setFormErrors] = useState({})
-//   const [customError, setCustomError] = useState("")
+  const [faqInfo, setFaqInfo] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  //   const [formErrors, setFormErrors] = useState({})
+  //   const [customError, setCustomError] = useState("")
 
   const navigate = useNavigate();
 
+  const { myFaqId } = useParams();
+  console.log(myFaqId);
+
+  const getInfo = async () => {
+    try {
+      const response = await axios.get(`/faq/${myFaqId}`);
+      setFaqInfo(response.data.data);
+      console.log(response.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    setId(localStorage.getItem("faqID"));
-    setQuestion(localStorage.getItem("question"));
-    setAnswer(localStorage.getItem("answer"));
+    getInfo();
   }, []);
 
-//   const faqID =
+  //   const faqID =
 
-
-  const handleUpdate = async(e) => {
-      try {
-        e.preventDefault();
-        const { data:result } = await axios.patch(
-            `/faq/${id}`,
-            { answer:answer, question:question
-        },
-          )
-          console.log(result)
-      } catch (err) {
-          console.log(err)
-      }
-      navigate("/faq");     
+  const handleUpdate = async (e) => {
+    try {
+      e.preventDefault();
+      const { data: result } = await axios.patch(`/faq/${id}`, {
+        answer: answer,
+        question: question,
+      });
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
+    navigate("/faq");
   };
+
+  if (isLoading) {
+    return <h1>Loading</h1>;
+  }
 
   return (
     <div>
       <>
-
         <div className="dashboard-main-wrapper">
-
           <Navbar />
-
 
           <Sidebar />
 
-
           <div className="dashboard-wrapper">
             <div className="container-fluid dashboard-content">
-
               <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <div className="page-header">
@@ -78,9 +91,9 @@ const EditFaq = () => {
                           </label>
                           <input
                             type="text"
-                            name='question'
+                            name="question"
                             className="form-control"
-                            value={question}
+                            value={faqInfo.question}
                             onChange={(e) => setQuestion(e.target.value)}
                           />
                           {/* {formErrors.question && (<p className="text-danger">{formErrors.question}</p>)} */}
@@ -91,9 +104,9 @@ const EditFaq = () => {
                           </label>
                           <textarea
                             className="form-control"
-                            type='text'
-                            value={answer}
-                            name='answer'
+                            type="text"
+                            value={faqInfo.answer}
+                            name="answer"
                             onChange={(e) => setAnswer(e.target.value)}
                           />
                           {/* {formErrors.answer && (<p className="text-danger">{formErrors.answer}</p>)} */}

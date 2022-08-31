@@ -19,12 +19,6 @@ const Testimonial = () => {
     }
   };
 
-  const setData = (id, name, company, message) => {
-    localStorage.setItem("testimonialID", id);
-    localStorage.setItem("name", name);
-    localStorage.setItem("company", company);
-    localStorage.setItem("message", message);
-  };
 
   useEffect(() => {
     getData();
@@ -66,7 +60,7 @@ const Testimonial = () => {
                 className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
                 align="right"
               >
-                <a href="/edittestimonial" className="btn btn-dark">
+                <a href="/createtestimonial" className="btn btn-dark">
                   New Testimonial
                 </a>
               </div>
@@ -115,17 +109,13 @@ const Testimonial = () => {
                                   View
                                 </button>
 
-                                <Link to="/edittestimonial">
-                                  {" "}
-                                  <button
-                                    className="btn btn-success mx-2"
-                                    onClick={() =>
-                                      setData(item.id, item.name, item.company, item.message)
-                                    }
-                                  >
-                                    Edit
-                                  </button>
-                                </Link>
+                                <Link to={`/edittestimonial/${item.id}`}>
+                                        <button type="button"
+                                        className="btn btn-success mx-2"
+                                        data-dismiss="modal">Edit</button>
+                                      </Link>
+
+                               
                                 </div>
 
                                 <div

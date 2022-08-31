@@ -13,10 +13,11 @@ const Applicants = () => {
 
 
   const [applicants, setApplicants] = useState([]);
+  const [applicantView, setApplicantView] = useState([]);
 
   const getData = async () => {
     try {
-      axios.get("/applicant").then((response) => {
+      axios.get("/tofa-academy").then((response) => {
         console.log(response.data);
         setApplicants(response.data.data);
       });
@@ -25,17 +26,23 @@ const Applicants = () => {
     }
   };
 
+  const showDetails = (applicantID) => { 
+    axios.get(`/tofa-academy/${applicantID}`).then((response) => {
+      setApplicantView(response.data.data)
+    });
+};
+
   //  const {data, loading, error} = useFetch("/order")
 
   //  if (loading) return <h1>LOADING ....</h1>
 
   //  if (error) console.log(error)
 
-  const handleDelete = (applicantID) => {
-    axios.delete(`/product/${applicantID}`).then(() => {
+  // const handleDelete = (applicantID) => {
+  //   axios.delete(`/product/${applicantID}`).then(() => {
 
-    })
-  }
+  //   })
+  // }
 
   useEffect(() => {
     getData()
@@ -66,15 +73,6 @@ $(document).ready(function () {
                   <h2 className="pageheader-title">Applicants Overview</h2>
                 </div>
               </div>
-
-              {/* <div
-                className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
-                align="right"
-              >
-                <a href="/createproduct" className="btn btn-dark">
-                  Create Products
-                </a>
-              </div> */}
             </div>
             {/* <!-- end pageheader --> */}
 
@@ -83,8 +81,6 @@ $(document).ready(function () {
                 <div className="card">
                   <div className="card-header" style={{ textAlign: "left" }}>
                     <h5 className="mb-0 font-bold">All Applicants</h5>
-
-                    {/* <p>This example shows DataTables and the Buttons extension being used with the Bootstrap 4 framework providing the styling.</p> */}
                   </div>
                   <div className="card-body">
                     <div className="table-responsive">
@@ -92,57 +88,6 @@ $(document).ready(function () {
                         id="example wrapper"
                         className="dataTables_wrapper dt_bootstrap4"
                       >
-                        <div className="row">
-                          <div
-                            className="col-sm-12 md-6"
-                            style={{ textAlign: "left" }}
-                          >
-                            <div className="dt-buttons my-3">
-                              <button
-                                className="btn btn-outline-light buttons-copy buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Copy</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-excel buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Excel</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-pdf buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>PDF</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-print"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Print</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-collection dropdown-toggle buttons-colvis"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                                aria-haspopup="true"
-                              >
-                                <span>Column Visibility</span>
-                              </button>
-                            </div>
-                          </div>
-
-                        </div>
                       </div>
                       <div className="container">
                         <table
@@ -158,20 +103,130 @@ $(document).ready(function () {
                               <th>phoneNumber</th>
                               <th>productTraded</th>
                               <th>Age</th>
-                              <th>Action</th>
+                              <th>Email</th>
+                              <th className="text-center">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {applicantDatatabless.map((item) => {
+                            {applicants.map((item) => {
                               return (
                                 <tr key={item.id}>
                                   <td>{item.id}</td>
-                                  <td>{item.fullName}</td>
+                                  <td>{item.firstName} {item.lastName}</td>
                                   <td>{item.country}</td>
                                   <td>{item.phoneNumber}</td>
-                                  <td>{item.productTraded}</td>
+                                  <td>{item.gender}</td>
                                   <td>{item.age}</td>
-                                  <td><a href='delete' onClick={() => handleDelete(item.id)}>{item.delete} </a> | <a href='view'>{item.view} </a>  </td>
+                                  <td>{item.email}</td>
+                                  <td>
+                                  <div className="text-center">
+                                    <button
+                                      onClick={(e) => showDetails(item.id)}
+                                      type="button"
+                                      className="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
+                                    >
+                                      view
+                                    </button>
+                                    </div>
+
+                                    <div
+                                      className="modal fade modal-width"
+                                      id="exampleModal"
+                                      tabIndex="-1"
+                                      aria-labelledby="exampleModalLabel"
+                                      aria-hidden="true"
+                                    >
+                                      <div className="modal-dialog">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
+                                            <h5
+                                              className="modal-title"
+                                              id="exampleModalLabel"
+                                            >
+                                              Applications Overview
+                                            </h5>
+                                            <button
+                                              type="button"
+                                              className="btn-close text-danger"
+                                              data-bs-dismiss="modal"
+                                              aria-label="Close"
+                                             
+                                            ></button>
+                                          </div>
+                                          
+                                          <div className="modal-body px-2">
+                                            <label>
+                                              Full Name:{" "}
+                                            </label>
+                                            <br />
+                                            <p> {applicantView.firstName} {applicantView.lastName}</p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Country of Exported Import: </label>
+                                            <p>
+                                              {applicantView.country}
+                                            </p>
+                                          </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Phone Number: </label>
+                                            <p>
+                                              {applicantView.phoneNumber}
+                                            </p>
+                                          </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Email: </label>
+                                            <p>
+                                              {applicantView.email}
+                                            </p>
+                                          </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Gender: </label>
+                                            <p>
+                                              {applicantView.gender}
+                                            </p>
+                                          </div>
+
+                                          <div className=" modal-bodyb px-2">
+                                            <label>Quantity Requested:</label>
+                                            <p>39 Metric Tonnes</p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Product Specification:</label>
+                                            <p>
+                                              Commodo eget a et dignissim
+                                              dignissim morbi vitae, mi. Mi
+                                              aliquam sit ultrices enim cursus.
+                                              Leo sapien, pretium duis est eu
+                                              volutpat interdum eu non. Odio
+                                              eget nullam elit laoreet. Libero
+                                              at felis nam at orci venenatis
+                                              rutrum nunc. Etiam mattis ornare
+                                              pellentesque iaculis enim. Felis
+                                              eu non in aliquam egestas
+                                              placerat. Eget maecenas ornare
+                                              venenatis lacus nunc{" "}
+                                            </p>
+                                          </div>
+
+                                         
+                                          <div className="modal-footer">
+                                            <button
+                                              type="button"
+                                              className="btn btn-dark"
+                                              data-bs-dismiss="modal"
+                                            >
+                                              Close
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                     </td>
                                   
                                 </tr>
                               );

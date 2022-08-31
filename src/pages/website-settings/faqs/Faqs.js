@@ -20,11 +20,11 @@ const Faqs = () => {
     }
   };
 
-  const setData = (id, question, answer) => {
-    localStorage.setItem("faqID", id);
-    localStorage.setItem("answer", answer);
-    localStorage.setItem("question", question);
-  };
+  // const setData = (id, question, answer) => {
+  //   localStorage.setItem("faqID", id);
+  //   localStorage.setItem("answer", answer);
+  //   localStorage.setItem("question", question);
+  // };
 
   useEffect(() => {
     getData();
@@ -115,17 +115,11 @@ const Faqs = () => {
                               <td>{item.question}</td>
                               <td>{item.answer}</td>
                               <td>
-                                <Link to="/editfaq">
-                                  {" "}
-                                  <button
-                                    className="btn btn-success mx-2"
-                                    onClick={() =>
-                                      setData(item.id, item.question, item.answer)
-                                    }
-                                  >
-                                    Edit
-                                  </button>
-                                </Link>
+                              <Link to={`/editfaq/${item.id}`}>
+                                        <button type="button"
+                                        className="btn btn-success"
+                                        data-dismiss="modal">Edit</button>
+                                      </Link>
                                 {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
                                   Delete
                                 </button> */}

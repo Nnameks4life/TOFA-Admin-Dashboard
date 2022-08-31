@@ -54,11 +54,11 @@ function App() {
       <Route exact path='/disputes' element={<Disputes/>} />
       <Route exact path='/inquiry' element={<Inquiries/>} />
       <Route exact path='/applicants' element={<Applicants/>} />
-      <Route exact path='/editproduct' element={<EditProducts/>} />
+      <Route exact path='/editproduct/:productId' element={<EditProducts/>} />
       <Route exact path='/buyers' element={<Buyers/>} />
-      <Route exact path='/editfaq' element={<EditFaq/>} />
-      <Route exact path='/edittestimonial' element={<EditTestimonial/>} />
-      <Route exact path='/editcommodity' element={<EditCommodity/>} />
+      <Route exact path='/editfaq/:myFaqId' element={<EditFaq/>} />
+      <Route exact path='/edittestimonial/:myTestimonialId' element={<EditTestimonial/>} />
+      <Route exact path='/editcommodity/:commodityId' element={<EditCommodity/>} />
       
     </Routes>
     </BrowserRouter>

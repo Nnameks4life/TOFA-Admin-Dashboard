@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
 // import { useNavigate} from 'react-router-dom';
 
 const CreateTestimonial = () => {
@@ -30,6 +32,13 @@ const CreateTestimonial = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      toast.success("SUCCESSFULLY CREATED FAQ", {
+        position: "top-right",
+        autoClose: 8000,
+        pauseHover: true,
+        draggable: true,
+        className: "custom-toast",
+      })
       console.log(result);
     } catch (err) {
       if (err.response.data.errors[0].field) {
@@ -61,6 +70,7 @@ const CreateTestimonial = () => {
           {/* <!-- wrapper  --> */}
           <div className="dashboard-wrapper">
             <div className="container-fluid dashboard-content">
+            <ToastContainer />
               {/* <!-- pageheader --> */}
               <div className="row">
                 <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { axios } from '../../components/baseUrl';
 
 const EditCommodity = () => {
@@ -13,15 +13,36 @@ const EditCommodity = () => {
     const [name, setName] = useState("");
     const [briefHistory, setBriefHistory] = useState("");
   const [countries, setCountries] = useState(""); 
+  const [commodityInfo, setCommodityInfo] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    setId(localStorage.getItem("commodityID"));
-    setCountries(localStorage.getItem("countries"));
-    setName(localStorage.getItem("name"));
-    setBriefHistory(localStorage.getItem("briefHistory"));
- }, [])
+//   useEffect(() => {
+//     setId(localStorage.getItem("commodityID"));
+//     setCountries(localStorage.getItem("countries"));
+//     setName(localStorage.getItem("name"));
+//     setBriefHistory(localStorage.getItem("briefHistory"));
+//  }, [])
 
  const navigate = useNavigate()
+
+ const {commodityId} = useParams()
+ console.log(commodityId)
+
+const getInfo = async () => {
+    try {
+    const response =  await axios.get(`/commodity/${commodityId}`)
+    setCommodityInfo(response.data.data)
+    console.log(response.data.data)
+    setIsLoading(false)
+    }  catch(error) {
+    console.log(error)
+    setIsLoading(false)
+    }
+}
+
+useEffect(() => {
+    getInfo()
+}, [])
 
     const handleUpdate = (e) => {
         e.preventDefault()
@@ -46,6 +67,12 @@ const handleRemoveCountry = (index) => {
   countryValues.splice(index, 1);
   setCountry(countryValues);
 };
+
+if (isLoading) {
+    return (
+        <h1>Loading</h1>
+    )
+}
 
   return (
     <>
@@ -78,7 +105,7 @@ const handleRemoveCountry = (index) => {
                 <div className="col-6 mt-2">
                   <label className="form-label">Commodity Name:</label>
                   <input
-                    value={name}
+                    value={commodityInfo.name}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -119,7 +146,7 @@ const handleRemoveCountry = (index) => {
               <div>
                 <h4>Commodity Information</h4>
                 <Editor
-                  value={briefHistory}
+                  value={commodityInfo.briefHistory}
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   onChange={(e) => setBriefHistory(e.target.value)}
                 />

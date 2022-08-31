@@ -32,7 +32,7 @@ const Testimonial = () => {
 
   const showDetails = (testimonialID) => {
     axios.get(`/testimonial/${testimonialID}`).then((response) => {
-      setViewTestimonial(response.data.data)
+      setViewTestimonial(response.data.data);
     });
   };
 
@@ -99,6 +99,7 @@ const Testimonial = () => {
                                   Delete
                                 </button> */}
                                 <div className="d-flex">
+
                                 <button
                                   onClick={() => showDetails(item.id)}
                                   type="button"
@@ -116,6 +117,7 @@ const Testimonial = () => {
                                       </Link>
 
                                
+
                                 </div>
 
                                 <div
@@ -134,10 +136,6 @@ const Testimonial = () => {
                                         >
                                           TESTIMONIAL
                                         </h5>
-
-                               
-                                       
-                                        
                                       </div>
                                       <div className="modal-body">
                                         <p>{viewTestimonial.name}</p>

@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 
 const Products = () => {
   const [product, setProduct] = useState([]);
-  const [viewProduct, setViewProduct] = useState([])
+  const [viewProduct, setViewProduct] = useState([]);
 
   const getData = async () => {
     try {
@@ -30,7 +30,19 @@ const Products = () => {
     }
   };
 
-  const setData = (id, productName,maxDuration, parentCategory, supplyCapacity, category, minDuration, subCategory, unitForMinOrder, unitForSupplyCapacity, productDescription) => {
+  const setData = (
+    id,
+    productName,
+    maxDuration,
+    parentCategory,
+    supplyCapacity,
+    category,
+    minDuration,
+    subCategory,
+    unitForMinOrder,
+    unitForSupplyCapacity,
+    productDescription
+  ) => {
     localStorage.setItem("id", id);
     localStorage.setItem("productName", productName);
     localStorage.setItem("minPricePerUnit", minDuration);
@@ -44,8 +56,6 @@ const Products = () => {
     localStorage.setItem("productDescription", productDescription);
   };
 
-
-
   useEffect(() => {
     getData();
   }, []);
@@ -56,10 +66,10 @@ const Products = () => {
   //   });
   // };
 
-  const showDetails = (productID) => { 
-      axios.get(`/product/${productID}`).then((response) => {
-        setViewProduct(response.data.data)
-      });
+  const showDetails = (productID) => {
+    axios.get(`/product/${productID}`).then((response) => {
+      setViewProduct(response.data.data);
+    });
   };
 
   useEffect(() => {
@@ -202,6 +212,7 @@ const Products = () => {
                                   <td>{item.maxDuration}</td>
                                 
                                   <td>
+                                    
 
                                   
                           {/* <button
@@ -230,6 +241,7 @@ const Products = () => {
                           </button>
                           </Link>
                                     
+
                                     {/* <button
                                       type="button"
                                       className="btn btn-danger"
@@ -238,7 +250,7 @@ const Products = () => {
                                     >
                                       delete
                                     </button> */}
-                                   
+
                                     <button
                                       onClick={(e) => showDetails(item.id)}
                                       type="button"
@@ -248,8 +260,7 @@ const Products = () => {
                                     >
                                       view
                                     </button>
-                                   
-                                  
+
                                     <div
                                       className="modal fade"
                                       id="exampleModal"
@@ -273,25 +284,45 @@ const Products = () => {
                                               aria-label="Close"
                                             ></button>
                                           </div>
-                                          <div align='right'>
-                                       
-                       
-                                          </div>
+                                          <div align="right"></div>
                                           <div className="d-flex ">
-                                          <div className="modal-body">Product Name: {viewProduct.productName}</div>
-                                          <div className="modal-body">Category: {viewProduct.subCategory}</div>
-                                          <div className="modal-body">Minimum Price: {viewProduct.minPricePerUnit}</div>
+                                            <div className="modal-body">
+                                              Product Name:{" "}
+                                              {viewProduct.productName}
+                                            </div>
+                                            <div className="modal-body">
+                                              Category:{" "}
+                                              {viewProduct.subCategory}
+                                            </div>
+                                            <div className="modal-body">
+                                              Minimum Price:{" "}
+                                              {viewProduct.minPricePerUnit}
+                                            </div>
                                           </div>
                                           <div className="d-flex">
-                                          <div className="modal-body">Maximum Price Per Unit: {viewProduct.maxPricePerUnit}</div>
-                                          <div className="modal-body">Currency: {viewProduct.currency}</div>
+                                            <div className="modal-body">
+                                              Maximum Price Per Unit:{" "}
+                                              {viewProduct.maxPricePerUnit}
+                                            </div>
+                                            <div className="modal-body">
+                                              Currency: {viewProduct.currency}
+                                            </div>
                                           </div>
                                           <div className="d-flex">
-                                          <div className="modal-body">Supply Capacity: {viewProduct.supplyCapacity}</div>
-                                          <div className="modal-body">Minmum Duration: {viewProduct.minDuration}</div>
+                                            <div className="modal-body">
+                                              Supply Capacity:{" "}
+                                              {viewProduct.supplyCapacity}
+                                            </div>
+                                            <div className="modal-body">
+                                              Minmum Duration:{" "}
+                                              {viewProduct.minDuration}
+                                            </div>
                                           </div>
                                           <div className="mx-auto">
-                                          <div className="modal-body">Subcategory: {viewProduct.subCategory}</div>
+                                            <div className="modal-body">
+                                              Subcategory:{" "}
+                                              {viewProduct.subCategory}
+                                            </div>
                                           </div>
                                           <div className="modal-footer">
                                             <button
@@ -301,14 +332,10 @@ const Products = () => {
                                             >
                                               Close
                                             </button>
-                                            
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-
-
-
                                   </td>
                                 </tr>
                               );

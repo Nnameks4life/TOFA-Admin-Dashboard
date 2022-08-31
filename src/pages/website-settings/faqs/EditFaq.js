@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
+
 import { useNavigate, useParams } from "react-router-dom";
+
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+
 
 const EditFaq = () => {
   const [id, setId] = useState(null);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+
   const [faqInfo, setFaqInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,11 +50,26 @@ const EditFaq = () => {
         answer: answer,
         question: question,
       });
+
+
+      toast.success("EDITED SUCCESSFULLY", {
+        position: "top-right",
+        autoClose: 2000,
+        pauseHover: true,
+        draggable: true,
+      });
       console.log(result);
-    } catch (err) {
-      console.log(err);
+      // navigate("/faq");
+    } catch (error) {
+      if (error) {
+        toast.error("FAILED TRY AGAIN", {
+          position: "top-right",
+          autoClose: 4000,
+          pauseHover: true,
+          draggable: true,
+        });
+      }
     }
-    navigate("/faq");
   };
 
   if (isLoading) {
@@ -64,6 +85,7 @@ const EditFaq = () => {
           <Sidebar />
 
           <div className="dashboard-wrapper">
+            <ToastContainer />
             <div className="container-fluid dashboard-content">
               <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
@@ -106,6 +128,7 @@ const EditFaq = () => {
                             className="form-control"
                             type="text"
                             value={faqInfo.answer}
+
                             name="answer"
                             onChange={(e) => setAnswer(e.target.value)}
                           />

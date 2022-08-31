@@ -188,12 +188,12 @@ const Products = () => {
                               <th>Product Name</th>
                               <th>Min Price Per Unit</th>
                               <th>maxPricePerUnit</th>
-                              <th>currency</th>
+                            
                               <th>supplyCapacity</th>
 
                               <th>minDuration</th>
                               <th>maxDuration</th>
-                              <th>subCategory</th>
+                           
                               <th>Actionn-two</th>
                             </tr>
                           </thead>
@@ -206,34 +206,41 @@ const Products = () => {
                                   <td>{item.productName}</td>
                                   <td>{item.minPricePerUnit}</td>
                                   <td>{item.maxPricePerUnit}</td>
-                                  <td>{item.currency}</td>
+                           
                                   <td>{item.supplyCapacity}</td>
                                   <td>{item.minDuration}</td>
                                   <td>{item.maxDuration}</td>
-                                  <td>{item.subCategory}</td>
+                                
                                   <td>
-                                    <Link to="/editproduct">
-                                      <button
-                                        className="btn btn-success"
-                                        onClick={() =>
-                                          setData(
-                                            item.id,
-                                            item.productName,
-                                            item.parentCategory,
-                                            item.minDuration,
-                                            item.maxDuration,
-                                            item.supplyCapacity,
-                                            item.category,
-                                            item.unitForSupplyCapacity,
-                                            item.subCategory,
-                                            item.unitForMinOrder,
-                                            item.productDescription
-                                          )
-                                        }
-                                      >
-                                        Edit
-                                      </button>
-                                    </Link>
+                                    
+
+                                  
+                          {/* <button
+                            className="btn btn-success"
+                            onClick={() =>
+                              setData(
+                                item.id,
+                                item.productName,
+                                item.parentCategory,
+                                item.minDuration,
+                                item.maxDuration,
+                                item.supplyCapacity,
+                                item.category,
+                                item.unitForSupplyCapacity,
+                                item.subCategory,
+                                item.unitForMinOrder,
+                                item.productDescription, 
+                              )
+                            }
+                          >
+                            Edit
+                          </button> */}
+                          <Link to={`/editproduct/${item.id}`}> 
+                          <button>
+                            Edit
+                          </button>
+                          </Link>
+                                    
 
                                     {/* <button
                                       type="button"

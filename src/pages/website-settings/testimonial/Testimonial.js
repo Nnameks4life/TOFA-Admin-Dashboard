@@ -19,12 +19,6 @@ const Testimonial = () => {
     }
   };
 
-  const setData = (id, name, company, message) => {
-    localStorage.setItem("testimonialID", id);
-    localStorage.setItem("name", name);
-    localStorage.setItem("company", company);
-    localStorage.setItem("message", message);
-  };
 
   useEffect(() => {
     getData();
@@ -105,32 +99,25 @@ const Testimonial = () => {
                                   Delete
                                 </button> */}
                                 <div className="d-flex">
-                                  <button
-                                    onClick={() => showDetails(item.id)}
-                                    type="button"
-                                    className="btn btn-primary"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
-                                  >
-                                    View
-                                  </button>
 
-                                  <Link to="/edittestimonial">
-                                    {" "}
-                                    <button
-                                      className="btn btn-success mx-2"
-                                      onClick={() =>
-                                        setData(
-                                          item.id,
-                                          item.name,
-                                          item.company,
-                                          item.message
-                                        )
-                                      }
-                                    >
-                                      Edit
-                                    </button>
-                                  </Link>
+                                <button
+                                  onClick={() => showDetails(item.id)}
+                                  type="button"
+                                  className="btn btn-primary"
+                                  data-bs-toggle="modal"
+                                  data-bs-target="#exampleModal"
+                                >
+                                  View
+                                </button>
+
+                                <Link to={`/edittestimonial/${item.id}`}>
+                                        <button type="button"
+                                        className="btn btn-success mx-2"
+                                        data-dismiss="modal">Edit</button>
+                                      </Link>
+
+                               
+
                                 </div>
 
                                 <div

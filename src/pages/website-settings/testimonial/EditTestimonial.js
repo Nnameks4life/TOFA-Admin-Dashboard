@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate, useParams } from "react-router-dom";
+
+
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
+
 // import { useNavigate} from 'react-router-dom';
 
 const EditTestimonial = () => {
@@ -12,15 +16,28 @@ const EditTestimonial = () => {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [message, setMessage] = useState("");
+  const [testimonialInfo, setTestimonialInfo] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setId(localStorage.getItem("testimonialID"));
-    setName(localStorage.getItem("name"));
-    setCompany(localStorage.getItem("company"));
-    setMessage(localStorage.getItem("message"));
-  }, []);
+  const {myTestimonialId} = useParams()
+
+const getInfo = async () => {
+    try {
+    const response =  await axios.get(`/testimonial/${myTestimonialId}`)
+    setTestimonialInfo(response.data.data)
+    console.log(response.data.data)
+    setIsLoading(false)
+    }  catch(error) {
+    console.log(error)
+    setIsLoading(false)
+    }
+}
+
+useEffect(() => {
+    getInfo()
+}, [])
 
   const handleUpdate = async (e) => {
     try {
@@ -50,6 +67,12 @@ const EditTestimonial = () => {
       }
     }
   };
+
+  if (isLoading) {
+    return (
+        <h1>Loading</h1>
+    )
+}
 
   return (
     <div>
@@ -90,7 +113,7 @@ const EditTestimonial = () => {
                             Name
                           </label>
                           <input
-                            value={name}
+                            value={testimonialInfo.name}
                             onChange={(e) => setName(e.target.value)}
                             type="text"
                             className="form-control"
@@ -106,7 +129,7 @@ const EditTestimonial = () => {
                           <input
                             type="text"
                             className="form-control"
-                            value={company}
+                            value={testimonialInfo.company}
                             onChange={(e) => setCompany(e.target.value)}
                           />
                         </div>
@@ -117,7 +140,7 @@ const EditTestimonial = () => {
                           <textarea
                             className="form-control"
                             rows="3"
-                            value={message}
+                            value={testimonialInfo.message}
                             onChange={(e) => setMessage(e.target.value)}
                           />
                         </div>

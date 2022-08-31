@@ -45,18 +45,11 @@ useEffect(() => {
   getData();
 }, []);
 
-// const setToLocalStorage = (id, name, company, message) => {
-//   localStorage.setItem("id", id);
-//   localStorage.setItem("name", name);
-//   localStorage.setItem("company", company);
-//   localStorage.setItem("message", message);
+// const handleDelete = (orderID) => {
+//   axios.delete(`/order/${orderID}`).then((response) => {
+//     setViewOrder(response.data.data)
+//   });
 // };
-
-const handleDelete = (orderID) => {
-  axios.delete(`/order/${orderID}`).then((response) => {
-    setViewOrder(response.data.data)
-  });
-};
 
 const showDetails = (orderID) => { 
     axios.get(`/order/${orderID}`).then((response) => {
@@ -172,57 +165,10 @@ const showDetails = (orderID) => {
                         id="example wrapper"
                         className="dataTables_wrapper dt_bootstrap4"
                       >
-                        <div className="row">
-                          <div
-                            className="col-sm-12 md-6"
-                            style={{ textAlign: "left" }}
-                          >
-                            <div className="dt-buttons">
-                              <button
-                                className="btn btn-outline-light buttons-copy buttons-html5"
-                                tabindex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Copy</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-excel buttons-html5"
-                                tabindex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Excel</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-pdf buttons-html5"
-                                tabindex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>PDF</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-print"
-                                tabindex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Print</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-collection dropdown-toggle buttons-colvis"
-                                tabindex="0"
-                                aria-controls="example"
-                                type="button"
-                                aria-haspopup="true"
-                              >
-                                <span>Column Visibility</span>
-                              </button>
-                            </div>
-                          </div>
+                       
 
-                        </div>
+
+                        
                       </div>
 
                       
@@ -235,37 +181,37 @@ const showDetails = (orderID) => {
                           <thead>
                             <tr>
                                 <th>ID</th>
-                              <th>Quantity</th>
+                              <th>Cost</th>
                               <th>Country</th>
-                              <th>Address</th>
+                              <th>IncoTerm</th>
                               <th>paymentTerm</th>
-                              <th>Grade</th>
-                              <th>Specification</th>
+                              <th>ShippingType</th>
                               <th>Status</th>
+                              <th>Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                         { datatabless.map((item) => {
+                         { order.map((item) => {
                          return (
                       
-                              <tr>
-                                  <td>{item.id}</td>
+                              <tr key={item.id}>
+                                  {/* <td>{item.id}</td>
                                   <td>{item.price}</td>
                                   <td>{item.country}</td>
                                   <td>{item.origin}</td>
                                   
                                   <td>{item.description}</td>
                                   <td>{item.country}</td>
-                                  <td>{item.specification}</td>
+                                  <td>{item.specification}</td> */}
 
-                                  {/* <td>{item.id}</td>
-                                  <td>{item.quantity}</td>
+                                  <td>{item.id}</td>
+                                  <td>{item.cost}</td>
                                   <td>{item.country}</td>
-                                  <td>{item.address}</td>
+                                  <td>{item.incoterm}</td>
                                   
                                   <td>{item.paymentTerm}</td>
-                                  <td>{item.grade}</td>
-                                  <td>{item.specification}</td> */}
+                                  <td>{item.shippingType}</td>
+                                  <td>{item.status}</td>
                                   <td>
                                   {/* <button
                                       type="button"
@@ -279,7 +225,7 @@ const showDetails = (orderID) => {
                                     <button
                                       onClick={(e) => showDetails(item.id)}
                                       type="button"
-                                      class="btn btn-primary"
+                                      className="btn btn-primary"
                                       data-bs-toggle="modal"
                                       data-bs-target="#exampleModal"
                                     >
@@ -287,24 +233,24 @@ const showDetails = (orderID) => {
                                     </button>
                                   
                                     <div
-                                      class="modal fade"
+                                      className="modal fade"
                                       id="exampleModal"
-                                      tabindex="-1"
+                                      tabIndex="-1"
                                       aria-labelledby="exampleModalLabel"
                                       aria-hidden="true"
                                     >
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
+                                      <div className="modal-dialog">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
                                             <h5
-                                              class="modal-title"
+                                              className="modal-title"
                                               id="exampleModalLabel"
                                             >
                                               Product Information
                                             </h5>
                                             <button
                                               type="button"
-                                              class="btn-close"
+                                              className="btn-close"
                                               data-bs-dismiss="modal"
                                               aria-label="Close"
                                             ></button>
@@ -331,24 +277,105 @@ const showDetails = (orderID) => {
                           </Link>
                        
                                           </div> */}
-                                          <div className="d-flex ">
-                                          <div class="modal-body">Product Name: {viewOrder.quantity}</div>
-                                          <div class="modal-body">Category: {viewOrder.country}</div>
-                                          <div class="modal-body">Minimum Price: {viewOrder.address}</div>
+                                      
+                                          <div className="modal-body px-2">
+                                            <label>Cost: </label>
+                                            <p>
+                                             {viewOrder.cost}
+                                            </p>
                                           </div>
-                                          <div className="d-flex">
-                                          <div class="modal-body">Maximum Price Per Unit: {viewOrder.paymentTerm}</div>
-                                          <div class="modal-body">Currency: {viewOrder.grade}</div>
+                                          <div className="modal-body px-2">
+                                            <label>Buyers Id: </label>
+                                            <p>
+                                             {viewOrder.buyerID}
+                                            </p>
                                           </div>
-                                          <div className="d-flex">
-                                          <div class="modal-body">Supply Capacity: {viewOrder.specification}</div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Country: </label>
+                                            <p>
+                                             {viewOrder.country}
+                                            </p>
+                                          </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Created At: </label>
+                                            <p>
+                                             {viewOrder.createdAt}
+                                            </p>
+                                          </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Incoterm: </label>
+                                            <p>
+                                             {viewOrder.incoterm}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Note: </label>
+                                            <p>
+                                             {viewOrder.note}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>order Number: </label>
+                                            <p>
+                                             {viewOrder.orderNumber}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>payment Term: </label>
+                                            <p>
+                                             {viewOrder.paymentTerm}
+                                            </p>
+                                          </div>
+
+                                          {/* <div className="modal-body px-2">
+                                            <label>Port: </label>
+                                            <p>
+                                             {viewOrder.port}
+                                            </p>
+                                          </div> */}
+                                          <div className="modal-body px-2">
+                                            <label>Product ID: </label>
+                                            <p>
+                                             {viewOrder.productID}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Quantity Order: </label>
+                                            <p>
+                                             {viewOrder.quantityOrdered}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Shipping Type: </label>
+                                            <p>
+                                             {viewOrder.shippingType}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Status: </label>
+                                            <p>
+                                             {viewOrder.status}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>UpdatedAt: </label>
+                                            <p>
+                                             {viewOrder.updatedAt}
+                                            </p>
+                                          </div>
+
+
+                            
                                        
-                                          </div>
+                                       
                                          
-                                          <div class="modal-footer">
+                                          <div className="modal-footer">
                                             <button
                                               type="button"
-                                              class="btn btn-secondary"
+                                              className="btn btn-secondary"
                                               data-bs-dismiss="modal"
                                             >
                                               Close

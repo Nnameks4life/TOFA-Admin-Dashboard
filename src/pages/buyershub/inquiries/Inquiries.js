@@ -13,10 +13,11 @@ const Inquiries = () => {
 
 
   const [inquiries, setInquiries] = useState([]);
+  const [inquiryView, setInquiryView] = useState([]);
 
   const getData = async () => {
     try {
-      axios.get("/inquiry").then((response) => {
+      axios.get("/rfq/all").then((response) => {
         console.log(response.data);
         setInquiries(response.data.data);
       });
@@ -32,8 +33,8 @@ const Inquiries = () => {
   //  if (error) console.log(error)
 
   const showDetails = (productID) => { 
-    axios.get(`/product/${productID}`).then((response) => {
-      getData()
+    axios.get(`/rfq/${productID}`).then((response) => {
+      setInquiryView(response.data.data)
     });
 };
 
@@ -81,58 +82,11 @@ $(document).ready(function () {
                         id="example wrapper"
                         className="dataTables_wrapper dt_bootstrap4"
                       >
-                        <div className="row">
-                          <div
-                            className="col-sm-12 md-6"
-                            style={{ textAlign: "left" }}
-                          >
-                            <div className="dt-buttons my-3">
-                              <button
-                                className="btn btn-outline-light buttons-copy buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Copy</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-excel buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Excel</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-pdf buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>PDF</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-print"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Print</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-collection dropdown-toggle buttons-colvis"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                                aria-haspopup="true"
-                              >
-                                <span>Column Visibility</span>
-                              </button>
-                            </div>
-                          </div>
+                        
 
-                        </div>
+
                       </div>
+
                       <div className="container">
                         <table
                           id="example"
@@ -146,26 +100,136 @@ $(document).ready(function () {
                               <th>Inquiries</th>
                               <th>phoneNumber</th>
                               <th>Country</th>
-                              <th>Action</th>
+                              <th>paymentTerms</th>
+                              <th className="text-center">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {applicantDatatabless.map((item) => {
+                            {inquiries.map((item) => {
                               return (
                                 <tr key={item.id}>
                                   <td>{item.id}</td>
-                                  <td>{item.fullName}</td>
-                                  <td>{item.country}</td>
-                                  <td>{item.phoneNumber}</td>
-                                  <td>{item.productTraded}</td>
+                                  <td>{item.ProductName}</td>
+                                  <td>{item.quantity}</td>
+                                  <td>{item.unit}</td>
+                                  <td>{item.destinationPort}</td>
+                                  <td>{item.paymentTerms}</td>
                                 
-                                  <td><button
+                                  <td >
+                                    <div className="text-center">
+                                    <button
                                       onClick={(e) => showDetails(item.id)}
                                       type="button"
-                                      className="btn btn-primary" 
+                                      className="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
                                     >
                                       view
-                                    </button> </td>
+                                    </button>
+                                    </div>
+
+                                    <div
+                                      className="modal fade modal-width"
+                                      id="exampleModal"
+                                      tabIndex="-1"
+                                      aria-labelledby="exampleModalLabel"
+                                      aria-hidden="true"
+                                    >
+                                      <div className="modal-dialog">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
+                                            <h5
+                                              className="modal-title"
+                                              id="exampleModalLabel"
+                                            >
+                                              Buyer Enquiry Management
+                                            </h5>
+                                            <button
+                                              type="button"
+                                              className="btn-close text-danger"
+                                              data-bs-dismiss="modal"
+                                              aria-label="Close"
+                                             
+                                            ></button>
+                                          </div>
+                                          
+                                          <div className="modal-body px-2">
+                                            <label>
+                                              Product Name:{inquiryView.ProductName}
+                                            </label>
+                                            <br />
+                                            <p> Cashew</p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Payment Terms: </label>
+                                            <p>
+                                             {inquiryView.paymentTerms}
+                                            </p>
+                                          </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Terms Of Trade: </label>
+                                            <p>
+                                             {inquiryView.termsOfTrade}
+                                            </p>
+                                          </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>Destination Port: </label>
+                                            <p>
+                                             {inquiryView.destinationPort}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                          <label>Quantity Requested:</label>
+                                            <p>
+                                             {inquiryView.quantityRequired}
+                                            </p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                          <label>Target Price:</label>
+                                            <p>
+                                             {inquiryView.targetPrice}
+                                            </p>
+                                          </div>
+
+                                          <div className=" modal-bodyb px-2">
+                                            <label>Units:</label>
+                                            <p> {inquiryView.unit}</p>
+                                          </div>
+                                          <div className="modal-body px-2">
+                                            <label>Product Specification:</label>
+                                            <p>{ inquiryView.productDescription}</p>
+                                            <p>
+                                              Commodo eget a et dignissim
+                                              dignissim morbi vitae, mi. Mi
+                                              aliquam sit ultrices enim cursus.
+                                              Leo sapien, pretium duis est eu
+                                              volutpat interdum eu non. Odio
+                                              eget nullam elit laoreet. Libero
+                                              at felis nam at orci venenatis
+                                              rutrum nunc. Etiam mattis ornare
+                                              pellentesque iaculis enim. Felis
+                                              eu non in aliquam egestas
+                                              placerat. Eget maecenas ornare
+                                              venenatis lacus nunc{" "}
+                                            </p>
+                                          </div>
+
+                                         
+                                          <div className="modal-footer">
+                                            <button
+                                              type="button"
+                                              className="btn btn-dark"
+                                              data-bs-dismiss="modal"
+                                            >
+                                              Close
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    </td>
                                   
                                 </tr>
                               );

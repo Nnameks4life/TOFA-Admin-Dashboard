@@ -279,16 +279,27 @@ button{
     max-width: 100px !important;
 }
 
+/* .modal-btnn{
+    display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 14px 20px;
+gap: 10px;
+width: 180px;
+height: 44px;
+left: 515px;
+top: 630px;
+background: #4F4F4F;
+border-radius: 8px;
+} */
+
 .root{
    width: 100%;
    display: flex;
     
 }
 
-.custom-toast{
-    background-color: #00ab6c;
-    color: #fff;
-}
 
 .form-control {
     display: block;

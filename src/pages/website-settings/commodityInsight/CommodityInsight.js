@@ -22,7 +22,7 @@ const CommodityInsight = () => {
 
   const getData = async () => {
     try {
-    axios.get("/commodity").then((response) => {
+      axios.get("/commodity").then((response) => {
         console.log(response.data.data);
         setCommodity(response.data.data);
       });
@@ -51,15 +51,15 @@ const CommodityInsight = () => {
   const showDetails = (commodityID) => {
     axios.get(`/commodity/${commodityID}`).then((response) => {
       setViewCommodity(response.data.data);
-      console.log(response.data.data)
+      console.log(response.data.data);
     });
   };
 
-  const updateHandler = (commodityID) => {
-    axios.patch(`/commodity/${commodityID}`).then((response) => {
-      setViewCommodity(response.data.data);
-     });
-  }
+  // const updateHandler = (commodityID) => {
+  //   axios.patch(`/commodity/${commodityID}`).then((response) => {
+  //     setViewCommodity(response.data.data);
+  //   });
+  // };
 
   useEffect(() => {
     //initialize datatable
@@ -156,31 +156,25 @@ const CommodityInsight = () => {
                                 <th>Name</th>
                                 <th>briefHistory</th>
                                 <th>Action</th>
-                               
                               </tr>
                             </thead>
                             <tbody>
                               {commodity.map((item) => {
                                 return (
                                   <tr key={item.id}>
-                                
                                     <td>{item.id}</td>
                                     <td>{item.name}</td>
                                     <td>{item.briefHistory}</td>
-                               
 
                                     <td>
-                                      <Link to='/editcommodity'>
-                                    <button
-                                        type="button"
+                                      <Link to={`/editcommodity/${item.id}`}>
+                                        <button type="button"
                                         className="btn btn-success"
-                                        data-dismiss="modal"
-                                        onClick={() => updateHandler(item.id)}
-                                      >
-                                        
-                                      Edit
-                                      </button>
+                                        data-dismiss="modal">Edit</button>
                                       </Link>
+                                      
+                                       
+                                    
                                       {/* <button
                                         type="button"
                                         className="btn btn-danger"
@@ -223,27 +217,26 @@ const CommodityInsight = () => {
                                               ></button>
                                             </div>
                                             <div align="right">
-                                              <Link to='/editcommodity'> 
-                          <button
-                            className="btn btn-success"
-                            onClick={() =>
-                              setData(
-                                item.id,
-                                item.name,
-                                item.briefHistory,
-                                item.country,
-                                
-                                
-                              )
-                            }
-                          >
-                            Edit
-                          </button>
-                          </Link>
+                                              {/* <Link to="/editcommodity">
+                                                <button
+                                                  className="btn btn-success"
+                                                  onClick={() =>
+                                                    setData(
+                                                      item.id,
+                                                      item.name,
+                                                      item.briefHistory,
+                                                      item.country
+                                                    )
+                                                  }
+                                                >
+                                                  Edit
+                                                </button>
+                                              </Link> */}
                                             </div>
                                             <div className="d-flex ">
                                               <div className="modal-body">
-                                                Commodity Name: {viewCommodity.name}
+                                                Commodity Name:{" "}
+                                                {viewCommodity.name}
                                               </div>
                                               <div className="modal-body">
                                                 Country: {viewCommodity.country}

@@ -1,27 +1,55 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 // import IconButton from "@mui/material/IconButton";
 // import DeleteIcon from "@mui/icons-material/Delete";
 import { axios } from "../../components/baseUrl";
+// import { useAppContext } from "../../../utils/contexts/AppContext";
 // import DropFileInput from "../../components/DropFileInput";
 // import OtherImages from "./OtherImages";
 
 const EditProducts = () => {
-  const [id, setId] = useState(0);
-  const [productName, setProductName] = useState("");
-  const [parentCategory, setParentCategory] = useState("");
-  const [unitForMinOrder, setUnitForMinOrder] = useState("");
-  const [supplyCapacity, setSupplyCapacity] = useState("");
-  const [unitForSupplyCapacity, setUnitForSupplyCapacity] = useState("");
-  const [minDuration, setMinDuration] = useState("");
-  const [maxDuration, setMaxDuration] = useState("");
-  const [category, setCategory] = useState("");
-  const [subCategory, setSubCategory] = useState("");
-  const [productDescription, setProductDescription] = useState("");
+
+
+  const [productName, setProductName] = useState("")
+  const [parentCategory, setParentCategory] = useState("")
+  const [unitForMinOrder, setUnitForMinOrder] = useState("")
+  const [supplyCapacity, setSupplyCapacity] = useState("")
+  const [unitForSupplyCapacity, setUnitForSupplyCapacity] = useState("")
+  const [minDuration, setMinDuration] = useState("")
+  const [maxDuration, setMaxDuration] = useState("")
+  const [category, setCategory] = useState("")
+  const [subCategory, setSubCategory] = useState("")
+  const [productDescription, setProductDescription] = useState("")
+  const [productInfo, setProductInfo] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
+
+//   const {name} = useAppContext()
+
+//   console.log(name)
+  
+const {productId} = useParams()
+console.log(productId)
+
+const getInfo = async () => {
+    try {
+    const response =  await  axios.get(`/product/${productId}`)
+    setProductInfo(response.data.data)
+    setIsLoading(false)
+    }  catch(error) {
+    console.log(error)
+    setIsLoading(false)
+    }
+   
+}
+
+useEffect(() => {
+    getInfo()
+}, [])
+
 
   const navigate = useNavigate();
 
@@ -51,19 +79,13 @@ const EditProducts = () => {
     });
   };
 
-  useEffect(() => {
-    setId(localStorage.getItem("id"));
-    setProductName(localStorage.getItem("productName"));
-    setParentCategory(localStorage.getItem("parentCategory"));
-    setUnitForMinOrder(localStorage.getItem("unitForMinOrder"));
-    setSupplyCapacity(localStorage.getItem("supplyCapacity"));
-    setUnitForSupplyCapacity(localStorage.getItem("unitForSupplyCapacity"));
-    setMinDuration(localStorage.getItem("minDuration"));
-    setMaxDuration(localStorage.getItem("maxDuration"));
-    setCategory(localStorage.getItem("category"));
-    setSubCategory(localStorage.getItem("subCategory"));
-    setProductDescription(localStorage.getItem("productDescription"));
-  }, []);
+
+if (isLoading) {
+    return (
+        <h1>Loading</h1>
+    )
+}
+
 
   return (
     <>
@@ -100,7 +122,7 @@ const EditProducts = () => {
                   <label className="form-label">Product Name:</label>
                   <input
                     name="productName"
-                    value={productName}
+                    value={productInfo.productName}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -117,7 +139,7 @@ const EditProducts = () => {
                   <select
                     className="form-control"
                     name="parentCategory"
-                    value={parentCategory}
+                    value={productInfo.parentCategory}
                     aria-describedby="Default select example"
                     onChange={(e) => setParentCategory(e.target.value)}
                     placeholder="parent category"
@@ -147,7 +169,7 @@ const EditProducts = () => {
                   <label className="form-label">Supply Capacity</label>
                   <input
                     type="number"
-                    value={supplyCapacity}
+                    value={productInfo.supplyCapacity}
                     name="supplyCapacity"
                     className="form-control"
                     onChange={(e) => setSupplyCapacity(e.target.value)}
@@ -173,7 +195,7 @@ const EditProducts = () => {
                   <label className="form-label">Unit of Min order</label>
                   <input
                     name="unitForMinOrder"
-                    value={unitForMinOrder}
+                    value={productInfo.unitForMinOrder}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -188,7 +210,7 @@ const EditProducts = () => {
                   <label className="form-label">Unit of Supply Capacity</label>
                   <input
                     name="unitForSupplyCapacity"
-                    value={unitForSupplyCapacity}
+                    value={productInfo.unitForSupplyCapacity}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -205,7 +227,7 @@ const EditProducts = () => {
                   <label className="form-label">Min Duration</label>
                   <input
                     name="minDuration"
-                    value={minDuration}
+                    value={productInfo.minDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -222,7 +244,7 @@ const EditProducts = () => {
                   <label className="form-label">Max Duration</label>
                   <input
                     name="maxDuration"
-                    value={maxDuration}
+                    value={productInfo.maxDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -237,7 +259,7 @@ const EditProducts = () => {
                   <label className="form-label">Category</label>
                   <input
                     name="category"
-                    value={category}
+                    value={productInfo.category}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -252,7 +274,7 @@ const EditProducts = () => {
                   <label className="form-label">Sub Category</label>
                   <input
                     name="subCategory"
-                    value={subCategory}
+                    value={productInfo.subCategory}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -346,7 +368,7 @@ const EditProducts = () => {
                 <label className="form-label">Description</label>
                 <textarea
                   name="productDescription"
-                  value={productDescription}
+                  value={productInfo.productDescription}
                   type="text"
                   className="form-control"
                   onChange={(e) => setProductDescription(e.target.value)}

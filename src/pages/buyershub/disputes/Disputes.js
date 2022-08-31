@@ -1,20 +1,17 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import { useFetch } from '../../../useFetch'
-import { axios } from '../../components/baseUrl'
-import {applicantDatatabless} from './DummyData';
-import 'jquery/dist/jquery.min.js';
-import "datatables.net-dt/js/dataTables.dataTables"
-import "datatables.net-dt/css/jquery.dataTables.min.css"
-import $ from 'jquery'; 
+import { axios } from "../../components/baseUrl";
+import { applicantDatatabless } from "./DummyData";
+import "jquery/dist/jquery.min.js";
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import $ from "jquery";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 
 const Disputes = () => {
-
-
   const [disputes, setDisputes] = useState([]);
   const [viewDisputes, setViewDisputes] = useState([]);
-
 
   const getData = async () => {
     try {
@@ -33,31 +30,31 @@ const Disputes = () => {
 
   //  if (error) console.log(error)
 
-  const showDetails = (disputeID) => { 
+  const showDetails = (disputeID) => {
     axios.get(`/dispute/${disputeID}`).then((response) => {
-      setViewDisputes(response.data.data)
+      setViewDisputes(response.data.data);
     });
-};
+  };
 
   useEffect(() => {
-    getData()
-  }, [])
+    getData();
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     //initialize datatable
-$(document).ready(function () {
-    setTimeout(function(){
-    $('#example').DataTable();
-     } ,1000);
-});
-},[])
+    $(document).ready(function() {
+      setTimeout(function() {
+        $("#example").DataTable();
+      }, 1000);
+    });
+  }, []);
 
   return (
     <>
       {/* <!-- main wrapper --> */}
       <div className="dashboard-main-wrapper">
-        <Navbar/>
-        <Sidebar/>
+        <Navbar />
+        <Sidebar />
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
           <div className="container-fluid dashboard-content">
@@ -132,7 +129,6 @@ $(document).ready(function () {
                               </button>
                             </div>
                           </div>
-
                         </div>
                       </div>
                       <div className="container">
@@ -148,7 +144,7 @@ $(document).ready(function () {
                               <th>Dispute</th>
                               <th>phoneNumber</th>
                               <th>Country</th>
-                              <th>Action</th>
+                              <th className="text-center">Action</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -160,18 +156,17 @@ $(document).ready(function () {
                                   <td>{item.country}</td>
                                   <td>{item.phoneNumber}</td>
                                   <td>{item.productTraded}</td>
-                                  
-                                 
-                                  <td><button
+
+                                  <td>
+                                    {/* <button
                                       onClick={(e) => showDetails(item.id)}
                                       type="button"
                                       className="btn btn-primary" 
                                     >
                                       view
-                                    </button>
-
-
-                                    {/* <button
+                                    </button> */}
+                                    <div className="text-center">
+                                    <button
                                       onClick={(e) => showDetails(item.id)}
                                       type="button"
                                       className="btn btn-primary"
@@ -180,10 +175,10 @@ $(document).ready(function () {
                                     >
                                       view
                                     </button>
-                                   
-                                  
+                                    </div>
+
                                     <div
-                                      className="modal fade"
+                                      className="modal fade modal-width"
                                       id="exampleModal"
                                       tabIndex="-1"
                                       aria-labelledby="exampleModalLabel"
@@ -196,53 +191,68 @@ $(document).ready(function () {
                                               className="modal-title"
                                               id="exampleModalLabel"
                                             >
-                                              Product Information
+                                              TOFA Dispute Pipeline
                                             </h5>
                                             <button
                                               type="button"
-                                              className="btn-close"
+                                              className="btn-close text-danger"
                                               data-bs-dismiss="modal"
                                               aria-label="Close"
+                                             
                                             ></button>
                                           </div>
-                                          <div align='right'>
-                                       
-                       
+                                          
+                                          <div className="modal-body px-2">
+                                            <label>
+                                              Customer Name:{" "}
+                                            </label>
+                                            <br />
+                                            <p>Erhun Abbe</p>
                                           </div>
-                                          <div className="d-flex ">
-                                          <div className="modal-body">Product Name: {viewProduct.productName}</div>
-                                          <div className="modal-body">Category: {viewProduct.subCategory}</div>
-                                          <div className="modal-body">Minimum Price: {viewProduct.minPricePerUnit}</div>
+                                          <div className="modal-body px-2">
+                                            <label>Date: </label>
+                                            <p>
+                                              Tuesday, November 30, 2021 2:00:19
+                                              PM
+                                            </p>
                                           </div>
-                                          <div className="d-flex">
-                                          <div className="modal-body">Maximum Price Per Unit: {viewProduct.maxPricePerUnit}</div>
-                                          <div className="modal-body">Currency: {viewProduct.currency}</div>
+
+                                          <div className=" modal-bodyb px-2">
+                                            <label>Subject:</label>
+                                            <p>Pending reversed money </p>
                                           </div>
-                                          <div className="d-flex">
-                                          <div className="modal-body">Supply Capacity: {viewProduct.supplyCapacity}</div>
-                                          <div className="modal-body">Minmum Duration: {viewProduct.minDuration}</div>
+                                          <div className="modal-body px-2">
+                                            <label>Complaint:</label>
+                                            <p>
+                                              Commodo eget a et dignissim
+                                              dignissim morbi vitae, mi. Mi
+                                              aliquam sit ultrices enim cursus.
+                                              Leo sapien, pretium duis est eu
+                                              volutpat interdum eu non. Odio
+                                              eget nullam elit laoreet. Libero
+                                              at felis nam at orci venenatis
+                                              rutrum nunc. Etiam mattis ornare
+                                              pellentesque iaculis enim. Felis
+                                              eu non in aliquam egestas
+                                              placerat. Eget maecenas ornare
+                                              venenatis lacus nunc{" "}
+                                            </p>
                                           </div>
-                                          <div className="mx-auto">
-                                          <div className="modal-body">Subcategory: {viewProduct.subCategory}</div>
-                                          </div>
+
+                                         
                                           <div className="modal-footer">
                                             <button
                                               type="button"
-                                              className="btn btn-secondary"
+                                              className="btn btn-dark"
                                               data-bs-dismiss="modal"
                                             >
                                               Close
                                             </button>
-                                            
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-                                     */}
-                                    
-                                    
                                   </td>
-                                  
                                 </tr>
                               );
                             })}

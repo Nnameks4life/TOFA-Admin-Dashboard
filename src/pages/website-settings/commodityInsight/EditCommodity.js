@@ -1,13 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
+
 import { useNavigate, useParams } from 'react-router-dom';
 import { axios } from '../../components/baseUrl';
 
-const EditCommodity = () => {
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
-    const editorRef = useRef();
+
+const EditCommodity = () => {
+  const editorRef = useRef();
+
+
+    // const editorRef = useRef();
 
     const [id, setId] = useState(0)
     const [name, setName] = useState("");
@@ -44,29 +51,52 @@ useEffect(() => {
     getInfo()
 }, [])
 
-    const handleUpdate = (e) => {
-        e.preventDefault()
-        axios.patch(`/commodity/${id}`,
-        {name:name,
-        countries:countries,
+    // const handleUpdate = (e) => {
+    //     e.preventDefault()
+    //     axios.patch(`/commodity/${id}`,
+    //     {name:name,
+    //     countries:countries,
+
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     setId(localStorage.getItem("commodityID"));
+//     setCountries(localStorage.getItem("countries"));
+//     setName(localStorage.getItem("name"));
+//     setBriefHistory(localStorage.getItem("briefHistory"));
+//   }, []);
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    axios
+      .patch(`/commodity/${id}`, {
+        name: name,
+        countries: countries,
+
         briefHistory: briefHistory,
-        }
-        ).then(() =>{
-        navigate('/commodityinsight')
-        })
-    }
+      })
+      .then(() => {
+        navigate("/commodityinsight");
+      });
+    toast.success("EDITED SUCCESSFULLY", {
+      position: "top-right",
+      autoClose: 4000,
+      pauseHover: true,
+      draggable: true,
+    });
+  };
 
-    const [country, setCountry] = useState([{ countryName: "" }]);
+  const [country, setCountry] = useState([{ countryName: "" }]);
 
- const handleAddCountry = () => {
-  setCountry([...country, { countryName: ""}]);
-};
+  const handleAddCountry = () => {
+    setCountry([...country, { countryName: "" }]);
+  };
 
-const handleRemoveCountry = (index) => {
-  const countryValues = [...country];
-  countryValues.splice(index, 1);
-  setCountry(countryValues);
-};
+  const handleRemoveCountry = (index) => {
+    const countryValues = [...country];
+    countryValues.splice(index, 1);
+    setCountry(countryValues);
+  };
 
 if (isLoading) {
     return (
@@ -84,6 +114,7 @@ if (isLoading) {
 
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
+          <ToastContainer />
           <div>
             <form className="mx-5 my-5">
               <div className="d-flex justify-content-between">
@@ -111,15 +142,14 @@ if (isLoading) {
                     aria-describedby="emailHelp"
                     onChange={(e) => setName(e.target.value)}
                   />
-                  
                 </div>
-               
+
                 <div className="col-6">
                   <label className="form-label">Country</label>
                   {country.map((info, index) => (
                     <div key={index} className="root my-2">
                       <input
-                        type='text'
+                        type="text"
                         name="countries"
                         value={country.countryName}
                         variant="filled"
@@ -136,11 +166,9 @@ if (isLoading) {
                           className="fa-solid fa-minus mx-1"
                           onClick={() => handleRemoveCountry(index)}
                         ></i>
-                         
                       </div>
                     </div>
                   ))}
-                 
                 </div>
               </div>
               <div>
@@ -150,7 +178,6 @@ if (isLoading) {
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   onChange={(e) => setBriefHistory(e.target.value)}
                 />
-                
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
@@ -164,9 +191,10 @@ if (isLoading) {
               </div>
 
               <div style={{ textAlign: "start" }}>
-                <button className="btn btn-dark" onClick={handleUpdate}>Submit</button>
+                <button className="btn btn-dark" onClick={handleUpdate}>
+                  Submit
+                </button>
               </div>
-             
             </form>
           </div>
         </div>
@@ -178,24 +206,3 @@ if (isLoading) {
 };
 
 export default EditCommodity;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

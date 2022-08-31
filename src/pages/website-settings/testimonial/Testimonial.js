@@ -38,7 +38,7 @@ const Testimonial = () => {
 
   const showDetails = (testimonialID) => {
     axios.get(`/testimonial/${testimonialID}`).then((response) => {
-      setViewTestimonial(response.data.data)
+      setViewTestimonial(response.data.data);
     });
   };
 
@@ -66,7 +66,7 @@ const Testimonial = () => {
                 className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
                 align="right"
               >
-                <a href="/edittestimonial" className="btn btn-dark">
+                <a href="/createtestimonial" className="btn btn-dark">
                   New Testimonial
                 </a>
               </div>
@@ -105,27 +105,32 @@ const Testimonial = () => {
                                   Delete
                                 </button> */}
                                 <div className="d-flex">
-                                <button
-                                  onClick={() => showDetails(item.id)}
-                                  type="button"
-                                  className="btn btn-primary"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#exampleModal"
-                                >
-                                  View
-                                </button>
-
-                                <Link to="/edittestimonial">
-                                  {" "}
                                   <button
-                                    className="btn btn-success mx-2"
-                                    onClick={() =>
-                                      setData(item.id, item.name, item.company, item.message)
-                                    }
+                                    onClick={() => showDetails(item.id)}
+                                    type="button"
+                                    className="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
                                   >
-                                    Edit
+                                    View
                                   </button>
-                                </Link>
+
+                                  <Link to="/edittestimonial">
+                                    {" "}
+                                    <button
+                                      className="btn btn-success mx-2"
+                                      onClick={() =>
+                                        setData(
+                                          item.id,
+                                          item.name,
+                                          item.company,
+                                          item.message
+                                        )
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                  </Link>
                                 </div>
 
                                 <div
@@ -144,10 +149,6 @@ const Testimonial = () => {
                                         >
                                           TESTIMONIAL
                                         </h5>
-
-                               
-                                       
-                                        
                                       </div>
                                       <div className="modal-body">
                                         <p>{viewTestimonial.name}</p>

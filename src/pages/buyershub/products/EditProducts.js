@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 // import IconButton from "@mui/material/IconButton";
 // import DeleteIcon from "@mui/icons-material/Delete";
 import { axios } from "../../components/baseUrl";
@@ -10,18 +12,16 @@ import { axios } from "../../components/baseUrl";
 
 const EditProducts = () => {
   const [id, setId] = useState(0);
-  const [productName, setProductName] = useState("")
-  const [parentCategory, setParentCategory] = useState("")
-  const [unitForMinOrder, setUnitForMinOrder] = useState("")
-  const [supplyCapacity, setSupplyCapacity] = useState("")
-  const [unitForSupplyCapacity, setUnitForSupplyCapacity] = useState("")
-  const [minDuration, setMinDuration] = useState("")
-  const [maxDuration, setMaxDuration] = useState("")
-  const [category, setCategory] = useState("")
-  const [subCategory, setSubCategory] = useState("")
-  const [productDescription, setProductDescription] = useState("")
-  
-
+  const [productName, setProductName] = useState("");
+  const [parentCategory, setParentCategory] = useState("");
+  const [unitForMinOrder, setUnitForMinOrder] = useState("");
+  const [supplyCapacity, setSupplyCapacity] = useState("");
+  const [unitForSupplyCapacity, setUnitForSupplyCapacity] = useState("");
+  const [minDuration, setMinDuration] = useState("");
+  const [maxDuration, setMaxDuration] = useState("");
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [productDescription, setProductDescription] = useState("");
 
   const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const EditProducts = () => {
     e.preventDefault();
     axios
       .put(`product/${productID}`, {
-        productName:productName,
+        productName: productName,
         parentCategory: parentCategory,
         unitForMinOrder: unitForMinOrder,
         supplyCapacity: supplyCapacity,
@@ -43,6 +43,12 @@ const EditProducts = () => {
       .then(() => {
         navigate("/product");
       });
+    toast.success("EDITED SUCCESSFULLY", {
+      position: "top-right",
+      autoClose: 4000,
+      pauseHover: true,
+      draggable: true,
+    });
   };
 
   useEffect(() => {
@@ -59,7 +65,6 @@ const EditProducts = () => {
     setProductDescription(localStorage.getItem("productDescription"));
   }, []);
 
-
   return (
     <>
       {/* <!-- main wrapper --> */}
@@ -72,8 +77,9 @@ const EditProducts = () => {
 
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
+          <ToastContainer />
           <div>
-          <form className="mx-5 my-5" onSubmit={handleUpdate}>
+            <form className="mx-5 my-5" onSubmit={handleUpdate}>
               <div className="d-flex justify-content-between">
                 <h2> Create Products</h2>
                 {/* <Link to="/commodityInsight">
@@ -108,22 +114,22 @@ const EditProducts = () => {
                 <div className="col-4 ">
                   <label className="form-label">Parent Category</label>
 
-
-                  <select className="form-control"
+                  <select
+                    className="form-control"
                     name="parentCategory"
                     value={parentCategory}
                     aria-describedby="Default select example"
                     onChange={(e) => setParentCategory(e.target.value)}
-                    placeholder='parent category'
-                    >
-                      <option>CONSTRUCTION_MATERIAL</option>
-                      <option>FOOD_AND_BEVERAGE</option>
-                      <option>APPAREL</option>
-                      <option>HOME_AND_FURNITURE</option>
-                      <option> BEAUTY_AND_PERSONAL_CARE</option>
-                      <option>PACKAGING_AND_SUPPLY</option>
-                      <option>  MINERALS_AND_METALLURGY</option>
-                      <option>  AGRICULTURE</option>
+                    placeholder="parent category"
+                  >
+                    <option>CONSTRUCTION_MATERIAL</option>
+                    <option>FOOD_AND_BEVERAGE</option>
+                    <option>APPAREL</option>
+                    <option>HOME_AND_FURNITURE</option>
+                    <option> BEAUTY_AND_PERSONAL_CARE</option>
+                    <option>PACKAGING_AND_SUPPLY</option>
+                    <option> MINERALS_AND_METALLURGY</option>
+                    <option> AGRICULTURE</option>
                   </select>
                   {/* <input
                     name="parentCategory"
@@ -279,7 +285,7 @@ const EditProducts = () => {
                         className="mx-1 form-control specification-values"
                       /> */}
 
-                      {/* <div className="d-flex align-items-center">
+                {/* <div className="d-flex align-items-center">
                         <i
                           className="fa-solid fa-plus mx-1 "
                           onClick={() => handleAddFields()}
@@ -289,9 +295,9 @@ const EditProducts = () => {
                           onClick={() => handleRemoveFields(index)}
                         ></i>
                       </div> */}
-                    {/* </div>
+                {/* </div>
                   ))} */}
-                  {/* {formErrors.specification && (
+                {/* {formErrors.specification && (
                     <p className="text-danger">{formErrors.specification}</p>
                   )} */}
                 {/* </div> */}
@@ -318,7 +324,7 @@ const EditProducts = () => {
                         className="mx-1 form-control country-values"
                       /> */}
 
-                      {/* <div className="d-flex align-items-center">
+                  {/* <div className="d-flex align-items-center">
                         <i
                           className="fa-solid fa-plus mx-1 "
                           onClick={() => handleAddCountry()}
@@ -328,13 +334,12 @@ const EditProducts = () => {
                           onClick={() => handleRemoveCountry(index)}
                         ></i>
                       </div> */}
-                    {/* </div>
+                  {/* </div>
                   ))} */}
                   {/* {formErrors.country && (
                     <p className="text-danger">{formErrors.country}</p>
                   )} */}
                 </div>
-
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
@@ -351,16 +356,14 @@ const EditProducts = () => {
                 )} */}
               </div>
 
-              
-
-                {/* <div className="row">
+              {/* <div className="row">
                   <div className="col-6 box">
                     <h3 className="header">Featured Images</h3> */}
 
-                    {/* <DropFileInput
+              {/* <DropFileInput
                       onFileChange={(files) => onFileChange(files)}
                     /> */}
-                  {/* <input type="file" name="featuredImage" />
+              {/* <input type="file" name="featuredImage" />
                   </div>
                   <div className="col-6 mx-auto">
                   <div className="mb-3" style={{ textAlign: "left" }}>
@@ -373,7 +376,7 @@ const EditProducts = () => {
                   onChange={onSelectFile}
                 /> */}
 
-                {/* <div className="iamges d-flex">
+              {/* <div className="iamges d-flex">
                   {selectedImages &&
                     selectedImages.map((image, index) => {
                       return (
@@ -383,7 +386,7 @@ const EditProducts = () => {
                           style={{ position: "relative" }}
                         >
                           <img src={image} alt="" /> */}
-                          {/* <button
+              {/* <button
                             onClick={() =>
                               setSelectedImages(
                                 selectedImages.filter((e) => e !== image)
@@ -392,7 +395,7 @@ const EditProducts = () => {
                           >
                             delete image
                           </button> */}
-                          {/* <div
+              {/* <div
                             className="bin-icon"
                             style={{
                               position: "absolute",
@@ -432,10 +435,11 @@ const EditProducts = () => {
               /> */}
 
               <div style={{ textAlign: "left" }}>
-                <button className="btn btn-dark" type="submit">Update</button>
+                <button className="btn btn-dark" type="submit">
+                  Update
+                </button>
               </div>
             </form>
-
           </div>
         </div>
         {/* <!-- end main wrapper --> */}

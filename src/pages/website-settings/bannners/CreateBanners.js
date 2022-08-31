@@ -3,11 +3,12 @@ import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
 import { useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const CreateBanner = () => {
-
-  const [formErrors, setFormErrors] = useState({})
-  const [customError, setCustomError] = useState("")
+  const [formErrors, setFormErrors] = useState({});
+  const [customError, setCustomError] = useState("");
   const [banner, setBanner] = useState({
     action: "",
     link: "",
@@ -22,29 +23,35 @@ const CreateBanner = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const { result } = await axios
-        .post("/banner", {
-          action: banner.action,
-          link: banner.link,
-        })
-        console.log(result)
+      const { result } = await axios.post("/banner", {
+        action: banner.action,
+        link: banner.link,
+      });
+      toast.success("SUCCESSFULLY CREATED NEW BANNER", {
+        position: "top-right",
+        autoClose: 4000,
+        pauseHover: true,
+        draggable: true,
+      });
+      console.log(result);
     } catch (err) {
-        if(err.response.data.errors[0].field) {
-            setFormErrors(err.response.data.errors.reduce(function (obj, err) {
-              obj[err.field] = err.message;
-              return obj;
-            }, {}))
-        } else {
-            console.log(err.response.data.errors[0].message)
-              setCustomError(err.response.data.errors[0].message)
-              alert(customError)
-        }
-    } 
-    if (formErrors.email || formErrors.password ) {
-    navigate("/banner")
-  }
-};
-
+      if (err.response.data.errors[0].field) {
+        setFormErrors(
+          err.response.data.errors.reduce(function(obj, err) {
+            obj[err.field] = err.message;
+            return obj;
+          }, {})
+        );
+      } else {
+        console.log(err.response.data.errors[0].message);
+        setCustomError(err.response.data.errors[0].message);
+        alert(customError);
+      }
+    }
+    if (formErrors.email || formErrors.password) {
+      navigate("/banner");
+    }
+  };
 
   return (
     <div>
@@ -59,18 +66,19 @@ const CreateBanner = () => {
 
           {/* <!-- wrapper  --> */}
           <div className="dashboard-wrapper">
+            <ToastContainer />
             <div className="container-fluid dashboard-content">
               {/* <!-- pageheader --> */}
               <div className="row">
                 <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                  <div className="page-header" style={{textAlign:'left'}}>
+                  <div className="page-header" style={{ textAlign: "left" }}>
                     <h2 className="pageheader-title">Banner</h2>
                   </div>
                 </div>
               </div>
               {/* <!-- end pageheader --> */}
 
-              <div className="row" style={{textAlign:'left'}}>
+              <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <div className="card">
                     <h4 className="card-header font-bold">Create Banner</h4>
@@ -90,7 +98,9 @@ const CreateBanner = () => {
                             className="form-control"
                             onChange={handleChange}
                           />
-                           {formErrors.action && (<p className="text-danger">{formErrors.action}</p>)}
+                          {formErrors.action && (
+                            <p className="text-danger">{formErrors.action}</p>
+                          )}
                         </div>
                         <div className="form-group">
                           <label
@@ -106,7 +116,9 @@ const CreateBanner = () => {
                             className="form-control"
                             onChange={handleChange}
                           />
-                           {formErrors.link && (<p className="text-danger">{formErrors.link}</p>)}
+                          {formErrors.link && (
+                            <p className="text-danger">{formErrors.link}</p>
+                          )}
                         </div>
                         <div className="form-group">
                           <label className="form-label mx-2">
@@ -118,10 +130,14 @@ const CreateBanner = () => {
                             name="fileName"
                             accept="image/*"
                           />
-                           {/* {formErrors.question && (<p className="text-danger">{formErrors.question}</p>)} */}
+                          {/* {formErrors.question && (<p className="text-danger">{formErrors.question}</p>)} */}
                         </div>
                         <div className="form-group">
-                          <a href="comingsoon" className="btn btn-dark" onClick={handleSubmit}>
+                          <a
+                            href="comingsoon"
+                            className="btn btn-dark"
+                            onClick={handleSubmit}
+                          >
                             Save Testimonial
                           </a>
                         </div>
@@ -131,8 +147,6 @@ const CreateBanner = () => {
                 </div>
               </div>
             </div>
-
-        
           </div>
           {/* <!-- end main wrapper --> */}
         </div>

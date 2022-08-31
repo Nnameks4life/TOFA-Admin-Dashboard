@@ -4,6 +4,8 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { axios } from "../../components/baseUrl";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 // import DropFileInput from "../../components/DropFileInput";
 // import OtherImages from "./OtherImages";
 
@@ -77,9 +79,9 @@ const CreateProducts = () => {
         supplyCapacity: productDetails.supplyCapacity,
         specification: getSpecifications(),
         countries: getCountry(),
-      }
+      };
 
-      const formData = new FormData()
+      const formData = new FormData();
       for (const property in jsonData) {
         formData.append(`${property}`, jsonData[property]);
       }
@@ -89,18 +91,21 @@ const CreateProducts = () => {
       }
       formData.append("featuredImage", e.target.featuredImage.files[0]);
 
-      const { data: result } = await axios
-        .post("/product", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        alert ("success")
-        console.log(result)
-      
+      const { data: result } = await axios.post("/product", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("SUCCESSFULLY CREATED NEW PRODUCT", {
+        position: "top-right",
+        autoClose: 4000,
+        pauseHover: true,
+        draggable: true,
+      });
+      console.log(result);
     } catch (err) {
       if (err.response.data.errors[0].field) {
-        console.log(err.response.data.errors)
+        console.log(err.response.data.errors);
         setFormErrors(
           err.response.data.errors.reduce(function(obj, err) {
             obj[err.field] = err.message;
@@ -125,13 +130,11 @@ const CreateProducts = () => {
       return URL.createObjectURL(file);
     });
     setSelectedImages((previousImages) => previousImages.concat(imagesArray));
-    
-    console.log(selectedFiles)
+
+    console.log(selectedFiles);
   };
 
-  const [specification, setSpecification] = useState([
-    { Type: "", Color: "" },
-  ]);
+  const [specification, setSpecification] = useState([{ Type: "", Color: "" }]);
   const [country, setCountry] = useState([{ countryName: "", price: "" }]);
 
   // const handleChangeInput = (index, event) => {
@@ -174,6 +177,7 @@ const CreateProducts = () => {
 
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
+          <ToastContainer />
           <div>
             <form className="mx-5 my-5" onSubmit={handleSubmit}>
               <div className="d-flex justify-content-between">
@@ -209,21 +213,21 @@ const CreateProducts = () => {
                 <div className="col-4 ">
                   <label className="form-label">Parent Category</label>
 
-
-                  <select className="form-control"
+                  <select
+                    className="form-control"
                     name="parentCategory"
                     aria-describedby="Default select example"
                     onChange={handleProductChange}
-                    placeholder='parent category'
-                    >
-                      <option>CONSTRUCTION_MATERIAL</option>
-                      <option>FOOD_AND_BEVERAGE</option>
-                      <option>APPAREL</option>
-                      <option>HOME_AND_FURNITURE</option>
-                      <option> BEAUTY_AND_PERSONAL_CARE</option>
-                      <option>PACKAGING_AND_SUPPLY</option>
-                      <option>  MINERALS_AND_METALLURGY</option>
-                      <option>  AGRICULTURE</option>
+                    placeholder="parent category"
+                  >
+                    <option>CONSTRUCTION_MATERIAL</option>
+                    <option>FOOD_AND_BEVERAGE</option>
+                    <option>APPAREL</option>
+                    <option>HOME_AND_FURNITURE</option>
+                    <option> BEAUTY_AND_PERSONAL_CARE</option>
+                    <option>PACKAGING_AND_SUPPLY</option>
+                    <option> MINERALS_AND_METALLURGY</option>
+                    <option> AGRICULTURE</option>
                   </select>
                   {/* <input
                     name="parentCategory"
@@ -356,7 +360,7 @@ const CreateProducts = () => {
                   {specification.map((info, index) => (
                     <div key={index} className="root my-2">
                       <input
-                        type='text'
+                        type="text"
                         name="Type"
                         value={specification.Type}
                         placeholder="type"
@@ -364,7 +368,7 @@ const CreateProducts = () => {
                       />
 
                       <input
-                        type='text'
+                        type="text"
                         name="Color"
                         value={specification.Color}
                         variant="filled"
@@ -394,7 +398,7 @@ const CreateProducts = () => {
                   {country.map((info, index) => (
                     <div key={index} className="root my-2">
                       <input
-                        type='text'
+                        type="text"
                         name="countryName"
                         value={country.countryName}
                         variant="filled"
@@ -427,7 +431,6 @@ const CreateProducts = () => {
                     <p className="text-danger">{formErrors.country}</p>
                   )}
                 </div>
-
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
@@ -443,39 +446,37 @@ const CreateProducts = () => {
                 )}
               </div>
 
-              
+              <div className="row">
+                <div className="col-6 box">
+                  <h3 className="header">Featured Images</h3>
 
-                <div className="row">
-                  <div className="col-6 box">
-                    <h3 className="header">Featured Images</h3>
-
-                    {/* <DropFileInput
+                  {/* <DropFileInput
                       onFileChange={(files) => onFileChange(files)}
                     /> */}
                   <input type="file" name="featuredImage" />
-                  </div>
-                  <div className="col-6 mx-auto">
+                </div>
+                <div className="col-6 mx-auto">
                   <div className="mb-3" style={{ textAlign: "left" }}>
-                <label className="form-label d-block">Other Images</label>
-                <input
-                  type="file"
-                  name="otherImages"
-                  accept="image/*"
-                  multiple
-                  onChange={onSelectFile}
-                />
+                    <label className="form-label d-block">Other Images</label>
+                    <input
+                      type="file"
+                      name="otherImages"
+                      accept="image/*"
+                      multiple
+                      onChange={onSelectFile}
+                    />
 
-                <div className="iamges d-flex">
-                  {selectedImages &&
-                    selectedImages.map((image, index) => {
-                      return (
-                        <div
-                          key={image}
-                          className="image"
-                          style={{ position: "relative" }}
-                        >
-                          <img src={image} alt="" />
-                          {/* <button
+                    <div className="iamges d-flex">
+                      {selectedImages &&
+                        selectedImages.map((image, index) => {
+                          return (
+                            <div
+                              key={image}
+                              className="image"
+                              style={{ position: "relative" }}
+                            >
+                              <img src={image} alt="" />
+                              {/* <button
                             onClick={() =>
                               setSelectedImages(
                                 selectedImages.filter((e) => e !== image)
@@ -484,33 +485,33 @@ const CreateProducts = () => {
                           >
                             delete image
                           </button> */}
-                          <div
-                            className="bin-icon"
-                            style={{
-                              position: "absolute",
-                              top: "50%",
-                              left: "0",
-                              color: "red",
-                            }}
-                          >
-                            <IconButton
-                              className="text-danger"
-                              aria-label="delete"
-                              size="small"
-                              onClick={() =>
-                                setSelectedImages(
-                                  selectedImages.filter((e) => e !== image)
-                                )
-                              }
-                            >
-                              <DeleteIcon fontSize="inherit" />
-                            </IconButton>
-                          </div>
-                        </div>
-                      );
-                    })}
-                    {console.log(selectedImages)}
-                </div>
+                              <div
+                                className="bin-icon"
+                                style={{
+                                  position: "absolute",
+                                  top: "50%",
+                                  left: "0",
+                                  color: "red",
+                                }}
+                              >
+                                <IconButton
+                                  className="text-danger"
+                                  aria-label="delete"
+                                  size="small"
+                                  onClick={() =>
+                                    setSelectedImages(
+                                      selectedImages.filter((e) => e !== image)
+                                    )
+                                  }
+                                >
+                                  <DeleteIcon fontSize="inherit" />
+                                </IconButton>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      {console.log(selectedImages)}
+                    </div>
                   </div>
                 </div>
               </div>

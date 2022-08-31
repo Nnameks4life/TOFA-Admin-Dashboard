@@ -3,6 +3,9 @@ import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
 import { useNavigate } from "react-router-dom";
+  import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import { dark } from "@mui/material/styles/createPalette";
 
 const CreateFaq = () => {
     const [formErrors, setFormErrors] = useState({})
@@ -11,6 +14,16 @@ const CreateFaq = () => {
     answer: "",
     question: "",
   });
+
+  // const successToast = () => {
+  //   toast("success custom toast", {
+  //   className:"custom-toast",
+  //   draggable: true,
+  //   position: toast.POSITION.TOP_CENTER})
+  // }
+
+  // toast.success("Faq Successfully Created"),
+  // toast.error("Faq Successfully Created")
 
   const navigate = useNavigate();
 
@@ -29,6 +42,13 @@ const CreateFaq = () => {
             "Content-Type": "multipart/form-data",
           },
         }, )
+        toast.success("SUCCESSFULLY CREATED FAQ", {
+          position: "top-right",
+          autoClose: 8000,
+          pauseHover: true,
+          draggable: true,
+          className: dark,
+        })
         console.log(result)
     } catch (err) {
         if(err.response.data.errors[0].field) {
@@ -42,8 +62,17 @@ const CreateFaq = () => {
               alert(customError)
         }
     } 
-    if (formErrors.question || formErrors.answer ) {
-    navigate("/faq")
+    if (!formErrors.question || !formErrors.answer ) {
+      
+    // navigate("/faq")
+  // } else {
+  //   toast.error("FILL IN THE FIELDS"), {
+  //     position: "top-right",
+  //     autoClose: 8000,
+  //     pauseHover: true,
+  //     draggable: true,
+  //     className: dark,
+  //   }
   }
 };
 
@@ -61,6 +90,7 @@ const CreateFaq = () => {
           {/* <!-- wrapper  --> */}
           <div className="dashboard-wrapper">
             <div className="container-fluid dashboard-content">
+              <ToastContainer />
               {/* <!-- pageheader --> */}
               <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
@@ -87,7 +117,7 @@ const CreateFaq = () => {
                             Question
                           </label>
                           <input
-                            id="inputText3"
+                           
                             name="question"
                             type="text"
                             className="form-control"

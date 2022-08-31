@@ -23,7 +23,7 @@ const CommodityInsight = () => {
   const getData = async () => {
     try {
     axios.get("/commodity").then((response) => {
-        console.log(response.data);
+        console.log(response.data.data);
         setCommodity(response.data.data);
       });
     } catch (error) {
@@ -31,8 +31,8 @@ const CommodityInsight = () => {
     }
   };
 
-  const setToLocalStorage = ( country, name, briefHistory) => {
-    
+  const setData = (id, country, name, briefHistory) => {
+    localStorage.setItem("commodityID", id);
     localStorage.setItem("name", name);
     localStorage.setItem("briefHistory", briefHistory);
     localStorage.setItem("country", country);
@@ -42,17 +42,24 @@ const CommodityInsight = () => {
     getData();
   }, []);
 
-  const handleDelete = (commodityID) => {
-    axios.delete(`/commodity/${commodityID}`).then((response) => {
-      setViewCommodity(response.data.data)
-    });
-  };
+  // const handleDelete = (commodityID) => {
+  //   axios.delete(`/commodity/${commodityID}`).then((response) => {
+  //    getData()
+  //   });
+  // };
 
   const showDetails = (commodityID) => {
     axios.get(`/commodity/${commodityID}`).then((response) => {
       setViewCommodity(response.data.data);
+      console.log(response.data.data)
     });
   };
+
+  const updateHandler = (commodityID) => {
+    axios.patch(`/commodity/${commodityID}`).then((response) => {
+      setViewCommodity(response.data.data);
+     });
+  }
 
   useEffect(() => {
     //initialize datatable
@@ -163,15 +170,26 @@ const CommodityInsight = () => {
                                
 
                                     <td>
-                                      <button
+                                      <Link to='/editcommodity'>
+                                    <button
+                                        type="button"
+                                        className="btn btn-success"
+                                        data-dismiss="modal"
+                                        onClick={() => updateHandler(item.id)}
+                                      >
+                                        
+                                      Edit
+                                      </button>
+                                      </Link>
+                                      {/* <button
                                         type="button"
                                         className="btn btn-danger"
                                         data-dismiss="modal"
                                         onClick={() => handleDelete(item.id)}
                                       >
                                         delete
-                                      </button>{" "}
-                                      |{" "}
+                                      </button> */}
+                                      |
                                       <button
                                         onClick={(e) => showDetails(item.id)}
                                         type="button"
@@ -209,7 +227,8 @@ const CommodityInsight = () => {
                           <button
                             className="btn btn-success"
                             onClick={() =>
-                              setToLocalStorage(
+                              setData(
+                                item.id,
                                 item.name,
                                 item.briefHistory,
                                 item.country,

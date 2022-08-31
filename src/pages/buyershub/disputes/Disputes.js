@@ -13,6 +13,8 @@ const Disputes = () => {
 
 
   const [disputes, setDisputes] = useState([]);
+  const [viewDisputes, setViewDisputes] = useState([]);
+
 
   const getData = async () => {
     try {
@@ -33,7 +35,7 @@ const Disputes = () => {
 
   const showDetails = (disputeID) => { 
     axios.get(`/dispute/${disputeID}`).then((response) => {
-      getData()
+      setViewDisputes(response.data.data)
     });
 };
 
@@ -166,7 +168,80 @@ $(document).ready(function () {
                                       className="btn btn-primary" 
                                     >
                                       view
-                                    </button>  </td>
+                                    </button>
+
+
+                                    {/* <button
+                                      onClick={(e) => showDetails(item.id)}
+                                      type="button"
+                                      className="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
+                                    >
+                                      view
+                                    </button>
+                                   
+                                  
+                                    <div
+                                      className="modal fade"
+                                      id="exampleModal"
+                                      tabIndex="-1"
+                                      aria-labelledby="exampleModalLabel"
+                                      aria-hidden="true"
+                                    >
+                                      <div className="modal-dialog">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
+                                            <h5
+                                              className="modal-title"
+                                              id="exampleModalLabel"
+                                            >
+                                              Product Information
+                                            </h5>
+                                            <button
+                                              type="button"
+                                              className="btn-close"
+                                              data-bs-dismiss="modal"
+                                              aria-label="Close"
+                                            ></button>
+                                          </div>
+                                          <div align='right'>
+                                       
+                       
+                                          </div>
+                                          <div className="d-flex ">
+                                          <div className="modal-body">Product Name: {viewProduct.productName}</div>
+                                          <div className="modal-body">Category: {viewProduct.subCategory}</div>
+                                          <div className="modal-body">Minimum Price: {viewProduct.minPricePerUnit}</div>
+                                          </div>
+                                          <div className="d-flex">
+                                          <div className="modal-body">Maximum Price Per Unit: {viewProduct.maxPricePerUnit}</div>
+                                          <div className="modal-body">Currency: {viewProduct.currency}</div>
+                                          </div>
+                                          <div className="d-flex">
+                                          <div className="modal-body">Supply Capacity: {viewProduct.supplyCapacity}</div>
+                                          <div className="modal-body">Minmum Duration: {viewProduct.minDuration}</div>
+                                          </div>
+                                          <div className="mx-auto">
+                                          <div className="modal-body">Subcategory: {viewProduct.subCategory}</div>
+                                          </div>
+                                          <div className="modal-footer">
+                                            <button
+                                              type="button"
+                                              className="btn btn-secondary"
+                                              data-bs-dismiss="modal"
+                                            >
+                                              Close
+                                            </button>
+                                            
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                     */}
+                                    
+                                    
+                                  </td>
                                   
                                 </tr>
                               );

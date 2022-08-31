@@ -5,45 +5,53 @@ import { axios } from "../../components/baseUrl";
 import { useNavigate } from "react-router-dom";
 
 const EditFaq = () => {
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(null);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+//   const [formErrors, setFormErrors] = useState({})
+//   const [customError, setCustomError] = useState("")
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setId(localStorage.getItem("id"));
+    setId(localStorage.getItem("faqID"));
     setQuestion(localStorage.getItem("question"));
     setAnswer(localStorage.getItem("answer"));
   }, []);
 
-  const handleUpdate = (e, faqID) => {
-    e.preventDefault();
-    axios
-      .put(
-        `/faq/${faqID}`,
-        { answer: answer, question: question }
-      )
-      .then(() => {
-        navigate("/faq");
-      });
+//   const faqID =
+
+
+  const handleUpdate = async(e) => {
+      try {
+        e.preventDefault();
+        const { data:result } = await axios.patch(
+            `/faq/${id}`,
+            { answer:answer, question:question
+        },
+          )
+          console.log(result)
+      } catch (err) {
+          console.log(err)
+      }
+      navigate("/faq");     
   };
 
   return (
     <div>
       <>
-        {/* <!-- main wrapper --> */}
+
         <div className="dashboard-main-wrapper">
-          {/* <!-- navbar --> */}
+
           <Navbar />
 
-          {/* <!-- left sidebar --> */}
+
           <Sidebar />
 
-          {/* <!-- wrapper  --> */}
+
           <div className="dashboard-wrapper">
             <div className="container-fluid dashboard-content">
-              {/* <!-- pageheader --> */}
+
               <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <div className="page-header">
@@ -70,10 +78,12 @@ const EditFaq = () => {
                           </label>
                           <input
                             type="text"
+                            name='question'
                             className="form-control"
                             value={question}
                             onChange={(e) => setQuestion(e.target.value)}
                           />
+                          {/* {formErrors.question && (<p className="text-danger">{formErrors.question}</p>)} */}
                         </div>
                         <div className="form-group">
                           <label htmlFor="exampleFormControlTextarea1">
@@ -81,9 +91,12 @@ const EditFaq = () => {
                           </label>
                           <textarea
                             className="form-control"
+                            type='text'
                             value={answer}
+                            name='answer'
                             onChange={(e) => setAnswer(e.target.value)}
                           />
+                          {/* {formErrors.answer && (<p className="text-danger">{formErrors.answer}</p>)} */}
                         </div>
                         <button
                           type="submit"

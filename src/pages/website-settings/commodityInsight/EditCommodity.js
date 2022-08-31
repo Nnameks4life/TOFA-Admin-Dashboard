@@ -15,7 +15,7 @@ const EditCommodity = () => {
   const [countries, setCountries] = useState(""); 
 
   useEffect(() => {
-    setId(localStorage.getItem("id"));
+    setId(localStorage.getItem("commodityID"));
     setCountries(localStorage.getItem("countries"));
     setName(localStorage.getItem("name"));
     setBriefHistory(localStorage.getItem("briefHistory"));
@@ -23,9 +23,9 @@ const EditCommodity = () => {
 
  const navigate = useNavigate()
 
-    const handleUpdate = (e, commodityID) => {
+    const handleUpdate = (e) => {
         e.preventDefault()
-        axios.put(`/commodity/${commodityID}`,
+        axios.patch(`/commodity/${id}`,
         {name:name,
         countries:countries,
         briefHistory: briefHistory,

@@ -6,31 +6,32 @@ import { useNavigate } from "react-router-dom";
 // import { useNavigate} from 'react-router-dom';
 
 const EditTestimonial = () => {
-    const [id, setId] = useState(0)
-    const [name, setName] = useState("");
-  const [company, setCompany] = useState(""); 
-  const [message, setMessage] = useState(""); 
+  const [id, setId] = useState(0);
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [message, setMessage] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect(() =>{
-     setId(localStorage.getItem("id"));
-     setName(localStorage.getItem("name"));
-     setCompany(localStorage.getItem("company"));
-     setMessage(localStorage.getItem("message"));
-  }, [])
+  useEffect(() => {
+    setId(localStorage.getItem("testimonialID"));
+    setName(localStorage.getItem("name"));
+    setCompany(localStorage.getItem("company"));
+    setMessage(localStorage.getItem("message"));
+  }, []);
 
-  const handleUpdate = (e, testimonialID) => {
-e.preventDefault()
-axios.put(`testimonial/${testimonialID}`,
-{name:name,
-company:company,
-message:message
-}
-).then(() =>{
-navigate('/testimonial')
-})
-  }
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    axios
+      .patch(`testimonial/${id}`, {
+        name: name,
+        company: company,
+        message: message,
+      })
+      .then(() => {
+        navigate("/testimonial");
+      });
+  };
 
   return (
     <div>
@@ -59,9 +60,7 @@ navigate('/testimonial')
               <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                   <div className="card">
-                    <h5 className="card-header font-bold">
-                      Edit Testimonial
-                    </h5>
+                    <h5 className="card-header font-bold">Edit Testimonial</h5>
                     <div className="card-body">
                       <form>
                         <div className="form-group">
@@ -76,9 +75,7 @@ navigate('/testimonial')
                             onChange={(e) => setName(e.target.value)}
                             type="text"
                             className="form-control"
-                            
                           />
-                         
                         </div>
                         <div className="form-group">
                           <label
@@ -88,13 +85,11 @@ navigate('/testimonial')
                             Company
                           </label>
                           <input
-                           
                             type="text"
                             className="form-control"
                             value={company}
                             onChange={(e) => setCompany(e.target.value)}
                           />
-                         
                         </div>
                         <div className="form-group">
                           <label htmlFor="exampleFormControlTextarea1">
@@ -102,21 +97,19 @@ navigate('/testimonial')
                           </label>
                           <textarea
                             className="form-control"
-                            
                             rows="3"
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                           />
-                        
                         </div>
                         <div className="form-group">
-                        <button
-          type="submit"
-          className="btn btn-primary"
-        onClick={handleUpdate}
-        >
-          Update
-        </button>
+                          <button
+                            type="submit"
+                            className="btn btn-primary"
+                            onClick={handleUpdate}
+                          >
+                            Update
+                          </button>
                         </div>
                       </form>
                     </div>

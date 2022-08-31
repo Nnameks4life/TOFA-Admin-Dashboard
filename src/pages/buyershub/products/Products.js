@@ -30,17 +30,18 @@ const Products = () => {
     }
   };
 
-  const setToLocalStorage = (id, productName,minPricePerUnit, maxPricePerUnit,supplyCapacity, currency,minDuration, subCategory) => {
-    // localStorage.setItem("id", id);
-    // localStorage.setItem("answer", answer);
-   
-    localStorage.setItem("productNname", productName);
-    localStorage.setItem("minPricePerUnit", minPricePerUnit);
-    localStorage.setItem("maxPricePerUnit", maxPricePerUnit);
+  const setData = (id, productName,maxDuration, parentCategory, supplyCapacity, category, minDuration, subCategory, unitForMinOrder, unitForSupplyCapacity, productDescription) => {
+    localStorage.setItem("id", id);
+    localStorage.setItem("productName", productName);
+    localStorage.setItem("minPricePerUnit", minDuration);
+    localStorage.setItem("maxPricePerUnit", maxDuration);
     localStorage.setItem("supplyCapacity", supplyCapacity);
-    localStorage.setItem("currency", currency);
-    localStorage.setItem("minDuration", minDuration);
+    localStorage.setItem("unitForSupplyCapacity", unitForSupplyCapacity);
+    localStorage.setItem("category", category);
+    localStorage.setItem("parentCategory", parentCategory);
     localStorage.setItem("subCategory", subCategory);
+    localStorage.setItem("unitForMinOrder", unitForMinOrder);
+    localStorage.setItem("productDescription", productDescription);
   };
 
 
@@ -49,11 +50,11 @@ const Products = () => {
     getData();
   }, []);
 
-  const handleDelete = (productID) => {
-    axios.delete(`/product/${productID}`).then(() => {
-      getData();
-    });
-  };
+  // const handleDelete = (productID) => {
+  //   axios.delete(`/product/${productID}`).then((response) => {
+  //     setViewProduct(response.data.data)
+  //   });
+  // };
 
   const showDetails = (productID) => { 
       axios.get(`/product/${productID}`).then((response) => {
@@ -181,6 +182,7 @@ const Products = () => {
                               <th>supplyCapacity</th>
 
                               <th>minDuration</th>
+                              <th>maxDuration</th>
                               <th>subCategory</th>
                               <th>Actionn-two</th>
                             </tr>
@@ -197,92 +199,100 @@ const Products = () => {
                                   <td>{item.currency}</td>
                                   <td>{item.supplyCapacity}</td>
                                   <td>{item.minDuration}</td>
+                                  <td>{item.maxDuration}</td>
                                   <td>{item.subCategory}</td>
                                   <td>
-                                    <button
-                                      type="button"
-                                      className="btn btn-danger"
-                                      data-dismiss="modal"
-                                      onClick={() => handleDelete(item.id)}
-                                    >
-                                      delete
-                                    </button>{" "}
-                                    |{" "}
-                                    <button
-                                      onClick={(e) => showDetails(item.id)}
-                                      type="button"
-                                      class="btn btn-primary"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#exampleModal"
-                                    >
-                                      view{" "}
-                                    </button>
-                                  
-                                    <div
-                                      class="modal fade"
-                                      id="exampleModal"
-                                      tabindex="-1"
-                                      aria-labelledby="exampleModalLabel"
-                                      aria-hidden="true"
-                                    >
-                                      <div class="modal-dialog">
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <h5
-                                              class="modal-title"
-                                              id="exampleModalLabel"
-                                            >
-                                              Product Information
-                                            </h5>
-                                            <button
-                                              type="button"
-                                              class="btn-close"
-                                              data-bs-dismiss="modal"
-                                              aria-label="Close"
-                                            ></button>
-                                          </div>
-                                          <div align='right'>
-                                       <Link to='/editproduct'> 
+
+                                  <Link to='/editproduct'> 
                           <button
                             className="btn btn-success"
                             onClick={() =>
-                              setToLocalStorage(
+                              setData(
+                                item.id,
                                 item.productName,
-                                item.minPricePerUnit,
-                                item.maxPricePerUnit,
-                                item.supplyCapacity,
-                                item.currency,
+                                item.parentCategory,
                                 item.minDuration,
+                                item.maxDuration,
+                                item.supplyCapacity,
+                                item.category,
+                                item.unitForSupplyCapacity,
                                 item.subCategory,
-                                
+                                item.unitForMinOrder,
+                                item.productDescription, 
                               )
                             }
                           >
                             Edit
                           </button>
                           </Link>
+                                    
+                                    {/* <button
+                                      type="button"
+                                      className="btn btn-danger"
+                                      data-dismiss="modal"
+                                      onClick={() => handleDelete(item.id)}
+                                    >
+                                      delete
+                                    </button> */}
+                                   
+                                    <button
+                                      onClick={(e) => showDetails(item.id)}
+                                      type="button"
+                                      className="btn btn-primary"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
+                                    >
+                                      view
+                                    </button>
+                                   
+                                  
+                                    <div
+                                      className="modal fade"
+                                      id="exampleModal"
+                                      tabIndex="-1"
+                                      aria-labelledby="exampleModalLabel"
+                                      aria-hidden="true"
+                                    >
+                                      <div className="modal-dialog">
+                                        <div className="modal-content">
+                                          <div className="modal-header">
+                                            <h5
+                                              className="modal-title"
+                                              id="exampleModalLabel"
+                                            >
+                                              Product Information
+                                            </h5>
+                                            <button
+                                              type="button"
+                                              className="btn-close"
+                                              data-bs-dismiss="modal"
+                                              aria-label="Close"
+                                            ></button>
+                                          </div>
+                                          <div align='right'>
+                                       
                        
                                           </div>
                                           <div className="d-flex ">
-                                          <div class="modal-body">Product Name: {viewProduct.productName}</div>
-                                          <div class="modal-body">Category: {viewProduct.subCategory}</div>
-                                          <div class="modal-body">Minimum Price: {viewProduct.minPricePerUnit}</div>
+                                          <div className="modal-body">Product Name: {viewProduct.productName}</div>
+                                          <div className="modal-body">Category: {viewProduct.subCategory}</div>
+                                          <div className="modal-body">Minimum Price: {viewProduct.minPricePerUnit}</div>
                                           </div>
                                           <div className="d-flex">
-                                          <div class="modal-body">Maximum Price Per Unit: {viewProduct.maxPricePerUnit}</div>
-                                          <div class="modal-body">Currency: {viewProduct.currency}</div>
+                                          <div className="modal-body">Maximum Price Per Unit: {viewProduct.maxPricePerUnit}</div>
+                                          <div className="modal-body">Currency: {viewProduct.currency}</div>
                                           </div>
                                           <div className="d-flex">
-                                          <div class="modal-body">Supply Capacity: {viewProduct.supplyCapacity}</div>
-                                          <div class="modal-body">Minmum Duration: {viewProduct.minDuration}</div>
+                                          <div className="modal-body">Supply Capacity: {viewProduct.supplyCapacity}</div>
+                                          <div className="modal-body">Minmum Duration: {viewProduct.minDuration}</div>
                                           </div>
                                           <div className="mx-auto">
-                                          <div class="modal-body">Subcategory: {viewProduct.subCategory}</div>
+                                          <div className="modal-body">Subcategory: {viewProduct.subCategory}</div>
                                           </div>
-                                          <div class="modal-footer">
+                                          <div className="modal-footer">
                                             <button
                                               type="button"
-                                              class="btn btn-secondary"
+                                              className="btn btn-secondary"
                                               data-bs-dismiss="modal"
                                             >
                                               Close

@@ -272,10 +272,22 @@ label {
     color: #71748d;
 }
 
+button{
+    padding: 3px !important;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+    max-width: 100px !important;
+}
+
 .root{
    width: 100%;
    display: flex;
     
+}
+
+.custom-toast{
+    background-color: #00ab6c;
+    color: #fff;
 }
 
 .form-control {

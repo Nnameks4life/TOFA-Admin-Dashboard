@@ -11,7 +11,7 @@ const Testimonial = () => {
   const getData = async () => {
     try {
       axios.get("/testimonial").then((response) => {
-        console.log(response.data);
+        console.log(response.data.data);
         setTestimonial(response.data.data);
       });
     } catch (error) {
@@ -19,8 +19,8 @@ const Testimonial = () => {
     }
   };
 
-  const setToLocalStorage = (id, name, company, message) => {
-    localStorage.setItem("id", id);
+  const setData = (id, name, company, message) => {
+    localStorage.setItem("testimonialID", id);
     localStorage.setItem("name", name);
     localStorage.setItem("company", company);
     localStorage.setItem("message", message);
@@ -37,8 +37,8 @@ const Testimonial = () => {
   // };
 
   const showDetails = (testimonialID) => {
-    axios.get(`/testimonial/${testimonialID}`).then(() => {
-      setViewTestimonial()
+    axios.get(`/testimonial/${testimonialID}`).then((response) => {
+      setViewTestimonial(response.data.data)
     });
   };
 
@@ -66,7 +66,7 @@ const Testimonial = () => {
                 className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
                 align="right"
               >
-                <a href="/edittest" className="btn btn-dark">
+                <a href="/edittestimonial" className="btn btn-dark">
                   New Testimonial
                 </a>
               </div>
@@ -104,6 +104,7 @@ const Testimonial = () => {
                                 {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
                                   Delete
                                 </button> */}
+                                <div className="d-flex">
                                 <button
                                   onClick={() => showDetails(item.id)}
                                   type="button"
@@ -113,6 +114,19 @@ const Testimonial = () => {
                                 >
                                   View
                                 </button>
+
+                                <Link to="/edittestimonial">
+                                  {" "}
+                                  <button
+                                    className="btn btn-success mx-2"
+                                    onClick={() =>
+                                      setData(item.id, item.name, item.company, item.message)
+                                    }
+                                  >
+                                    Edit
+                                  </button>
+                                </Link>
+                                </div>
 
                                 <div
                                   className="modal fade"
@@ -130,22 +144,10 @@ const Testimonial = () => {
                                         >
                                           TESTIMONIAL
                                         </h5>
+
+                               
                                        
-                                        <Link to="/edittestimonial">
-                                          <button
-                                            className="btn btn-success"
-                                            onClick={() =>
-                                              setToLocalStorage(
-                                                item.id,
-                                                item.name,
-                                                item.company,
-                                                item.message
-                                              )
-                                            }
-                                          >
-                                            Edit
-                                          </button>
-                                        </Link>
+                                        
                                       </div>
                                       <div className="modal-body">
                                         <p>{viewTestimonial.name}</p>

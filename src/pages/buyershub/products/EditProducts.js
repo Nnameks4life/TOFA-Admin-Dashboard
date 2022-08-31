@@ -73,41 +73,65 @@ const EditProducts = () => {
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
           <div>
-            <form className="mx-5 my-5">
+          <form className="mx-5 my-5" onSubmit={handleUpdate}>
+              <div className="d-flex justify-content-between">
+                <h2> Create Products</h2>
+                {/* <Link to="/commodityInsight">
+                <button className="btn btn-primary m-3">Show Commodity</button>
+              </Link> */}
+                <div
+                  className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
+                  align="right"
+                >
+                  <a href="/products" className="btn btn-dark">
+                    Show Products
+                  </a>
+                </div>
+              </div>
+
               <div className="row my-3" style={{ textAlign: "left" }}>
                 <div className="col-4 ">
                   <label className="form-label">Product Name:</label>
                   <input
-                    
+                    name="productName"
                     value={productName}
-                    onChange={(e) => setProductName(e.target.value)}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
+                    onChange={(e) => setProductName(e.target.value)}
                   />
+                  {/* {formErrors.productName && (
+                    <p className="text-danger">{formErrors.productName}</p>
+                  )} */}
                 </div>
 
                 <div className="col-4 ">
                   <label className="form-label">Parent Category</label>
 
-                  <select
-                    className="form-control"
-                    value={parentCategory}
-                    onChange={(e) => setParentCategory(e.target.value)}
-                    aria-describedby="Default select example"
-                    
-                    placeholder="parent category"
-                  >
-                    <option>CONSTRUCTION_MATERIAL</option>
-                    <option>FOOD_AND_BEVERAGE</option>
-                    <option>APPAREL</option>
-                    <option>HOME_AND_FURNITURE</option>
-                    <option> BEAUTY_AND_PERSONAL_CARE</option>
-                    <option>PACKAGING_AND_SUPPLY</option>
-                    <option> MINERALS_AND_METALLURGY</option>
-                    <option> AGRICULTURE</option>
-                  </select>
 
+                  <select className="form-control"
+                    name="parentCategory"
+                    value={parentCategory}
+                    aria-describedby="Default select example"
+                    onChange={(e) => setParentCategory(e.target.value)}
+                    placeholder='parent category'
+                    >
+                      <option>CONSTRUCTION_MATERIAL</option>
+                      <option>FOOD_AND_BEVERAGE</option>
+                      <option>APPAREL</option>
+                      <option>HOME_AND_FURNITURE</option>
+                      <option> BEAUTY_AND_PERSONAL_CARE</option>
+                      <option>PACKAGING_AND_SUPPLY</option>
+                      <option>  MINERALS_AND_METALLURGY</option>
+                      <option>  AGRICULTURE</option>
+                  </select>
+                  {/* <input
+                    name="parentCategory"
+                    type="text"
+                    className="form-control"
+                    aria-describedby="emailHelp"
+                    onChange={handleProductChange}
+                  /> */}
                   {/* {formErrors.parentCategory && (
                     <p className="text-danger">{formErrors.parentCategory}</p>
                   )} */}
@@ -118,44 +142,72 @@ const EditProducts = () => {
                   <input
                     type="number"
                     value={supplyCapacity}
+                    name="supplyCapacity"
                     className="form-control"
                     onChange={(e) => setSupplyCapacity(e.target.value)}
                   ></input>
+                  {/* {formErrors.supplyCapacity && (
+                    <p className="text-danger">{formErrors.supplyCapacity}</p>
+                  )} */}
                 </div>
+
+                {/* <div className="col-4 mb-3">
+                  <label className="form-label">Currency</label>
+                  <input
+                    name="currency"
+                    type="text"
+                    className="form-control"
+                    aria-describedby="emailHelp"
+                  />
+                </div> */}
               </div>
 
               <div className="row" style={{ textAlign: "left" }}>
                 <div className="col-4 mb-3">
                   <label className="form-label">Unit of Min order</label>
                   <input
+                    name="unitForMinOrder"
                     value={unitForMinOrder}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
                     onChange={(e) => setUnitForMinOrder(e.target.value)}
                   />
+                  {/* {formErrors.unitForMinOrder && (
+                    <p className="text-danger">{formErrors.unitForMinOrder}</p>
+                  )} */}
                 </div>
 
                 <div className="col-4  mb-3">
                   <label className="form-label">Unit of Supply Capacity</label>
                   <input
+                    name="unitForSupplyCapacity"
                     value={unitForSupplyCapacity}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
                     onChange={(e) => setUnitForSupplyCapacity(e.target.value)}
                   />
+                  {/* {formErrors.unitForSupplyCapacity && (
+                    <p className="text-danger">
+                      {formErrors.unitForSupplyCapacity}
+                    </p>
+                  )} */}
                 </div>
 
                 <div className="col-4 mb-3">
                   <label className="form-label">Min Duration</label>
                   <input
+                    name="minDuration"
                     value={minDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
                     onChange={(e) => setMinDuration(e.target.value)}
                   />
+                  {/* {formErrors.minDuration && (
+                    <p className="text-danger">{formErrors.minDuration}</p>
+                  )} */}
                 </div>
               </div>
 
@@ -163,34 +215,46 @@ const EditProducts = () => {
                 <div className="col-4  mb-3">
                   <label className="form-label">Max Duration</label>
                   <input
+                    name="maxDuration"
                     value={maxDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
                     onChange={(e) => setMaxDuration(e.target.value)}
                   />
+                  {/* {formErrors.maxDuration && (
+                    <p className="text-danger">{formErrors.maxDuration}</p>
+                  )} */}
                 </div>
 
                 <div className="col-4 mb-3">
                   <label className="form-label">Category</label>
                   <input
+                    name="category"
                     value={category}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
                     onChange={(e) => setCategory(e.target.value)}
                   />
+                  {/* {formErrors.category && (
+                    <p className="text-danger">{formErrors.category}</p>
+                  )} */}
                 </div>
 
                 <div className="col-4 mb-3">
                   <label className="form-label">Sub Category</label>
                   <input
+                    name="subCategory"
                     value={subCategory}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
                     onChange={(e) => setSubCategory(e.target.value)}
                   />
+                  {/* {formErrors.subCategory && (
+                    <p className="text-danger">{formErrors.subCategory}</p>
+                  )} */}
                 </div>
               </div>
               <div className="row">
@@ -213,9 +277,9 @@ const EditProducts = () => {
                         variant="filled"
                         placeholder="value"
                         className="mx-1 form-control specification-values"
-                      />
+                      /> */}
 
-                      <div className="d-flex align-items-center">
+                      {/* <div className="d-flex align-items-center">
                         <i
                           className="fa-solid fa-plus mx-1 "
                           onClick={() => handleAddFields()}
@@ -224,17 +288,17 @@ const EditProducts = () => {
                           className="fa-solid fa-minus mx-1"
                           onClick={() => handleRemoveFields(index)}
                         ></i>
-                      </div>
-                    </div>
+                      </div> */}
+                    {/* </div>
                   ))} */}
-                {/* {formErrors.specification && (
+                  {/* {formErrors.specification && (
                     <p className="text-danger">{formErrors.specification}</p>
                   )} */}
                 {/* </div> */}
 
-                {/* <div className="col-6">
+                <div className="col-6">
                   <label className="form-label">Country</label>
-                  {country.map((info, index) => (
+                  {/* {country.map((info, index) => (
                     <div key={index} className="root my-2">
                       <input
                         type='text'
@@ -252,9 +316,9 @@ const EditProducts = () => {
                         variant="filled"
                         placeholder="price"
                         className="mx-1 form-control country-values"
-                      />
+                      /> */}
 
-                      <div className="d-flex align-items-center">
+                      {/* <div className="d-flex align-items-center">
                         <i
                           className="fa-solid fa-plus mx-1 "
                           onClick={() => handleAddCountry()}
@@ -263,18 +327,20 @@ const EditProducts = () => {
                           className="fa-solid fa-minus mx-1"
                           onClick={() => handleRemoveCountry(index)}
                         ></i>
-                      </div>
-                    </div>
+                      </div> */}
+                    {/* </div>
                   ))} */}
-                {/* {formErrors.country && (
+                  {/* {formErrors.country && (
                     <p className="text-danger">{formErrors.country}</p>
                   )} */}
-                {/* </div> */}
+                </div>
+
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
                 <label className="form-label">Description</label>
                 <textarea
+                  name="productDescription"
                   value={productDescription}
                   type="text"
                   className="form-control"
@@ -285,17 +351,19 @@ const EditProducts = () => {
                 )} */}
               </div>
 
-              <div className="row">
-                <div className="col-6 box">
-                  <h3 className="header">Featured Images</h3>
+              
 
-                  {/* <DropFileInput
+                {/* <div className="row">
+                  <div className="col-6 box">
+                    <h3 className="header">Featured Images</h3> */}
+
+                    {/* <DropFileInput
                       onFileChange={(files) => onFileChange(files)}
                     /> */}
-                  <input type="file" />
-                </div>
-                <div className="col-6 mx-auto">
-                  {/* <div className="mb-3" style={{ textAlign: "left" }}>
+                  {/* <input type="file" name="featuredImage" />
+                  </div>
+                  <div className="col-6 mx-auto">
+                  <div className="mb-3" style={{ textAlign: "left" }}>
                 <label className="form-label d-block">Other Images</label>
                 <input
                   type="file"
@@ -305,7 +373,7 @@ const EditProducts = () => {
                   onChange={onSelectFile}
                 /> */}
 
-                  {/* <div className="iamges d-flex">
+                {/* <div className="iamges d-flex">
                   {selectedImages &&
                     selectedImages.map((image, index) => {
                       return (
@@ -315,7 +383,7 @@ const EditProducts = () => {
                           style={{ position: "relative" }}
                         >
                           <img src={image} alt="" /> */}
-                  {/* <button
+                          {/* <button
                             onClick={() =>
                               setSelectedImages(
                                 selectedImages.filter((e) => e !== image)
@@ -324,16 +392,16 @@ const EditProducts = () => {
                           >
                             delete image
                           </button> */}
-                  {/* <div
+                          {/* <div
                             className="bin-icon"
                             style={{
                               position: "absolute",
                               top: "50%",
                               left: "0",
                               color: "red",
-                            }} */}
-                  {/* > */}
-                  {/* <IconButton
+                            }}
+                          >
+                            <IconButton
                               className="text-danger"
                               aria-label="delete"
                               size="small"
@@ -351,20 +419,23 @@ const EditProducts = () => {
                     })}
                     {console.log(selectedImages)}
                 </div>
-                  </div> */}
+                  </div>
                 </div>
-              </div>
+              </div> */}
+
+              {/* <input
+                className="productInput"
+                type="file"
+                id="file"
+                style={{ display: "none" }}
+                onChange={(e) => setFile(e.target.files[0])}
+              /> */}
 
               <div style={{ textAlign: "left" }}>
-                <button
-                  type="submit"
-                  className="btn btn-dark"
-                  onClick={handleUpdate}
-                >
-                  Update
-                </button>
+                <button className="btn btn-dark" type="submit">Update</button>
               </div>
             </form>
+
           </div>
         </div>
         {/* <!-- end main wrapper --> */}

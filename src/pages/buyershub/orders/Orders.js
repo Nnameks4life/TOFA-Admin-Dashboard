@@ -4,7 +4,7 @@ import React, { useState, useEffect} from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 
-// import {datatabless} from '../../website-settings/commodityInsight/DummyData';
+import {datatabless} from '../../website-settings/commodityInsight/DummyData';
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
 import 'jquery/dist/jquery.min.js';
@@ -245,20 +245,29 @@ const showDetails = (orderID) => {
                             </tr>
                           </thead>
                           <tbody>
-                         { order.map((item) => {
+                         { datatabless.map((item) => {
                          return (
                       
                               <tr>
                                   <td>{item.id}</td>
+                                  <td>{item.price}</td>
+                                  <td>{item.country}</td>
+                                  <td>{item.origin}</td>
+                                  
+                                  <td>{item.description}</td>
+                                  <td>{item.country}</td>
+                                  <td>{item.specification}</td>
+
+                                  {/* <td>{item.id}</td>
                                   <td>{item.quantity}</td>
                                   <td>{item.country}</td>
                                   <td>{item.address}</td>
                                   
                                   <td>{item.paymentTerm}</td>
                                   <td>{item.grade}</td>
-                                  <td>{item.specification}</td>
+                                  <td>{item.specification}</td> */}
                                   <td>
-                                  <button
+                                  {/* <button
                                       type="button"
                                       className="btn btn-danger"
                                       data-dismiss="modal"
@@ -266,7 +275,7 @@ const showDetails = (orderID) => {
                                     >
                                       delete
                                     </button>{" "}
-                                    |{" "}
+                                    |{" "} */}
                                     <button
                                       onClick={(e) => showDetails(item.id)}
                                       type="button"

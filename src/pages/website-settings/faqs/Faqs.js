@@ -20,8 +20,8 @@ const Faqs = () => {
     }
   };
 
-  const setToLocalStorage = (id, question, answer) => {
-    localStorage.setItem("id", id);
+  const setData = (id, question, answer) => {
+    localStorage.setItem("faqID", id);
     localStorage.setItem("answer", answer);
     localStorage.setItem("question", question);
   };
@@ -30,15 +30,26 @@ const Faqs = () => {
     getData();
   }, []);
 
-  const handleDelete = (faqID) => {
-    axios.delete(`/faq/${faqID}`).then(() => {
-      getData();
-    });
-  };
+  // const handleDelete = (faqID) => {
+  //   axios.delete(`/faq/${faqID}`).then(() => {
+  //     getData();
+  //   });
+  // };
+
+  // const setID = (id) => {
+  //   console.log(id)
+  //   localStorage.setItem('ID', id)
+  // }
+
+  // const updateHandler = (faqID) => {
+  //   axios.get(`/faq/${faqID}`).then((response) => {
+  //     setViewFaq(response.data.data);
+  //   });
+  // };
 
   const showDetails = (faqID) => {
-    axios.get(`/product/${faqID}`).then(() => {
-      setViewFaq()
+    axios.get(`/faq/${faqID}`).then((response) => {
+      setViewFaq(response.data.data);
     });
   };
 
@@ -68,7 +79,7 @@ const Faqs = () => {
                 className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
                 align="right"
               >
-                <a href="/editfaq" className="btn btn-dark">
+                <a href="/createfaq" className="btn btn-dark">
                   New FAQ
                 </a>
               </div>
@@ -104,9 +115,20 @@ const Faqs = () => {
                               <td>{item.question}</td>
                               <td>{item.answer}</td>
                               <td>
-                                <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
+                                <Link to="/editfaq">
+                                  {" "}
+                                  <button
+                                    className="btn btn-success mx-2"
+                                    onClick={() =>
+                                      setData(item.id, item.question, item.answer)
+                                    }
+                                  >
+                                    Edit
+                                  </button>
+                                </Link>
+                                {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
                                   Delete
-                                </button>
+                                </button> */}
                                 <button
                                   onClick={() => showDetails(item.id)}
                                   type="button"
@@ -131,30 +153,29 @@ const Faqs = () => {
                                           className="modal-title"
                                           id="exampleModalLabel"
                                         >
-                                         FAQ
+                                          FAQ
                                         </h5>
-                                       
-                                       
-                                        <Link to="/editfaq">
-                          <button
-                            className="btn btn-success"
-                            onClick={() =>
-                              setToLocalStorage(
-                                item.id,
-                                item.question,
-                                item.answer
-                              )
-                            }
-                          >
-                            Edit
-                          </button>
-                          </Link>
-                          </div>
-                                      
+
+                                        {/* <Link to="/editfaq">
+                                          <button
+                                            className="btn btn-success"
+                                            onClick={() =>
+                                              setToLocalStorage(
+                                                item.id,
+                                                item.question,
+                                                item.answer
+                                              )
+                                            }
+                                          >
+                                            Edit
+                                          </button>
+                                        </Link> */}
+                                      </div>
+
                                       <div className="modal-body">
                                         <p>{viewFaq.answer}</p>
                                         <p>{viewFaq.question}</p>
-                                        </div>
+                                      </div>
                                       <div className="modal-footer">
                                         <button
                                           type="button"
@@ -163,13 +184,10 @@ const Faqs = () => {
                                         >
                                           Close
                                         </button>
-                                        
                                       </div>
                                     </div>
                                   </div>
                                 </div>
-
-
                               </td>
                             </tr>
                           );

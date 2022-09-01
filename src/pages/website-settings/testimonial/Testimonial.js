@@ -32,7 +32,7 @@ const Testimonial = () => {
 
   const showDetails = (testimonialID) => {
     axios.get(`/testimonial/${testimonialID}`).then((response) => {
-      setViewTestimonial(response.data.data)
+      setViewTestimonial(response.data.data);
     });
   };
 
@@ -137,10 +137,6 @@ const Testimonial = () => {
                                         >
                                           TESTIMONIAL
                                         </h5>
-
-                               
-                                       
-                                        
                                       </div>
                                       <div className="modal-body">
                                         <p>{viewTestimonial.name}</p>

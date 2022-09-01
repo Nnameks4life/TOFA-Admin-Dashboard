@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../../components/sidebar/Sidebar";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 // import IconButton from "@mui/material/IconButton";
 // import DeleteIcon from "@mui/icons-material/Delete";
 import { axios } from "../../components/baseUrl";
@@ -58,6 +60,7 @@ const EditProducts = () => {
     getInfo();
   }, []);
 
+
   const navigate = useNavigate();
 
   const handleUpdate = async (e) => {
@@ -97,6 +100,7 @@ const EditProducts = () => {
 
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
+          <ToastContainer />
           <div>
             <form className="mx-5 my-5" onSubmit={handleUpdate}>
               <div className="d-flex justify-content-between">

@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
+
 import { useNavigate, useParams } from "react-router-dom";
+
+
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
+
 // import { useNavigate} from 'react-router-dom';
 
 const EditTestimonial = () => {
@@ -37,19 +43,33 @@ const EditTestimonial = () => {
     getInfo();
   }, []);
 
-  const handleUpdate = async(e) => {
-      try {
-        e.preventDefault();
-   const {data:result} = await axios.patch(`/testimonial/${id}`, {
-            name: name,
-            company: company,
-            message: message,
-          })
-          console.log(result)
-      } catch (error) {
-          console.log(error)
+  const handleUpdate = async (e) => {
+    try {
+      e.preventDefault();
+      await axios.patch(`/testimonial/${id}`, {
+        name: name,
+        company: company,
+        message: message,
+      });
+
+      toast.success("EDITED SUCCESSFULLY", {
+        position: "top-right",
+        autoClose: 4000,
+        pauseHover: true,
+        draggable: true,
+      });
+      // navigate("/testimonial");
+    } catch (error) {
+      if (error) {
+        toast.error("FAILED TRY AGAIN", {
+          position: "top-right",
+          autoClose: 4000,
+          pauseHover: true,
+          draggable: true,
+        });
+        console.log(error);
       }
-      navigate("/testimonial");
+    }
   };
 
   if (isLoading) {
@@ -69,6 +89,7 @@ const EditTestimonial = () => {
 
           {/* <!-- wrapper  --> */}
           <div className="dashboard-wrapper">
+            <ToastContainer />
             <div className="container-fluid dashboard-content">
               {/* <!-- pageheader --> */}
               <div className="row">

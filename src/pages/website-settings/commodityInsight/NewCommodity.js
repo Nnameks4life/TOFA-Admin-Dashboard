@@ -3,16 +3,17 @@ import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
+import "react-toastify/dist/ReactToastify.css";
+import { toast, ToastContainer } from "react-toastify";
 
 const NewCommodity = () => {
   const editorRef = useRef();
- const [commodity, setCommodity] = useState({
-   name:"",
-   
- })
- const [briefHistory, setBriefHistory] = useState("");
+  const [commodity, setCommodity] = useState({
+    name: "",
+  });
+  const [briefHistory, setBriefHistory] = useState("");
 
- const [formErrors, setFormErrors] = useState({});
+  const [formErrors, setFormErrors] = useState({});
   const [customError, setCustomError] = useState("");
 
   // const getText = () => {
@@ -20,83 +21,85 @@ const NewCommodity = () => {
   // }
 
   const handleEditor = () => {
-    setBriefHistory(editorRef.current.getContent())
-  }
+    setBriefHistory(editorRef.current.getContent());
+  };
 
- const handleChange = (e) => {
-setCommodity({...commodity, [e.target.name]: e.target.value})
- }
- const handleSubmit = async(e) => {
-   try{
-    e.preventDefault()
-    const jsonData = {
-      name: commodity.name,
-      countries:getCountry(), 
-      briefHistory:briefHistory, 
+  const handleChange = (e) => {
+    setCommodity({ ...commodity, [e.target.name]: e.target.value });
+  };
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const jsonData = {
+        name: commodity.name,
+        countries: getCountry(),
+        briefHistory: briefHistory,
+      };
+      // const formData = new FormData()
+      //   for (const property in jsonData) {
+      //     formData.append(`${property}`, jsonData[property]);
+      //   }
+      const { data: result } = await axios.post("/commodity", jsonData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("SUCCESSFULLY CREATED NEW COMMODITY", {
+        position: "top-right",
+        autoClose: 4000,
+        pauseHover: true,
+        draggable: true,
+      });
+      // alert ("success")
+      console.log(result);
+      // const {data} = axios.post("./commodity", {
+      //   name: commodity.name,
+      //   country:getCountry(),
+      //   briefHistory:commodity.briefHistory,
+      // })
+      // console.log(data)
+    } catch (err) {
+      if (err.response.data.errors[0].field) {
+        console.log(err.response.data.errors);
+        setFormErrors(
+          err.response.data.errors.reduce(function(obj, err) {
+            obj[err.field] = err.message;
+            return obj;
+          }, {})
+        );
+      } else {
+        console.log(err.response.data.errors[0].message);
+        setCustomError(err.response.data.errors[0].message);
+        alert(customError);
+      }
     }
-    // const formData = new FormData()
-    //   for (const property in jsonData) {
-    //     formData.append(`${property}`, jsonData[property]);
-    //   }
-      const { data: result } = await axios
-        .post("/commodity", jsonData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        alert ("success")
-        console.log(result)
-    // const {data} = axios.post("./commodity", {
-    //   name: commodity.name,
-    //   country:getCountry(), 
-    //   briefHistory:commodity.briefHistory,
-    // })
-    // console.log(data)
-  } catch (err) {
-    if (err.response.data.errors[0].field) {
-      console.log(err.response.data.errors)
-      setFormErrors(
-        err.response.data.errors.reduce(function(obj, err) {
-          obj[err.field] = err.message;
-          return obj;
-        }, {})
-      );
-    } else {
-      console.log(err.response.data.errors[0].message);
-      setCustomError(err.response.data.errors[0].message);
-      alert(customError);
+  };
+
+  const getCountry = () => {
+    const countries = document.getElementsByClassName("country-keys");
+    // const prices = document.getElementsByClassName("country-values");
+
+    const country = [];
+    // [{ countryName: string, price: string }]
+    for (let i = 0; i < countries.length; i++) {
+      const countryName = countries[i].value;
+      // const price = prices[i].value;
+      if (countryName) country.push(countryName);
     }
-  }
- 
- }
+    return JSON.stringify(country);
+  };
 
- const getCountry = () => {
-  const countries = document.getElementsByClassName("country-keys");
-  // const prices = document.getElementsByClassName("country-values");
+  const [country, setCountry] = useState([{ countryName: "" }]);
 
-  const country = [];
-  // [{ countryName: string, price: string }]
-  for (let i = 0; i < countries.length; i++) {
-    const countryName = countries[i].value;
-    // const price = prices[i].value;
-    if (countryName) country.push( countryName);
-  }
-  return JSON.stringify(country);
-};
+  const handleAddCountry = () => {
+    setCountry([...country, { countryName: "" }]);
+  };
 
-const [country, setCountry] = useState([{ countryName: "" }]);
-
- const handleAddCountry = () => {
-  setCountry([...country, { countryName: ""}]);
-};
-
-const handleRemoveCountry = (index) => {
-  const countryValues = [...country];
-  countryValues.splice(index, 1);
-  setCountry(countryValues);
-};
-
-
+  const handleRemoveCountry = (index) => {
+    const countryValues = [...country];
+    countryValues.splice(index, 1);
+    setCountry(countryValues);
+  };
 
   return (
     <>
@@ -109,6 +112,7 @@ const handleRemoveCountry = (index) => {
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
           <div>
+            <ToastContainer />
             <form className="mx-5 my-5">
               <div className="d-flex justify-content-between">
                 <h2> Create Commodity Insight</h2>
@@ -135,17 +139,17 @@ const handleRemoveCountry = (index) => {
                     aria-describedby="emailHelp"
                     onChange={handleChange}
                   />
-                   {formErrors.name && (
+                  {formErrors.name && (
                     <p className="text-danger">{formErrors.name}</p>
                   )}
                 </div>
-               
+
                 <div className="col-6">
                   <label className="form-label">Country</label>
                   {country.map((info, index) => (
                     <div key={index} className="root my-2">
                       <input
-                        type='text'
+                        type="text"
                         name="countries"
                         value={country.countryName}
                         variant="filled"
@@ -162,9 +166,9 @@ const handleRemoveCountry = (index) => {
                           className="fa-solid fa-minus mx-1"
                           onClick={() => handleRemoveCountry(index)}
                         ></i>
-                         {formErrors.country && (
-                    <p className="text-danger">{formErrors.country}</p>
-                  )}
+                        {formErrors.country && (
+                          <p className="text-danger">{formErrors.country}</p>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -176,14 +180,14 @@ const handleRemoveCountry = (index) => {
               <div>
                 <h4>Commodity Information</h4>
                 <Editor
-                  id='mytextarea'
+                  id="mytextarea"
                   name="briefHistory"
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   onChange={handleEditor}
                 />
-                 {formErrors.briefHistory && (
-                    <p className="text-danger">{formErrors.briefHistory}</p>
-                  )}
+                {formErrors.briefHistory && (
+                  <p className="text-danger">{formErrors.briefHistory}</p>
+                )}
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
@@ -197,9 +201,10 @@ const handleRemoveCountry = (index) => {
               </div>
 
               <div style={{ textAlign: "start" }}>
-                <button className="btn btn-dark" onClick={handleSubmit}>Submit</button>
+                <button className="btn btn-dark" onClick={handleSubmit}>
+                  Submit
+                </button>
               </div>
-             
             </form>
           </div>
         </div>

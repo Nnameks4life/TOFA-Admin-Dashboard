@@ -8,7 +8,7 @@ const EditFaq = () => {
   const [id, setId] = useState(null);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-  const [faqInfo, setFaqInfo] = useState({});
+//   const [faqInfo, setFaqInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   //   const [formErrors, setFormErrors] = useState({})
@@ -22,8 +22,11 @@ const EditFaq = () => {
   const getInfo = async () => {
     try {
       const response = await axios.get(`/faq/${myFaqId}`);
-      setFaqInfo(response.data.data);
+    //   setFaqInfo(response.data.data);
       console.log(response.data.data);
+      setId(response.data.data.id);
+      setQuestion(response.data.data.question);
+      setAnswer(response.data.data.answer);
       setIsLoading(false);
     } catch (error) {
       console.log(error);
@@ -93,7 +96,7 @@ const EditFaq = () => {
                             type="text"
                             name="question"
                             className="form-control"
-                            value={faqInfo.question}
+                            value={question}
                             onChange={(e) => setQuestion(e.target.value)}
                           />
                           {/* {formErrors.question && (<p className="text-danger">{formErrors.question}</p>)} */}
@@ -105,7 +108,7 @@ const EditFaq = () => {
                           <textarea
                             className="form-control"
                             type="text"
-                            value={faqInfo.answer}
+                            value={answer}
                             name="answer"
                             onChange={(e) => setAnswer(e.target.value)}
                           />

@@ -94,11 +94,18 @@ const Testimonial = () => {
                               <td>{item.name}</td>
                               <td>{item.company}</td>
                               <td>{item.message}</td>
-                              <td>
+                              <td className="text-center d-flex">
                                 {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
                                   Delete
                                 </button> */}
-                                <div className="d-flex">
+                              
+                                  <div className="text-center mx-2">
+                                <Link to={`/edittestimonial/${item.id}`}>
+                                        <button type="button"
+                                        className="btn btn-success"
+                                        data-dismiss="modal">Edit</button>
+                                      </Link>
+                                      </div>
                                 <button
                                   onClick={() => showDetails(item.id)}
                                   type="button"
@@ -109,14 +116,10 @@ const Testimonial = () => {
                                   View
                                 </button>
 
-                                <Link to={`/edittestimonial/${item.id}`}>
-                                        <button type="button"
-                                        className="btn btn-success mx-2"
-                                        data-dismiss="modal">Edit</button>
-                                      </Link>
+                                
 
                                
-                                </div>
+                            
 
                                 <div
                                   className="modal fade"

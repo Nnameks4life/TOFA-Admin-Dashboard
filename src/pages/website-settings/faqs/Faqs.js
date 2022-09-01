@@ -114,12 +114,14 @@ const Faqs = () => {
                               <td>{item.id}</td>
                               <td>{item.question}</td>
                               <td>{item.answer}</td>
-                              <td>
+                              <td className="text-center d-flex">
+                                <div className="text-center mx-2">
                               <Link to={`/editfaq/${item.id}`}>
                                         <button type="button"
                                         className="btn btn-success"
                                         data-dismiss="modal">Edit</button>
                                       </Link>
+                                      </div>
                                 {/* <button className="btn btn-danger mx-2" onClick={(e) => handleDelete(item.id)}>
                                   Delete
                                 </button> */}

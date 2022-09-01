@@ -10,50 +10,61 @@ import { axios } from "../../components/baseUrl";
 // import OtherImages from "./OtherImages";
 
 const EditProducts = () => {
+  const [id, setID] = useState(0);
+  const [productName, setProductName] = useState("");
+  const [parentCategory, setParentCategory] = useState("");
+  const [unitForMinOrder, setUnitForMinOrder] = useState("");
+  const [supplyCapacity, setSupplyCapacity] = useState("");
+  const [unitForSupplyCapacity, setUnitForSupplyCapacity] = useState("");
+  const [minDuration, setMinDuration] = useState("");
+  const [maxDuration, setMaxDuration] = useState("");
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [productDescription, setProductDescription] = useState("");
+  //   const [productInfo, setProductInfo] = useState({})
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [productName, setProductName] = useState("")
-  const [parentCategory, setParentCategory] = useState("")
-  const [unitForMinOrder, setUnitForMinOrder] = useState("")
-  const [supplyCapacity, setSupplyCapacity] = useState("")
-  const [unitForSupplyCapacity, setUnitForSupplyCapacity] = useState("")
-  const [minDuration, setMinDuration] = useState("")
-  const [maxDuration, setMaxDuration] = useState("")
-  const [category, setCategory] = useState("")
-  const [subCategory, setSubCategory] = useState("")
-  const [productDescription, setProductDescription] = useState("")
-  const [productInfo, setProductInfo] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
+  //   const {name} = useAppContext()
 
-//   const {name} = useAppContext()
+  //   console.log(name)
 
-//   console.log(name)
-  
-const {productId} = useParams()
-console.log(productId)
+  const { productId } = useParams();
+  console.log(productId);
 
-const getInfo = async () => {
+  const getInfo = async () => {
     try {
-    const response =  await  axios.get(`/product/${productId}`)
-    setProductInfo(response.data.data)
-    setIsLoading(false)
-    }  catch(error) {
-    console.log(error)
-    setIsLoading(false)
+      const response = await axios.get(`/product/${productId}`);
+      // setProductInfo(response.data.data)
+      setID(response.data.data.id);
+      setProductName(response.data.data.productName);
+      setParentCategory(response.data.data.parentCategory);
+      setUnitForMinOrder(response.data.data.unitForMinOrder);
+      setSupplyCapacity(response.data.data.supplyCapacity);
+      setUnitForSupplyCapacity(response.data.data.unitForSupplyCapacity);
+      setMinDuration(response.data.data.minDuration);
+      setMaxDuration(response.data.data.maxDuration);
+      setCategory(response.data.data.category);
+      setSubCategory(response.data.data.subCategory);
+      setProductDescription(response.data.data.productDescription);
+      // setProductInfo(response.data.data.productInfo)
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
     }
-   
-}
+  };
 
-useEffect(() => {
-    getInfo()
-}, [])
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const navigate = useNavigate();
 
-  const handleUpdate = (e, productID) => {
-    e.preventDefault();
-    axios
-      .put(`product/${productID}`, {
-        productName:productName,
+  const handleUpdate = async (e) => {
+    try {
+      e.preventDefault();
+      const { data: result } = await axios.patch(`product/${id}`, {
+        productName: productName,
         parentCategory: parentCategory,
         unitForMinOrder: unitForMinOrder,
         supplyCapacity: supplyCapacity,
@@ -63,17 +74,17 @@ useEffect(() => {
         category: category,
         subCategory: subCategory,
         productDescription: productDescription,
-      })
-      .then(() => {
-        navigate("/product");
       });
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
+    navigate("/products");
   };
 
-if (isLoading) {
-    return (
-        <h1>Loading</h1>
-    )
-}
+  if (isLoading) {
+    return <h1>Loading</h1>;
+  }
   return (
     <>
       {/* <!-- main wrapper --> */}
@@ -87,7 +98,7 @@ if (isLoading) {
         {/* <!-- wrapper  --> */}
         <div className="dashboard-wrapper">
           <div>
-          <form className="mx-5 my-5" onSubmit={handleUpdate}>
+            <form className="mx-5 my-5" onSubmit={handleUpdate}>
               <div className="d-flex justify-content-between">
                 <h2> Create Products</h2>
                 {/* <Link to="/commodityInsight">
@@ -108,7 +119,7 @@ if (isLoading) {
                   <label className="form-label">Product Name:</label>
                   <input
                     name="productName"
-                    value={productInfo.productName}
+                    value={productName}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -122,22 +133,22 @@ if (isLoading) {
                 <div className="col-4 ">
                   <label className="form-label">Parent Category</label>
 
-
-                  <select className="form-control"
+                  <select
+                    className="form-control"
                     name="parentCategory"
-                    value={productInfo.parentCategory}
+                    value={parentCategory}
                     aria-describedby="Default select example"
                     onChange={(e) => setParentCategory(e.target.value)}
-                    placeholder='parent category'
-                    >
-                      <option>CONSTRUCTION_MATERIAL</option>
-                      <option>FOOD_AND_BEVERAGE</option>
-                      <option>APPAREL</option>
-                      <option>HOME_AND_FURNITURE</option>
-                      <option> BEAUTY_AND_PERSONAL_CARE</option>
-                      <option>PACKAGING_AND_SUPPLY</option>
-                      <option>  MINERALS_AND_METALLURGY</option>
-                      <option>  AGRICULTURE</option>
+                    placeholder="parent category"
+                  >
+                    <option>CONSTRUCTION_MATERIAL</option>
+                    <option>FOOD_AND_BEVERAGE</option>
+                    <option>APPAREL</option>
+                    <option>HOME_AND_FURNITURE</option>
+                    <option> BEAUTY_AND_PERSONAL_CARE</option>
+                    <option>PACKAGING_AND_SUPPLY</option>
+                    <option> MINERALS_AND_METALLURGY</option>
+                    <option> AGRICULTURE</option>
                   </select>
                   {/* <input
                     name="parentCategory"
@@ -155,7 +166,7 @@ if (isLoading) {
                   <label className="form-label">Supply Capacity</label>
                   <input
                     type="number"
-                    value={productInfo.supplyCapacity}
+                    value={supplyCapacity}
                     name="supplyCapacity"
                     className="form-control"
                     onChange={(e) => setSupplyCapacity(e.target.value)}
@@ -181,7 +192,7 @@ if (isLoading) {
                   <label className="form-label">Unit of Min order</label>
                   <input
                     name="unitForMinOrder"
-                    value={productInfo.unitForMinOrder}
+                    value={unitForMinOrder}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -196,7 +207,7 @@ if (isLoading) {
                   <label className="form-label">Unit of Supply Capacity</label>
                   <input
                     name="unitForSupplyCapacity"
-                    value={productInfo.unitForSupplyCapacity}
+                    value={unitForSupplyCapacity}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -213,7 +224,7 @@ if (isLoading) {
                   <label className="form-label">Min Duration</label>
                   <input
                     name="minDuration"
-                    value={productInfo.minDuration}
+                    value={minDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -230,7 +241,7 @@ if (isLoading) {
                   <label className="form-label">Max Duration</label>
                   <input
                     name="maxDuration"
-                    value={productInfo.maxDuration}
+                    value={maxDuration}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -245,7 +256,7 @@ if (isLoading) {
                   <label className="form-label">Category</label>
                   <input
                     name="category"
-                    value={productInfo.category}
+                    value={category}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -260,7 +271,7 @@ if (isLoading) {
                   <label className="form-label">Sub Category</label>
                   <input
                     name="subCategory"
-                    value={productInfo.subCategory}
+                    value={subCategory}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -293,7 +304,7 @@ if (isLoading) {
                         className="mx-1 form-control specification-values"
                       /> */}
 
-                      {/* <div className="d-flex align-items-center">
+                {/* <div className="d-flex align-items-center">
                         <i
                           className="fa-solid fa-plus mx-1 "
                           onClick={() => handleAddFields()}
@@ -303,9 +314,9 @@ if (isLoading) {
                           onClick={() => handleRemoveFields(index)}
                         ></i>
                       </div> */}
-                    {/* </div>
+                {/* </div>
                   ))} */}
-                  {/* {formErrors.specification && (
+                {/* {formErrors.specification && (
                     <p className="text-danger">{formErrors.specification}</p>
                   )} */}
                 {/* </div> */}
@@ -332,7 +343,7 @@ if (isLoading) {
                         className="mx-1 form-control country-values"
                       /> */}
 
-                      {/* <div className="d-flex align-items-center">
+                  {/* <div className="d-flex align-items-center">
                         <i
                           className="fa-solid fa-plus mx-1 "
                           onClick={() => handleAddCountry()}
@@ -342,20 +353,19 @@ if (isLoading) {
                           onClick={() => handleRemoveCountry(index)}
                         ></i>
                       </div> */}
-                    {/* </div>
+                  {/* </div>
                   ))} */}
                   {/* {formErrors.country && (
                     <p className="text-danger">{formErrors.country}</p>
                   )} */}
                 </div>
-
               </div>
 
               <div className="mb-3" style={{ textAlign: "left" }}>
                 <label className="form-label">Description</label>
                 <textarea
                   name="productDescription"
-                  value={productInfo.productDescription}
+                  value={productDescription}
                   type="text"
                   className="form-control"
                   onChange={(e) => setProductDescription(e.target.value)}
@@ -365,16 +375,14 @@ if (isLoading) {
                 )} */}
               </div>
 
-              
-
-                {/* <div className="row">
+              {/* <div className="row">
                   <div className="col-6 box">
                     <h3 className="header">Featured Images</h3> */}
 
-                    {/* <DropFileInput
+              {/* <DropFileInput
                       onFileChange={(files) => onFileChange(files)}
                     /> */}
-                  {/* <input type="file" name="featuredImage" />
+              {/* <input type="file" name="featuredImage" />
                   </div>
                   <div className="col-6 mx-auto">
                   <div className="mb-3" style={{ textAlign: "left" }}>
@@ -387,7 +395,7 @@ if (isLoading) {
                   onChange={onSelectFile}
                 /> */}
 
-                {/* <div className="iamges d-flex">
+              {/* <div className="iamges d-flex">
                   {selectedImages &&
                     selectedImages.map((image, index) => {
                       return (
@@ -397,7 +405,7 @@ if (isLoading) {
                           style={{ position: "relative" }}
                         >
                           <img src={image} alt="" /> */}
-                          {/* <button
+              {/* <button
                             onClick={() =>
                               setSelectedImages(
                                 selectedImages.filter((e) => e !== image)
@@ -406,7 +414,7 @@ if (isLoading) {
                           >
                             delete image
                           </button> */}
-                          {/* <div
+              {/* <div
                             className="bin-icon"
                             style={{
                               position: "absolute",
@@ -446,10 +454,11 @@ if (isLoading) {
               /> */}
 
               <div style={{ textAlign: "left" }}>
-                <button className="btn btn-dark" type="submit">Update</button>
+                <button className="btn btn-dark" type="submit">
+                  Update
+                </button>
               </div>
             </form>
-
           </div>
         </div>
         {/* <!-- end main wrapper --> */}

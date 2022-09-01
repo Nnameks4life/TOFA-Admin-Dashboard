@@ -10,47 +10,51 @@ const EditTestimonial = () => {
   const [name, setName] = useState("");
   const [company, setCompany] = useState("");
   const [message, setMessage] = useState("");
-  const [testimonialInfo, setTestimonialInfo] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
+  //   const [testimonialInfo, setTestimonialInfo] = useState({})
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
-  const {myTestimonialId} = useParams()
+  const { myTestimonialId } = useParams();
 
-const getInfo = async () => {
+  const getInfo = async () => {
     try {
-    const response =  await axios.get(`/testimonial/${myTestimonialId}`)
-    setTestimonialInfo(response.data.data)
-    console.log(response.data.data)
-    setIsLoading(false)
-    }  catch(error) {
-    console.log(error)
-    setIsLoading(false)
+      const response = await axios.get(`/testimonial/${myTestimonialId}`);
+      // setTestimonialInfo(response.data.data)
+      console.log(response.data.data);
+      setId(response.data.data.id);
+      setName(response.data.data.name);
+      setCompany(response.data.data.company);
+      setMessage(response.data.data.message);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
     }
-}
+  };
 
-useEffect(() => {
-    getInfo()
-}, [])
+  useEffect(() => {
+    getInfo();
+  }, []);
 
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    axios
-      .patch(`testimonial/${id}`, {
-        name: name,
-        company: company,
-        message: message,
-      })
-      .then(() => {
-        navigate("/testimonial");
-      });
+  const handleUpdate = async(e) => {
+      try {
+        e.preventDefault();
+   const {data:result} = await axios.patch(`/testimonial/${id}`, {
+            name: name,
+            company: company,
+            message: message,
+          })
+          console.log(result)
+      } catch (error) {
+          console.log(error)
+      }
+      navigate("/testimonial");
   };
 
   if (isLoading) {
-    return (
-        <h1>Loading</h1>
-    )
-}
+    return <h1>Loading</h1>;
+  }
 
   return (
     <div>
@@ -90,7 +94,7 @@ useEffect(() => {
                             Name
                           </label>
                           <input
-                            value={testimonialInfo.name}
+                            value={name}
                             onChange={(e) => setName(e.target.value)}
                             type="text"
                             className="form-control"
@@ -106,7 +110,7 @@ useEffect(() => {
                           <input
                             type="text"
                             className="form-control"
-                            value={testimonialInfo.company}
+                            value={company}
                             onChange={(e) => setCompany(e.target.value)}
                           />
                         </div>
@@ -117,7 +121,7 @@ useEffect(() => {
                           <textarea
                             className="form-control"
                             rows="3"
-                            value={testimonialInfo.message}
+                            value={message}
                             onChange={(e) => setMessage(e.target.value)}
                           />
                         </div>

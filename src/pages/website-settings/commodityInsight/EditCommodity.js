@@ -68,11 +68,9 @@ useEffect(() => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios
-      .patch(`/commodity/${id}`, {
+    axios.patch(`/commodity/${id}`, {
         name: name,
         countries: countries,
-
         briefHistory: briefHistory,
       })
       .then(() => {

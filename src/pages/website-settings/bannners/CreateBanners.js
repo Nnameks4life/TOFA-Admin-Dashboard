@@ -138,7 +138,7 @@ const CreateBanner = () => {
                             className="btn btn-dark"
                             onClick={handleSubmit}
                           >
-                            Save Testimonial
+                            Save Banner
                           </a>
                         </div>
                       </form>

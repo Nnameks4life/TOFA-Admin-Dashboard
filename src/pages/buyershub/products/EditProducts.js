@@ -60,7 +60,6 @@ const EditProducts = () => {
     getInfo();
   }, []);
 
-
   const navigate = useNavigate();
 
   const handleUpdate = async (e) => {
@@ -78,15 +77,28 @@ const EditProducts = () => {
         subCategory: subCategory,
         productDescription: productDescription,
       });
-      console.log(result);
-    } catch (err) {
-      console.log(err);
+      toast.success("EDITED SUCCESSFULLY", {
+        position: "top-right",
+        autoClose: 2000,
+        pauseHover: true,
+        draggable: true,
+      });
+    } catch (error) {
+      if (error) {
+        toast.error("FAILED! TRY AGAIN", {
+          position: "top-right",
+          autoClose: 4000,
+          pauseHover: true,
+          draggable: true,
+        });
+        console.log(error);
+      }
     }
     navigate("/products");
   };
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <div className="loader" id="loader"></div>;
   }
   return (
     <>

@@ -5,7 +5,6 @@ import { axios } from "../../components/baseUrl";
 
 import { useNavigate, useParams } from "react-router-dom";
 
-
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -54,14 +53,15 @@ const EditTestimonial = () => {
 
       toast.success("EDITED SUCCESSFULLY", {
         position: "top-right",
-        autoClose: 4000,
+        autoClose: 2000,
         pauseHover: true,
         draggable: true,
       });
+
       // navigate("/testimonial");
     } catch (error) {
       if (error) {
-        toast.error("FAILED TRY AGAIN", {
+        toast.error("FAILED! TRY AGAIN", {
           position: "top-right",
           autoClose: 4000,
           pauseHover: true,
@@ -73,7 +73,7 @@ const EditTestimonial = () => {
   };
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <div className="loader" id="loader"></div>;
   }
 
   return (

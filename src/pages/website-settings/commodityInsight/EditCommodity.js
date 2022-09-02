@@ -2,73 +2,71 @@ import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-
-import { useNavigate, useParams } from 'react-router-dom';
-import { axios } from '../../components/baseUrl';
-
+import { useNavigate, useParams } from "react-router-dom";
+import { axios } from "../../components/baseUrl";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
-
 
 const EditCommodity = () => {
   const editorRef = useRef();
 
+  // const editorRef = useRef();
 
-    // const editorRef = useRef();
+  const [id, setId] = useState(0);
+  const [name, setName] = useState("");
+  const [briefHistory, setBriefHistory] = useState("");
+  const [countries, setCountries] = useState("");
+  const [commodityInfo, setCommodityInfo] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
-    const [id, setId] = useState(0)
-    const [name, setName] = useState("");
-    const [briefHistory, setBriefHistory] = useState("");
-  const [countries, setCountries] = useState(""); 
-  const [commodityInfo, setCommodityInfo] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
+  //   useEffect(() => {
+  //     setId(localStorage.getItem("commodityID"));
+  //     setCountries(localStorage.getItem("countries"));
+  //     setName(localStorage.getItem("name"));
+  //     setBriefHistory(localStorage.getItem("briefHistory"));
+  //  }, [])
 
-//   useEffect(() => {
-//     setId(localStorage.getItem("commodityID"));
-//     setCountries(localStorage.getItem("countries"));
-//     setName(localStorage.getItem("name"));
-//     setBriefHistory(localStorage.getItem("briefHistory"));
-//  }, [])
+  const navigate = useNavigate();
 
- const navigate = useNavigate()
+  const { commodityId } = useParams();
+  console.log(commodityId);
 
- const {commodityId} = useParams()
- console.log(commodityId)
-
-const getInfo = async () => {
+  const getInfo = async () => {
     try {
-    const response =  await axios.get(`/commodity/${commodityId}`)
-    setCommodityInfo(response.data.data)
-    console.log(response.data.data)
-    setIsLoading(false)
-    }  catch(error) {
-    console.log(error)
-    setIsLoading(false)
+      const response = await axios.get(`/commodity/${commodityId}`);
+      setCommodityInfo(response.data.data);
+      console.log(setCommodityInfo);
+      console.log(response.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
     }
-}
+  };
 
-useEffect(() => {
-    getInfo()
-}, [])
+  useEffect(() => {
+    getInfo();
+  }, []);
 
-    // const handleUpdate = (e) => {
-    //     e.preventDefault()
-    //     axios.patch(`/commodity/${id}`,
-    //     {name:name,
-    //     countries:countries,
+  // const handleUpdate = (e) => {
+  //     e.preventDefault()
+  //     axios.patch(`/commodity/${id}`,
+  //     {name:name,
+  //     countries:countries,
 
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
-//   useEffect(() => {
-//     setId(localStorage.getItem("commodityID"));
-//     setCountries(localStorage.getItem("countries"));
-//     setName(localStorage.getItem("name"));
-//     setBriefHistory(localStorage.getItem("briefHistory"));
-//   }, []);
+  //   useEffect(() => {
+  //     setId(localStorage.getItem("commodityID"));
+  //     setCountries(localStorage.getItem("countries"));
+  //     setName(localStorage.getItem("name"));
+  //     setBriefHistory(localStorage.getItem("briefHistory"));
+  //   }, []);
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    axios.patch(`/commodity/${id}`, {
+    axios
+      .patch(`/commodity/${id}`, {
         name: name,
         countries: countries,
         briefHistory: briefHistory,
@@ -96,11 +94,9 @@ useEffect(() => {
     setCountry(countryValues);
   };
 
-if (isLoading) {
-    return (
-        <h1>Loading</h1>
-    )
-}
+  if (isLoading) {
+    return <div className="loader" id="loader"></div>;
+  }
 
   return (
     <>

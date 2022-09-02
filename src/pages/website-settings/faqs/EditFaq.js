@@ -8,12 +8,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 
-
 const EditFaq = () => {
   const [id, setId] = useState(null);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
-//   const [faqInfo, setFaqInfo] = useState({});
+  //   const [faqInfo, setFaqInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   //   const [formErrors, setFormErrors] = useState({})
@@ -27,7 +26,7 @@ const EditFaq = () => {
   const getInfo = async () => {
     try {
       const response = await axios.get(`/faq/${myFaqId}`);
-    //   setFaqInfo(response.data.data);
+      //   setFaqInfo(response.data.data);
       console.log(response.data.data);
       setId(response.data.data.id);
       setQuestion(response.data.data.question);
@@ -53,7 +52,6 @@ const EditFaq = () => {
         question: question,
       });
 
-
       toast.success("EDITED SUCCESSFULLY", {
         position: "top-right",
         autoClose: 2000,
@@ -75,7 +73,7 @@ const EditFaq = () => {
   };
 
   if (isLoading) {
-    return <h1>Loading</h1>;
+    return <div className="loader" id="loader"></div>;
   }
 
   return (

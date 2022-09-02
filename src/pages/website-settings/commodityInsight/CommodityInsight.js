@@ -31,12 +31,12 @@ const CommodityInsight = () => {
     }
   };
 
-  const setData = (id, country, name, briefHistory) => {
-    localStorage.setItem("commodityID", id);
-    localStorage.setItem("name", name);
-    localStorage.setItem("briefHistory", briefHistory);
-    localStorage.setItem("country", country);
-  };
+  // const setData = (id, country, name, briefHistory) => {
+  //   localStorage.setItem("commodityID", id);
+  //   localStorage.setItem("name", name);
+  //   localStorage.setItem("briefHistory", briefHistory);
+  //   localStorage.setItem("country", country);
+  // };
 
   useEffect(() => {
     getData();
@@ -168,13 +168,14 @@ const CommodityInsight = () => {
 
                                     <td>
                                       <Link to={`/editcommodity/${item.id}`}>
-                                        <button type="button"
-                                        className="btn btn-success"
-                                        data-dismiss="modal">Edit</button>
+                                        <button
+                                          type="button"
+                                          className="btn btn-success"
+                                          data-dismiss="modal"
+                                        >
+                                          Edit
+                                        </button>
                                       </Link>
-                                      
-                                       
-                                    
                                       {/* <button
                                         type="button"
                                         className="btn btn-danger"

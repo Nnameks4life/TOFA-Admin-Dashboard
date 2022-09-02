@@ -198,11 +198,11 @@ const Products = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {product.map((item) => {
+                            {product.map((item, index) => {
                               return (
                                 <tr key={item.id}>
                                   {/* <td>{item.id}</td> */}
-                                  <td>{item.id}</td>
+                                  <td>{index +1}</td>
                                   <td>{item.productName}</td>
                                   <td>{item.minPricePerUnit}</td>
                                   <td>{item.maxPricePerUnit}</td>

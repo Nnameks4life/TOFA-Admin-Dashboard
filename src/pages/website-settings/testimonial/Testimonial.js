@@ -87,10 +87,10 @@ const Testimonial = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {testimonial.map((item) => {
+                        {testimonial.map((item, index) => {
                           return (
                             <tr key={item.id}>
-                              <td>{item.id}</td>
+                              <td>{index +1}</td>
                               <td>{item.name}</td>
                               <td>{item.company}</td>
                               <td>{item.message}</td>

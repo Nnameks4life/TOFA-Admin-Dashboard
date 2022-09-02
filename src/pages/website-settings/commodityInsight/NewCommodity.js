@@ -4,6 +4,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { axios } from "../../components/baseUrl";
 import "react-toastify/dist/ReactToastify.css";
+import { africanCountryData } from "../../buyershub/products/africanCountries";
 import { toast, ToastContainer } from "react-toastify";
 
 const NewCommodity = () => {
@@ -12,13 +13,11 @@ const NewCommodity = () => {
     name: "",
   });
   const [briefHistory, setBriefHistory] = useState("");
-
   const [formErrors, setFormErrors] = useState({});
   const [customError, setCustomError] = useState("");
+  const [country, setCountry] = useState([{ countryName: "" }]);
 
-  // const getText = () => {
-  //   document.getElementById("mytextarea");
-  // }
+
 
   const handleEditor = () => {
     setBriefHistory(editorRef.current.getContent());
@@ -27,6 +26,18 @@ const NewCommodity = () => {
   const handleChange = (e) => {
     setCommodity({ ...commodity, [e.target.name]: e.target.value });
   };
+
+  const getCountry = () => {
+    const countries = document.getElementsByClassName("country-keys");
+
+    const country = [];
+    for (let i = 0; i < countries.length; i++) {
+      const [countryName, shortName] = countries[i].value.split("___");
+      if (countryName && shortName) country.push({countryName, shortName});
+    }
+    return JSON.stringify(country);
+  };
+
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -35,10 +46,12 @@ const NewCommodity = () => {
         countries: getCountry(),
         briefHistory: briefHistory,
       };
-      // const formData = new FormData()
-      //   for (const property in jsonData) {
-      //     formData.append(`${property}`, jsonData[property]);
-      //   }
+      const formData = new FormData()
+        for (const property in jsonData) {
+          formData.append(`${property}`, jsonData[property]);
+        }
+        formData.append("image", e.target.image.files[0]);
+        console.log(e.target.image.files[0])
       const { data: result } = await axios.post("/commodity", jsonData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -75,21 +88,10 @@ const NewCommodity = () => {
     }
   };
 
-  const getCountry = () => {
-    const countries = document.getElementsByClassName("country-keys");
-    // const prices = document.getElementsByClassName("country-values");
 
-    const country = [];
-    // [{ countryName: string, price: string }]
-    for (let i = 0; i < countries.length; i++) {
-      const countryName = countries[i].value;
-      // const price = prices[i].value;
-      if (countryName) country.push(countryName);
-    }
-    return JSON.stringify(country);
-  };
 
-  const [country, setCountry] = useState([{ countryName: "" }]);
+
+
 
   const handleAddCountry = () => {
     setCountry([...country, { countryName: "" }]);
@@ -113,7 +115,7 @@ const NewCommodity = () => {
         <div className="dashboard-wrapper">
           <div>
             <ToastContainer />
-            <form className="mx-5 my-5">
+            <form className="mx-5 my-5" onSubmit={handleSubmit}>
               <div className="d-flex justify-content-between">
                 <h2> Create Commodity Insight</h2>
                 {/* <Link to="/commodityInsight">
@@ -148,14 +150,20 @@ const NewCommodity = () => {
                   <label className="form-label">Country</label>
                   {country.map((info, index) => (
                     <div key={index} className="root my-2">
-                      <input
+                      <select value={country.countryName} name="countries" className="mx-1 form-control country-keys">
+                        {Object.entries(africanCountryData).map((country, index) => {
+                          return <option key={index} value={`${country[0]}___${country[1]}`}>{country[1]}</option>
+                        })}
+
+                      </select>
+                      {/* <input
                         type="text"
                         name="countries"
                         value={country.countryName}
                         variant="filled"
                         placeholder="country name"
                         className="mx-1 form-control country-keys"
-                      />
+                      /> */}
 
                       <div className="d-flex align-items-center">
                         <i
@@ -197,11 +205,11 @@ const NewCommodity = () => {
             </div>
           } */}
                 <label className="form-label mx-2">Upload Product</label>
-                <input type="file" id="img" name="fileName" accept="image/*" />
+                <input type="file" id="image" name="image" accept="image/*" />
               </div>
 
               <div style={{ textAlign: "start" }}>
-                <button className="btn btn-dark" onClick={handleSubmit}>
+                <button className="btn btn-dark">
                   Submit
                 </button>
               </div>

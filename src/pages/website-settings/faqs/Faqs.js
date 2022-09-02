@@ -108,9 +108,9 @@ const Faqs = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {faq.map((item) => {
+                        {faq.map((item, index) => {
                           return (
-                            <tr key={item.id}>
+                            <tr key={index +1}>
                               <td>{item.id}</td>
                               <td>{item.question}</td>
                               <td>{item.answer}</td>

@@ -148,10 +148,10 @@ const Disputes = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {applicantDatatabless.map((item) => {
+                            {applicantDatatabless.map((item, index) => {
                               return (
                                 <tr key={item.id}>
-                                  <td>{item.id}</td>
+                                  <td>{index +1}</td>
                                   <td>{item.fullName}</td>
                                   <td>{item.country}</td>
                                   <td>{item.phoneNumber}</td>

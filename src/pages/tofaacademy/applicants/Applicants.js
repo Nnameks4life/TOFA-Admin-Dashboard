@@ -108,10 +108,10 @@ $(document).ready(function () {
                             </tr>
                           </thead>
                           <tbody>
-                            {applicants.map((item) => {
+                            {applicants.map((item, index) => {
                               return (
                                 <tr key={item.id}>
-                                  <td>{item.id}</td>
+                                  <td>{index +1}</td>
                                   <td>{item.firstName} {item.lastName}</td>
                                   <td>{item.country}</td>
                                   <td>{item.phoneNumber}</td>

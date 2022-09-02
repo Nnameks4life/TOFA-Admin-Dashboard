@@ -105,10 +105,10 @@ $(document).ready(function () {
                             </tr>
                           </thead>
                           <tbody>
-                            {inquiries.map((item) => {
+                            {inquiries.map((item, index) => {
                               return (
                                 <tr key={item.id}>
-                                  <td>{item.id}</td>
+                                  <td>{index +1}</td>
                                   <td>{item.ProductName}</td>
                                   <td>{item.quantity}</td>
                                   <td>{item.unit}</td>

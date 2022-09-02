@@ -31,12 +31,12 @@ const CommodityInsight = () => {
     }
   };
 
-  const setData = (id, country, name, briefHistory) => {
-    localStorage.setItem("commodityID", id);
-    localStorage.setItem("name", name);
-    localStorage.setItem("briefHistory", briefHistory);
-    localStorage.setItem("country", country);
-  };
+  // const setData = (id, country, name, briefHistory) => {
+  //   localStorage.setItem("commodityID", id);
+  //   localStorage.setItem("name", name);
+  //   localStorage.setItem("briefHistory", briefHistory);
+  //   localStorage.setItem("country", country);
+  // };
 
   useEffect(() => {
     getData();
@@ -159,10 +159,10 @@ const CommodityInsight = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {commodity.map((item) => {
+                              {commodity.map((item, index) => {
                                 return (
                                   <tr key={item.id}>
-                                    <td>{item.id}</td>
+                                    <td>{index + 1}</td>
                                     <td>{item.name}</td>
                                     <td>{item.briefHistory}</td>
 

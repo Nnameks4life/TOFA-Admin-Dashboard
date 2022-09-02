@@ -20,7 +20,6 @@ const EditCommodity = () => {
     const [name, setName] = useState("");
     const [briefHistory, setBriefHistory] = useState("");
   const [countries, setCountries] = useState(""); 
-  const [commodityInfo, setCommodityInfo] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 
 //   useEffect(() => {
@@ -38,7 +37,10 @@ const EditCommodity = () => {
 const getInfo = async () => {
     try {
     const response =  await axios.get(`/commodity/${commodityId}`)
-    setCommodityInfo(response.data.data)
+    setId(response.data.data.id)
+    setName(response.data.data.name)
+    setBriefHistory(response.data.data.briefHistory)
+    setCountries(response.data.data.countries)
     console.log(response.data.data)
     setIsLoading(false)
     }  catch(error) {
@@ -66,23 +68,51 @@ useEffect(() => {
 //     setBriefHistory(localStorage.getItem("briefHistory"));
 //   }, []);
 
-  const handleUpdate = (e) => {
-    e.preventDefault();
-    axios.patch(`/commodity/${id}`, {
-        name: name,
-        countries: countries,
-        briefHistory: briefHistory,
-      })
-      .then(() => {
-        navigate("/commodityinsight");
-      });
-    toast.success("EDITED SUCCESSFULLY", {
-      position: "top-right",
-      autoClose: 4000,
-      pauseHover: true,
-      draggable: true,
-    });
-  };
+  const handleUpdate = async(e) => {
+      try {
+        e.preventDefault();
+       await axios.patch("/commodity", {
+            name: name,
+            countries: getCountry(),
+            briefHistory: briefHistory,
+          });
+          toast.success("EDITED SUCCESSFULLY", {
+            position: "top-right",
+            autoClose: 4000,
+            pauseHover: true,
+            draggable: true,
+          });
+    
+
+      } catch (error) {
+          if (error) {
+        toast.error("FAILED TRY AGAIN", {
+            position: "top-right",
+            autoClose: 4000,
+            pauseHover: true,
+            draggable: true,
+          });
+          console.log(error)
+      }
+          }
+    }
+   
+    
+    const getCountry = () => {
+        const countries = document.getElementsByClassName("country-keys");
+        // const prices = document.getElementsByClassName("country-values");
+    
+        const country = [];
+        // [{ countryName: string, price: string }]
+        for (let i = 0; i < countries.length; i++) {
+          const countryName = countries[i].value;
+          // const price = prices[i].value;
+          if (countryName) country.push(countryName);
+        }
+        return JSON.stringify(country);
+      };
+
+    
 
   const [country, setCountry] = useState([{ countryName: "" }]);
 
@@ -134,7 +164,7 @@ if (isLoading) {
                 <div className="col-6 mt-2">
                   <label className="form-label">Commodity Name:</label>
                   <input
-                    value={commodityInfo.name}
+                    value={name}
                     type="text"
                     className="form-control"
                     aria-describedby="emailHelp"
@@ -172,7 +202,7 @@ if (isLoading) {
               <div>
                 <h4>Commodity Information</h4>
                 <Editor
-                  value={commodityInfo.briefHistory}
+                  value={briefHistory}
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   onChange={(e) => setBriefHistory(e.target.value)}
                 />

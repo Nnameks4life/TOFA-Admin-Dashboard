@@ -12,7 +12,7 @@ import { axios } from "../../components/baseUrl";
 // import OtherImages from "./OtherImages";
 
 const EditProducts = () => {
-  const [id, setID] = useState(0);
+  const [id, setId] = useState(0);
   const [productName, setProductName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
   const [unitForMinOrder, setUnitForMinOrder] = useState("");
@@ -37,7 +37,7 @@ const EditProducts = () => {
     try {
       const response = await axios.get(`/product/${productId}`);
       // setProductInfo(response.data.data)
-      setID(response.data.data.id);
+      setId(response.data.data.id);
       setProductName(response.data.data.productName);
       setParentCategory(response.data.data.parentCategory);
       setUnitForMinOrder(response.data.data.unitForMinOrder);
@@ -66,7 +66,7 @@ const EditProducts = () => {
   const handleUpdate = async (e) => {
     try {
       e.preventDefault();
-      const { data: result } = await axios.patch(`product/${id}`, {
+        await axios.patch(`product/${id}`, {
         productName: productName,
         parentCategory: parentCategory,
         unitForMinOrder: unitForMinOrder,
@@ -78,11 +78,10 @@ const EditProducts = () => {
         subCategory: subCategory,
         productDescription: productDescription,
       });
-      console.log(result);
     } catch (err) {
       console.log(err);
     }
-    navigate("/products");
+    // navigate("/products");
   };
 
   if (isLoading) {
@@ -102,7 +101,7 @@ const EditProducts = () => {
         <div className="dashboard-wrapper">
           <ToastContainer />
           <div>
-            <form className="mx-5 my-5" onSubmit={handleUpdate}>
+            <form className="mx-5 my-5" >
               <div className="d-flex justify-content-between">
                 <h2> Create Products</h2>
                 {/* <Link to="/commodityInsight">
@@ -458,7 +457,7 @@ const EditProducts = () => {
               /> */}
 
               <div style={{ textAlign: "left" }}>
-                <button className="btn btn-dark" type="submit">
+                <button className="btn btn-dark" type="submit" onClick={handleUpdate}>
                   Update
                 </button>
               </div>

@@ -33,7 +33,7 @@ const CreateBanner = () => {
       }
       formData.append("image", e.target.image.files[0]);
       console.log(e.target.image.files[0]);
-      const {data: result} = await axios.post("/banner", jsonData, {
+      const {data: result} = await axios.post("/banner", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -64,6 +64,8 @@ const CreateBanner = () => {
     //   navigate("/banner");
     // }
   };
+
+
 
   return (
     <div>

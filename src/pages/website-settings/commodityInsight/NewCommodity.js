@@ -63,14 +63,7 @@ const NewCommodity = () => {
         pauseHover: true,
         draggable: true,
       });
-      // alert ("success")
       console.log(result);
-      // const {data} = axios.post("./commodity", {
-      //   name: commodity.name,
-      //   country:getCountry(),
-      //   briefHistory:commodity.briefHistory,
-      // })
-      // console.log(data)
     } catch (err) {
       if (err.response.data.errors[0].field) {
         console.log(err.response.data.errors);

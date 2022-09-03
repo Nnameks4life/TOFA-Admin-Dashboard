@@ -46,7 +46,7 @@ const Login = () => {
                 alert(customError)
           }
       } 
-      if (formErrors.email || formErrors.password ) {
+      if (!formErrors.email || !formErrors.password ) {
       navigate("/overview")
     }
   };

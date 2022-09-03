@@ -24,6 +24,13 @@ const Disputes = () => {
     }
   };
 
+  const [status, setStatus] = useState("")
+
+  const handleStatusChange = (e) => {
+    setStatus( e.target.value)
+  }
+
+
   //  const {data, loading, error} = useFetch("/order")
 
   //  if (loading) return <h1>LOADING ....</h1>
@@ -142,7 +149,8 @@ const Disputes = () => {
                               <th>ID</th>
                               <th>Full Name</th>
                               <th>Dispute</th>
-                              <th>phoneNumber</th>
+                              <th>Status</th>
+                              <th>PhoneNumber</th>
                               <th>Country</th>
                               <th className="text-center">Action</th>
                             </tr>
@@ -154,6 +162,7 @@ const Disputes = () => {
                                   <td>{index +1}</td>
                                   <td>{item.fullName}</td>
                                   <td>{item.country}</td>
+                                  <td>{item.status}</td>
                                   <td>{item.phoneNumber}</td>
                                   <td>{item.productTraded}</td>
 
@@ -202,12 +211,33 @@ const Disputes = () => {
                                             ></button>
                                           </div>
                                           
-                                          <div className="modal-body px-2">
+                                          <div className="modal-body px-2 d-flex" style={{justifyContent:'space-between'}}>
+                                            <div className="">
                                             <label>
                                               Customer Name:{" "}
                                             </label>
                                             <br />
                                             <p>Erhun Abbe</p>
+                                            </div>
+                                            <div className="d-flex">
+                                              <label>Dispute Status</label>
+                                              <select
+                                                className="form-control"
+                                                onChange={handleStatusChange}
+                                                value={status}
+                                                name="status"
+                                                aria-describedby="Default select example"
+                                                placeholder="select status"
+                                              >
+                                                
+                                                <option>....Select Status</option>
+                                                <option value='paid'>Open</option>
+                                                <option value='pending'>
+                                                  Closed
+                                                </option>
+                                                
+                                              </select>
+                                            </div>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>Date: </label>
@@ -215,6 +245,38 @@ const Disputes = () => {
                                               Tuesday, November 30, 2021 2:00:19
                                               PM
                                             </p>
+                                          </div>
+
+                                          <div className="modal-body px-2 d-flex">
+                                            Dispute Status:
+                                            {status === "pending" && (
+                                              <div
+                                                className="bg-danger rounded-pill text-center mx-2"
+                                                style={{
+                                                  width: "75px",
+                                                  height: "30px",
+                                                }}
+                                              >
+                                                {" "}
+                                                <p className="text-white pt-1">
+                                                  Closed
+                                                </p>{" "}
+                                              </div>
+                                            )}
+                                            {status === "paid" && (
+                                              <div
+                                                className="bg-success rounded-pill text-center mx-2"
+                                                style={{
+                                                  width: "75px",
+                                                  height: "30px",
+                                                }}
+                                              >
+                                                {" "}
+                                                <p className="text-white pt-1">
+                                                  Open
+                                                </p>{" "}
+                                              </div>
+                                            )}
                                           </div>
 
                                           <div className=" modal-bodyb px-2">

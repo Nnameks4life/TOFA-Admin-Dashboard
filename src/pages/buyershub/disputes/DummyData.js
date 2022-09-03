@@ -9,6 +9,7 @@ export const applicantDatatabless = [
         age:'30',
         view:'view',
         delete:'delete',
+        status:'Open'
         },
         {
             id: 2,
@@ -20,6 +21,7 @@ export const applicantDatatabless = [
             age:'20',
             view:'view',
             delete:'delete',
+            status:'Closed',
             },
     {
         id: 3,
@@ -31,6 +33,7 @@ export const applicantDatatabless = [
         age:'300',
         view:'view',
         delete:'delete',
+        status:'Closed',
     },
     {
         id: 4,
@@ -42,6 +45,7 @@ export const applicantDatatabless = [
         age:'400',
         view:'view',
         delete:'delete',
+        status:'Open'
     },
     {
         id: 5,
@@ -53,6 +57,7 @@ export const applicantDatatabless = [
         age:'400',
         view:'view',
         delete:'delete',
+        status:'Closed'
     },
     {
         id: 6,
@@ -64,6 +69,7 @@ export const applicantDatatabless = [
         age:'500',
         view:'view',
         delete:'delete',
+        status:'Open'
     },
     {
         id: 7,
@@ -75,6 +81,7 @@ export const applicantDatatabless = [
         age:'10',
         view:'view',
         delete:'delete',
+        status:'Closed'
     },
     {
         id:8,
@@ -86,6 +93,7 @@ export const applicantDatatabless = [
         age:'10',
         view:'view',
         delete:'delete',
+        status:'Open'
     },
     {
         id:9,
@@ -97,6 +105,7 @@ export const applicantDatatabless = [
         age:'10',
         view:'view',
         delete:'delete',
+        status:'Closed'
     },
     {
         id:10,
@@ -108,6 +117,7 @@ export const applicantDatatabless = [
         age:'30',
         view:'view',
         delete:'delete',
+        status:'Open'
     },
     
 ]

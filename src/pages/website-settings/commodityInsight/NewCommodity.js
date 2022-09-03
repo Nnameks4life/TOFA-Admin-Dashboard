@@ -156,14 +156,7 @@ const NewCommodity = () => {
                         })}
 
                       </select>
-                      {/* <input
-                        type="text"
-                        name="countries"
-                        value={country.countryName}
-                        variant="filled"
-                        placeholder="country name"
-                        className="mx-1 form-control country-keys"
-                      /> */}
+                      
 
                       <div className="d-flex align-items-center">
                         <i

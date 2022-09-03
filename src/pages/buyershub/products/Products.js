@@ -299,6 +299,10 @@ const Products = () => {
                                               {viewProduct.minPricePerUnit}
                                             </div>
                                           </div>
+                                          <div className="modal-body">
+                                              Minimum Price:{" "}
+                                              {viewProduct.featuredImage}
+                                            </div>
                                           <div className="d-flex">
                                             <div className="modal-body">
                                               Maximum Price Per Unit:{" "}

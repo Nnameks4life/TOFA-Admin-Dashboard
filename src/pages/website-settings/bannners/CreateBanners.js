@@ -23,9 +23,20 @@ const CreateBanner = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      const { result } = await axios.post("/banner", {
-        action: banner.action,
+      const jsonData = {
+        callToAction: banner.action,
         link: banner.link,
+      };
+      const formData = new FormData();
+      for (const property in jsonData) {
+        formData.append(`${property}`, jsonData[property]);
+      }
+      formData.append("image", e.target.image.files[0]);
+      console.log(e.target.image.files[0]);
+      const {data: result} = await axios.post("/banner", jsonData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       toast.success("SUCCESSFULLY CREATED NEW BANNER", {
         position: "top-right",
@@ -36,6 +47,7 @@ const CreateBanner = () => {
       console.log(result);
     } catch (err) {
       if (err.response.data.errors[0].field) {
+        console.log(err.response.data.errors);
         setFormErrors(
           err.response.data.errors.reduce(function(obj, err) {
             obj[err.field] = err.message;
@@ -48,9 +60,9 @@ const CreateBanner = () => {
         alert(customError);
       }
     }
-    if (formErrors.email || formErrors.password) {
-      navigate("/banner");
-    }
+    // if (formErrors.email || formErrors.password) {
+    //   navigate("/banner");
+    // }
   };
 
   return (
@@ -83,7 +95,7 @@ const CreateBanner = () => {
                   <div className="card">
                     <h4 className="card-header font-bold">Create Banner</h4>
                     <div className="card-body">
-                      <form>
+                      <form onSubmit={handleSubmit}>
                         <div className="form-group">
                           <label
                             htmlFor="inputText3"
@@ -98,8 +110,10 @@ const CreateBanner = () => {
                             className="form-control"
                             onChange={handleChange}
                           />
-                          {formErrors.action && (
-                            <p className="text-danger">{formErrors.action}</p>
+                          {formErrors.callToAction && (
+                            <p className="text-danger">
+                              {formErrors.callToAction}
+                            </p>
                           )}
                         </div>
                         <div className="form-group">
@@ -126,20 +140,18 @@ const CreateBanner = () => {
                           </label>
                           <input
                             type="file"
-                            id="img"
-                            name="fileName"
+                            id="image"
+                            name="image"
                             accept="image/*"
                           />
-                          {/* {formErrors.question && (<p className="text-danger">{formErrors.question}</p>)} */}
+                          {formErrors.image && (
+                            <p className="text-danger">{formErrors.image}</p>
+                          )}
                         </div>
                         <div className="form-group">
-                          <a
-                            href="comingsoon"
-                            className="btn btn-dark"
-                            onClick={handleSubmit}
-                          >
-                            Save Testimonial
-                          </a>
+                          <button className="btn btn-dark">
+                            Save Banner
+                          </button>
                         </div>
                       </form>
                     </div>

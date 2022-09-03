@@ -110,8 +110,8 @@ const Faqs = () => {
                       <tbody>
                         {faq.map((item, index) => {
                           return (
-                            <tr key={index +1}>
-                              <td>{item.id}</td>
+                            <tr key={item.id}>
+                              <td>{index +1}</td>
                               <td>{item.question}</td>
                               <td>{item.answer}</td>
                               <td className="text-center d-flex">

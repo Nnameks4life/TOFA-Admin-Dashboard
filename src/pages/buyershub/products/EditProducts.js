@@ -26,9 +26,21 @@ const EditProducts = () => {
   //   const [productInfo, setProductInfo] = useState({})
   const [isLoading, setIsLoading] = useState(true);
 
+  const [specification, setSpecification] = useState([{ Type: "", Color: "" }]);
+
   //   const {name} = useAppContext()
 
   //   console.log(name)
+
+  const handleAddFields = () => {
+    setSpecification([...specification, { Type: "", Color: "" }]);
+  };
+
+  const handleRemoveFields = (index) => {
+    const values = [...specification];
+    values.splice(index, 1);
+    setSpecification(values);
+  };
 
   const { productId } = useParams();
   console.log(productId);
@@ -49,12 +61,16 @@ const EditProducts = () => {
       setSubCategory(response.data.data.subCategory);
       setProductDescription(response.data.data.productDescription);
       // setProductInfo(response.data.data.productInfo)
+        const responseSpecifications = response.data.data.productSpecification;
+        Object.keys(responseSpecifications)
       setIsLoading(false);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
     }
   };
+
+
 
   useEffect(() => {
     getInfo();
@@ -66,7 +82,7 @@ const EditProducts = () => {
   const handleUpdate = async (e) => {
     try {
       e.preventDefault();
-        await axios.patch(`product/${id}`, {
+        await axios.patch(`/product/${id}`, {
         productName: productName,
         parentCategory: parentCategory,
         unitForMinOrder: unitForMinOrder,
@@ -78,7 +94,19 @@ const EditProducts = () => {
         subCategory: subCategory,
         productDescription: productDescription,
       });
+      toast.success("SUCCESSFULLY CREATED NEW COMMODITY", {
+        position: "top-right",
+        autoClose: 4000,
+        pauseHover: true,
+        draggable: true,
+      });
     } catch (err) {
+        toast.error("FAILED! TRY AGAIN", {
+            position: "top-right",
+            autoClose: 4000,
+            pauseHover: true,
+            draggable: true,
+          });
       console.log(err);
     }
     // navigate("/products");
@@ -286,7 +314,7 @@ const EditProducts = () => {
                 </div>
               </div>
               <div className="row">
-                {/* <div className="col-6" style={{ textAlign: "left" }}>
+                 <div className="col-6" style={{ textAlign: "left" }}>
                   <label className="form-label">Specification</label>
                   {specification.map((info, index) => (
                     <div key={index} className="root my-2">
@@ -305,9 +333,9 @@ const EditProducts = () => {
                         variant="filled"
                         placeholder="value"
                         className="mx-1 form-control specification-values"
-                      /> */}
+                      /> 
 
-                {/* <div className="d-flex align-items-center">
+               <div className="d-flex align-items-center">
                         <i
                           className="fa-solid fa-plus mx-1 "
                           onClick={() => handleAddFields()}
@@ -316,13 +344,13 @@ const EditProducts = () => {
                           className="fa-solid fa-minus mx-1"
                           onClick={() => handleRemoveFields(index)}
                         ></i>
-                      </div> */}
-                {/* </div>
-                  ))} */}
-                {/* {formErrors.specification && (
+                      </div> 
+                 </div>
+                  ))} 
+                 {/* {formErrors.specification && (
                     <p className="text-danger">{formErrors.specification}</p>
-                  )} */}
-                {/* </div> */}
+                  )}  */}
+                </div>
 
                 <div className="col-6">
                   <label className="form-label">Country</label>

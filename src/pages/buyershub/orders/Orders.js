@@ -1,22 +1,21 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 // import { useFetch } from '../../../useFetch'
 // import { axios } from '../../components/baseUrl'
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 
-import {datatabless} from '../../website-settings/commodityInsight/DummyData';
+import { datatabless } from "../../website-settings/commodityInsight/DummyData";
 // import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 
-import 'jquery/dist/jquery.min.js';
- 
+import "jquery/dist/jquery.min.js";
+
 //Datatable Modules
-import "datatables.net-dt/js/dataTables.dataTables"
-import "datatables.net-dt/css/jquery.dataTables.min.css"
-import $ from 'jquery'; 
+import "datatables.net-dt/js/dataTables.dataTables";
+import "datatables.net-dt/css/jquery.dataTables.min.css";
+import $ from "jquery";
 import { axios } from "../../components/baseUrl";
 
 const Orders = () => {
-
   const [order, setOrder] = useState([]);
   const [viewOrder, setViewOrder] = useState([]);
 
@@ -32,31 +31,36 @@ const Orders = () => {
   };
   // const [search, setSearch] = useState();
 
-  useEffect(()=>{
+  useEffect(() => {
     //initialize datatable
-$(document).ready(function () {
-    setTimeout(function(){
-    $('#example').DataTable();
-     } ,1000);
-});
-},[])
-
-useEffect(() => {
-  getData();
-}, []);
-
-// const handleDelete = (orderID) => {
-//   axios.delete(`/order/${orderID}`).then((response) => {
-//     setViewOrder(response.data.data)
-//   });
-// };
-
-const showDetails = (orderID) => { 
-    axios.get(`/order/${orderID}`).then((response) => {
-      setViewOrder(response.data.data)
+    $(document).ready(function() {
+      setTimeout(function() {
+        $("#example").DataTable();
+      }, 1000);
     });
-};
+  }, []);
 
+  const [status, setStatus] = useState("");
+
+  const handleStatusChange = (e) => {
+    setStatus(e.target.value);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // const handleDelete = (orderID) => {
+  //   axios.delete(`/order/${orderID}`).then((response) => {
+  //     setViewOrder(response.data.data)
+  //   });
+  // };
+
+  const showDetails = (orderID) => {
+    axios.get(`/order/${orderID}`).then((response) => {
+      setViewOrder(response.data.data);
+    });
+  };
 
   return (
     <>
@@ -96,10 +100,11 @@ const showDetails = (orderID) => {
                           <h5 className="text-muted">Total Orders</h5>
                           <h2 className="mb-0"> 10,28,056</h2>
                         </div>
-                        <div className="float-right icon-circle-medium  icon-box-lg  bg-info-light mb-2" style={{textAlign:'center'}}>
-                          <i
-                            className="fa fa-eye fa-fw fa-sm text-info justify-content-center mt-2"
-                          ></i>
+                        <div
+                          className="float-right icon-circle-medium  icon-box-lg  bg-info-light mb-2"
+                          style={{ textAlign: "center" }}
+                        >
+                          <i className="fa fa-eye fa-fw fa-sm text-info justify-content-center mt-2"></i>
                         </div>
                       </div>
                     </div>
@@ -112,11 +117,10 @@ const showDetails = (orderID) => {
                           <h2 className="mb-0"> $149.00</h2>
                         </div>
                         <div
-                          className="float-right icon-circle-medium  icon-box-lg  bg-brand-light mb-2" style={{textAlign:'center'}}
+                          className="float-right icon-circle-medium  icon-box-lg  bg-brand-light mb-2"
+                          style={{ textAlign: "center" }}
                         >
-                          <i
-                            className="fa fa-money-bill-alt fa-fw fa-sm text-brand mt-2"
-                          ></i>
+                          <i className="fa fa-money-bill-alt fa-fw fa-sm text-brand mt-2"></i>
                         </div>
                       </div>
                     </div>
@@ -128,7 +132,10 @@ const showDetails = (orderID) => {
                           <h5 className="text-muted">Total Buyers</h5>
                           <h2 className="mb-0"> 24,763</h2>
                         </div>
-                        <div className="float-right icon-circle-medium  icon-box-lg  bg-primary-light mb-2" style={{textAlign:'center'}}>
+                        <div
+                          className="float-right icon-circle-medium  icon-box-lg  bg-primary-light mb-2"
+                          style={{ textAlign: "center" }}
+                        >
                           <i className="fa fa-user fa-fw fa-sm text-primary mt-2"></i>
                         </div>
                       </div>
@@ -141,7 +148,10 @@ const showDetails = (orderID) => {
                           <h5 className="text-muted">Partnerships</h5>
                           <h2 className="mb-0">14</h2>
                         </div>
-                        <div className="float-right icon-circle-medium  icon-box-lg  bg-secondary-light mb-2" style={{textAlign:'center'}}>
+                        <div
+                          className="float-right icon-circle-medium  icon-box-lg  bg-secondary-light mb-2"
+                          style={{ textAlign: "center" }}
+                        >
                           <i className="fa fa-handshake fa-fw fa-sm text-secondary mt-2"></i>
                         </div>
                       </div>
@@ -164,23 +174,17 @@ const showDetails = (orderID) => {
                       <div
                         id="example wrapper"
                         className="dataTables_wrapper dt_bootstrap4"
-                      >
-                       
+                      ></div>
 
-
-                        
-                      </div>
-
-                      
                       <div className="container">
                         <table
-                         id="example"
+                          id="example"
                           className="table table-hover table-bordered"
                           style={{ width: "100%", textAlign: "left" }}
                         >
                           <thead>
                             <tr>
-                                <th>ID</th>
+                              <th>ID</th>
                               <th>Cost</th>
                               <th>Country</th>
                               <th>IncoTerm</th>
@@ -191,10 +195,9 @@ const showDetails = (orderID) => {
                             </tr>
                           </thead>
                           <tbody>
-                         { order.map((item) => {
-                         return (
-                      
-                              <tr key={item.id}>
+                            {order.map((item, index) => {
+                              return (
+                                <tr key={item.id}>
                                   {/* <td>{item.id}</td>
                                   <td>{item.price}</td>
                                   <td>{item.country}</td>
@@ -204,16 +207,16 @@ const showDetails = (orderID) => {
                                   <td>{item.country}</td>
                                   <td>{item.specification}</td> */}
 
-                                  <td>{item.id}</td>
+                                  <td>{index + 1}</td>
                                   <td>{item.cost}</td>
                                   <td>{item.country}</td>
                                   <td>{item.incoterm}</td>
-                                  
+
                                   <td>{item.paymentTerm}</td>
                                   <td>{item.shippingType}</td>
                                   <td>{item.status}</td>
                                   <td>
-                                  {/* <button
+                                    {/* <button
                                       type="button"
                                       className="btn btn-danger"
                                       data-dismiss="modal"
@@ -231,7 +234,7 @@ const showDetails = (orderID) => {
                                     >
                                       view{" "}
                                     </button>
-                                  
+
                                     <div
                                       className="modal fade"
                                       id="exampleModal"
@@ -239,7 +242,7 @@ const showDetails = (orderID) => {
                                       aria-labelledby="exampleModalLabel"
                                       aria-hidden="true"
                                     >
-                                      <div className="modal-dialog">
+                                      <div className="modal-dialog modal-lg">
                                         <div className="modal-content">
                                           <div className="modal-header">
                                             <h5
@@ -277,57 +280,107 @@ const showDetails = (orderID) => {
                           </Link>
                        
                                           </div> */}
-                                      
+
                                           <div className="modal-body px-2">
                                             <label>Cost: </label>
-                                            <p>
-                                             {viewOrder.cost}
-                                            </p>
+                                            <p>{viewOrder.cost}</p>
                                           </div>
-                                          <div className="modal-body px-2">
-                                            <label>Buyers Id: </label>
-                                            <p>
-                                             {viewOrder.buyerID}
-                                            </p>
+                                          <div
+                                            className="modal-body px-2 d-flex"
+                                            style={{
+                                              justifyContent: "space-between",
+                                            }}
+                                          >
+                                            <div>
+                                              <label>Buyers Id: </label>
+                                              <p>{viewOrder.buyerID}</p>
+                                            </div>
+                                            <div>
+                                              <label>Order Status</label>
+                                              <select
+                                                className="form-control"
+                                                onChange={handleStatusChange}
+                                                value={status}
+                                                name="status"
+                                                aria-describedby="Default select example"
+                                                placeholder="select status"
+                                              >
+                                                <option>
+                                                  ....Select Status
+                                                </option>
+                                                <option value="pending">
+                                                  Pending
+                                                </option>
+                                                <option value="paid">
+                                                  Confirmed Payment
+                                                </option>
+                                                <option value="paid">
+                                                  Order Shipped
+                                                </option>
+                                                <option value="paid">
+                                                  Delivered
+                                                </option>
+                                              </select>
+                                            </div>
                                           </div>
 
                                           <div className="modal-body px-2">
                                             <label>Country: </label>
-                                            <p>
-                                             {viewOrder.country}
-                                            </p>
+                                            <p>{viewOrder.country}</p>
                                           </div>
 
                                           <div className="modal-body px-2">
                                             <label>Created At: </label>
-                                            <p>
-                                             {viewOrder.createdAt}
-                                            </p>
+                                            <p>{viewOrder.createdAt}</p>
                                           </div>
 
                                           <div className="modal-body px-2">
                                             <label>Incoterm: </label>
-                                            <p>
-                                             {viewOrder.incoterm}
-                                            </p>
+                                            <p>{viewOrder.incoterm}</p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>Note: </label>
-                                            <p>
-                                             {viewOrder.note}
-                                            </p>
+                                            <p>{viewOrder.note}</p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>order Number: </label>
-                                            <p>
-                                             {viewOrder.orderNumber}
-                                            </p>
+                                            <p>{viewOrder.orderNumber}</p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>payment Term: </label>
-                                            <p>
-                                             {viewOrder.paymentTerm}
-                                            </p>
+                                            <p>{viewOrder.paymentTerm}</p>
+                                          </div>
+
+                                          <div className="modal-body px-2 d-flex">
+                                            Payment Status:
+                                            {status === "pending" && (
+                                              <div
+                                                className="bg-success rounded-pill text-center mx-2"
+                                                style={{
+                                                  width: "75px",
+                                                  height: "30px",
+                                                }}
+                                              >
+                                                {" "}
+                                                <p className="text-white pt-1">
+                                                  Pending
+                                                </p>{" "}
+                                              </div>
+                                            )}
+                                            {status === "paid" && (
+                                              <div
+                                                className="bg-success rounded-pill text-center mx-2"
+                                                style={{
+                                                  width: "75px",
+                                                  height: "30px",
+                                                }}
+                                              >
+                                                {" "}
+                                                <p className="text-white pt-1">
+                                                  Paid
+                                                </p>{" "}
+                                              </div>
+                                            )}
                                           </div>
 
                                           {/* <div className="modal-body px-2">
@@ -338,40 +391,25 @@ const showDetails = (orderID) => {
                                           </div> */}
                                           <div className="modal-body px-2">
                                             <label>Product ID: </label>
-                                            <p>
-                                             {viewOrder.productID}
-                                            </p>
+                                            <p>{viewOrder.productID}</p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>Quantity Order: </label>
-                                            <p>
-                                             {viewOrder.quantityOrdered}
-                                            </p>
+                                            <p>{viewOrder.quantityOrdered}</p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>Shipping Type: </label>
-                                            <p>
-                                             {viewOrder.shippingType}
-                                            </p>
+                                            <p>{viewOrder.shippingType}</p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>Status: </label>
-                                            <p>
-                                             {viewOrder.status}
-                                            </p>
+                                            <p>{viewOrder.status}</p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>UpdatedAt: </label>
-                                            <p>
-                                             {viewOrder.updatedAt}
-                                            </p>
+                                            <p>{viewOrder.updatedAt}</p>
                                           </div>
 
-
-                            
-                                       
-                                       
-                                         
                                           <div className="modal-footer">
                                             <button
                                               type="button"
@@ -380,25 +418,17 @@ const showDetails = (orderID) => {
                                             >
                                               Close
                                             </button>
-                                            
                                           </div>
                                         </div>
                                       </div>
                                     </div>
-
                                   </td>
-                                
-                              </tr>
-                        
-                          )
-                        })}
-                           
-                           </tbody>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
                         </table>
-                        </div>
-
-
-
+                      </div>
                     </div>
                   </div>
                 </div>

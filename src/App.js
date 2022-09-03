@@ -27,6 +27,8 @@ import Buyers from "./pages/buyershub/buyers/Buyers";
 import EditFaq from "./pages/website-settings/faqs/EditFaq";
 import EditTestimonial from "./pages/website-settings/testimonial/EditTestimonial";
 import EditCommodity from "./pages/website-settings/commodityInsight/EditCommodity";
+import EditBanner from "./pages/website-settings/bannners/EditBannner";
+
 
 function App() {
   return (
@@ -58,6 +60,7 @@ function App() {
       <Route exact path='/buyers' element={<Buyers/>} />
       <Route exact path='/editfaq/:myFaqId' element={<EditFaq/>} />
       <Route exact path='/edittestimonial/:myTestimonialId' element={<EditTestimonial/>} />
+      <Route exact path='/editbanner/:bannerId' element={<EditBanner/>} />
       <Route exact path='/editcommodity/:commodityId' element={<EditCommodity/>} />
       
     </Routes>

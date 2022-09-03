@@ -2,117 +2,108 @@ import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
-
-import { useNavigate, useParams } from 'react-router-dom';
-import { axios } from '../../components/baseUrl';
-
+import { useNavigate, useParams } from "react-router-dom";
+import { axios } from "../../components/baseUrl";
 import "react-toastify/dist/ReactToastify.css";
+import { africanCountryData } from "../../buyershub/products/africanCountries";
 import { toast, ToastContainer } from "react-toastify";
-
 
 const EditCommodity = () => {
   const editorRef = useRef();
 
+  // const editorRef = useRef();
 
-    // const editorRef = useRef();
+  const [id, setId] = useState(0);
+  const [name, setName] = useState("");
+  const [briefHistory, setBriefHistory] = useState("");
+  const [countries, setCountries] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
-    const [id, setId] = useState(0)
-    const [name, setName] = useState("");
-    const [briefHistory, setBriefHistory] = useState("");
-  const [countries, setCountries] = useState(""); 
-  const [isLoading, setIsLoading] = useState(true)
+  const handleEditor = () => {
+    setBriefHistory(editorRef.current.getContent());
+  };
 
-//   useEffect(() => {
-//     setId(localStorage.getItem("commodityID"));
-//     setCountries(localStorage.getItem("countries"));
-//     setName(localStorage.getItem("name"));
-//     setBriefHistory(localStorage.getItem("briefHistory"));
-//  }, [])
+  //   useEffect(() => {
+  //     setId(localStorage.getItem("commodityID"));
+  //     setCountries(localStorage.getItem("countries"));
+  //     setName(localStorage.getItem("name"));
+  //     setBriefHistory(localStorage.getItem("briefHistory"));
+  //  }, [])
 
- const navigate = useNavigate()
+  
 
- const {commodityId} = useParams()
- console.log(commodityId)
+  const navigate = useNavigate();
 
-const getInfo = async () => {
+  const { commodityId } = useParams();
+  console.log(commodityId);
+
+  const getInfo = async () => {
     try {
-    const response =  await axios.get(`/commodity/${commodityId}`)
-    setId(response.data.data.id)
-    setName(response.data.data.name)
-    setBriefHistory(response.data.data.briefHistory)
-    setCountries(response.data.data.countries)
-    console.log(response.data.data)
-    setIsLoading(false)
-    }  catch(error) {
-    console.log(error)
-    setIsLoading(false)
+      const response = await axios.get(`/commodity/${commodityId}`);
+      setId(response.data.data.id);
+      setName(response.data.data.name);
+      setBriefHistory(response.data.data.briefHistory);
+      setCountries(response.data.data.countries);
+      console.log(response.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
     }
-}
+  };
 
-useEffect(() => {
-    getInfo()
-}, [])
+  useEffect(() => {
+    getInfo();
+  }, []);
 
-    // const handleUpdate = (e) => {
-    //     e.preventDefault()
-    //     axios.patch(`/commodity/${id}`,
-    //     {name:name,
-    //     countries:countries,
+  // const handleUpdate = (e) => {
+  //     e.preventDefault()
+  //     axios.patch(`/commodity/${id}`,
+  //     {name:name,
+  //     countries:countries,
 
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
 
-//   useEffect(() => {
-//     setId(localStorage.getItem("commodityID"));
-//     setCountries(localStorage.getItem("countries"));
-//     setName(localStorage.getItem("name"));
-//     setBriefHistory(localStorage.getItem("briefHistory"));
-//   }, []);
+  const getCountry = () => {
+    const countries = document.getElementsByClassName("country-keys");
 
-  const handleUpdate = async(e) => {
-      try {
-        e.preventDefault();
-       await axios.patch("/commodity", {
-            name: name,
-            countries: getCountry(),
-            briefHistory: briefHistory,
-          });
-          toast.success("EDITED SUCCESSFULLY", {
-            position: "top-right",
-            autoClose: 4000,
-            pauseHover: true,
-            draggable: true,
-          });
-    
+    const country = [];
+    for (let i = 0; i < countries.length; i++) {
+      const [countryName, shortName] = countries[i].value.split("___");
+      if (countryName && shortName) country.push({countryName, shortName});
+    }
+    return JSON.stringify(country);
+  };
 
-      } catch (error) {
-          if (error) {
+
+  const handleUpdate = async (e) => {
+    try {
+      e.preventDefault();
+      await axios.patch("/commodity", {
+        name: name,
+        countries: getCountry(),
+        briefHistory: briefHistory,
+      });
+      toast.success("EDITED SUCCESSFULLY", {
+        position: "top-right",
+        autoClose: 4000,
+        pauseHover: true,
+        draggable: true,
+      });
+    } catch (error) {
+      if (error) {
         toast.error("FAILED TRY AGAIN", {
-            position: "top-right",
-            autoClose: 4000,
-            pauseHover: true,
-            draggable: true,
-          });
-          console.log(error)
+          position: "top-right",
+          autoClose: 4000,
+          pauseHover: true,
+          draggable: true,
+        });
+        console.log(error);
       }
-          }
     }
-   
-    
-    const getCountry = () => {
-        const countries = document.getElementsByClassName("country-keys");
-        // const prices = document.getElementsByClassName("country-values");
-    
-        const country = [];
-        // [{ countryName: string, price: string }]
-        for (let i = 0; i < countries.length; i++) {
-          const countryName = countries[i].value;
-          // const price = prices[i].value;
-          if (countryName) country.push(countryName);
-        }
-        return JSON.stringify(country);
-      };
+  };
 
-    
+
 
   const [country, setCountry] = useState([{ countryName: "" }]);
 
@@ -126,11 +117,9 @@ useEffect(() => {
     setCountry(countryValues);
   };
 
-if (isLoading) {
-    return (
-        <h1>Loading</h1>
-    )
-}
+  if (isLoading) {
+    return <h1>Loading</h1>;
+  }
 
   return (
     <>
@@ -147,9 +136,7 @@ if (isLoading) {
             <form className="mx-5 my-5">
               <div className="d-flex justify-content-between">
                 <h2> Edit Commodity Insight</h2>
-                {/* <Link to="/commodityInsight">
-                <button className="btn btn-primary m-3">Show Commodity</button>
-              </Link> */}
+
                 <div
                   className="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12"
                   align="right"
@@ -173,17 +160,15 @@ if (isLoading) {
                 </div>
 
                 <div className="col-6">
-                  <label className="form-label">Country</label>
+                <label className="form-label">Country</label>
                   {country.map((info, index) => (
                     <div key={index} className="root my-2">
-                      <input
-                        type="text"
-                        name="countries"
-                        value={country.countryName}
-                        variant="filled"
-                        placeholder="country name"
-                        className="mx-1 form-control country-keys"
-                      />
+                      <select value={country.countryName} name="countries" className="mx-1 form-control country-keys">
+                        {Object.entries(africanCountryData).map((country, index) => {
+                          return <option key={index} value={`${country[0]}___${country[1]}`}>{country[1]}</option>
+                        })}
+
+                      </select>
 
                       <div className="d-flex align-items-center">
                         <i
@@ -199,24 +184,27 @@ if (isLoading) {
                   ))}
                 </div>
               </div>
+
               <div>
                 <h4>Commodity Information</h4>
                 <Editor
+                    id="mytextarea"
+                    name="briefHistory"
                   value={briefHistory}
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   onChange={(e) => setBriefHistory(e.target.value)}
                 />
               </div>
 
-              <div className="mb-3" style={{ textAlign: "left" }}>
-                {/* { file && <div>
+              {/* <div className="mb-3" style={{ textAlign: "left" }}> */}
+              {/* { file && <div>
                
             <img alt="not found" width={"250px"} src={URL.createObjectURL(file)} />
             </div>
           } */}
-                <label className="form-label mx-2">Upload Product</label>
+              {/* <label className="form-label mx-2">Upload Product</label>
                 <input type="file" id="img" name="fileName" accept="image/*" />
-              </div>
+              </div> */}
 
               <div style={{ textAlign: "start" }}>
                 <button className="btn btn-dark" onClick={handleUpdate}>

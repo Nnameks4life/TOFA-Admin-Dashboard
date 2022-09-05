@@ -158,7 +158,7 @@ const Banners = () => {
                                       </div>
                                       <div className="d-flex">
                                         <div className="modal-body">
-                                          Banner: {viewBanner.image}
+                                          Banner: <img src={viewBanner.image} alt='banner' /> 
                                         </div>
                                       </div>
 

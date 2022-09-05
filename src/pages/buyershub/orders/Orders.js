@@ -18,6 +18,7 @@ import { axios } from "../../components/baseUrl";
 const Orders = () => {
   const [order, setOrder] = useState([]);
   const [viewOrder, setViewOrder] = useState([]);
+  const [orderStatus, setOrderStatus] = useState([]);
 
   const getData = async () => {
     try {
@@ -39,6 +40,19 @@ const Orders = () => {
       }, 1000);
     });
   }, []);
+
+  const getOrder = async (id) => {
+    try {
+      const { data } = await axios
+        .patch("/order", {
+          status: "DELIVERED",
+          orderID: id,
+        })
+      setViewOrder(data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   const [status, setStatus] = useState("");
 
@@ -62,6 +76,11 @@ const Orders = () => {
     });
   };
 
+  const showStatus = () => {
+    axios.patch("/order").then((response) => {
+      setOrderStatus(response.data.data);
+    });
+  };
   return (
     <>
       {/* <!-- main wrapper --> */}
@@ -299,29 +318,31 @@ const Orders = () => {
                                               <label>Order Status</label>
                                               <select
                                                 className="form-control"
-                                                onChange={handleStatusChange}
-                                                value={status}
+                                                onChange={() => getOrder(viewOrder.id)}
+                                                // value={status}
                                                 name="status"
                                                 aria-describedby="Default select example"
                                                 placeholder="select status"
                                               >
-                                                <option>
+                                                {/* <option>
                                                   ....Select Status
-                                                </option>
+                                                </option> */}
                                                 <option value="pending">
-                                                  Pending
+                                                  PENDING
                                                 </option>
                                                 <option value="paid">
-                                                  Confirmed Payment
+                                                  CONFIRMED PAYMENT
                                                 </option>
                                                 <option value="paid">
-                                                  Order Shipped
+                                                  ORDER SHIPPED
                                                 </option>
                                                 <option value="paid">
-                                                  Delivered
+                                                  DELIVERED
                                                 </option>
                                               </select>
                                             </div>
+
+
                                           </div>
 
                                           <div className="modal-body px-2">
@@ -353,35 +374,12 @@ const Orders = () => {
 
                                           <div className="modal-body px-2 d-flex">
                                             Payment Status:
-                                            {status === "pending" && (
-                                              <div
-                                                className="bg-success rounded-pill text-center mx-2"
-                                                style={{
-                                                  width: "75px",
-                                                  height: "30px",
-                                                }}
-                                              >
-                                                {" "}
-                                                <p className="text-white pt-1">
-                                                  Pending
-                                                </p>{" "}
-                                              </div>
-                                            )}
-                                            {status === "paid" && (
-                                              <div
-                                                className="bg-success rounded-pill text-center mx-2"
-                                                style={{
-                                                  width: "75px",
-                                                  height: "30px",
-                                                }}
-                                              >
-                                                {" "}
-                                                <p className="text-white pt-1">
-                                                  Paid
-                                                </p>{" "}
-                                              </div>
-                                            )}
+                                            {viewOrder.status ==
+                                                "DELIVERED"
+                                                  ? <div className="bg-danger rounded-pill text-center mx-2">Pending</div>
+                                                  : <div className="bg-success rounded-pill text-center mx-2">Paid</div>}
                                           </div>
+                                          
 
                                           {/* <div className="modal-body px-2">
                                             <label>Port: </label>
@@ -413,6 +411,7 @@ const Orders = () => {
                                           <div className="modal-footer">
                                             <button
                                               type="button"
+                                              onClick={showStatus}
                                               className="btn btn-secondary"
                                               data-bs-dismiss="modal"
                                             >

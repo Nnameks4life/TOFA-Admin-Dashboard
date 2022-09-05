@@ -345,6 +345,13 @@ button {
 button:focus {
     outline: 0;
 }
+.top-left-ctn{
+    flex-direction: column;
+    width: 50%;
+}
+.product-img-ctn{
+    flex-direction: column;
+}
 
 select.form-control {
     color: #71748d;

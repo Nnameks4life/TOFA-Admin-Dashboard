@@ -155,6 +155,14 @@ $(document).ready(function () {
                                              
                                             ></button>
                                           </div>
+
+                                          <div className="modal-body px-2">
+                                            <label>
+                                              Applicant Image
+                                            </label>
+                                            <br />
+                                            <img src={applicantView.image} alt='applicant' />
+                                          </div>
                                           
                                           <div className="modal-body px-2">
                                             <label>
@@ -163,6 +171,8 @@ $(document).ready(function () {
                                             <br />
                                             <p> {applicantView.firstName} {applicantView.lastName}</p>
                                           </div>
+
+                                          
                                           <div className="modal-body px-2">
                                             <label>Country of Exported Import: </label>
                                             <p>

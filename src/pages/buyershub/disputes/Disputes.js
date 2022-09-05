@@ -11,7 +11,7 @@ import Sidebar from "../../components/sidebar/Sidebar";
 
 const Disputes = () => {
   const [disputes, setDisputes] = useState([]);
-  const [viewDisputes, setViewDisputes] = useState([]);
+  const [viewDisputes, setViewDisputes] = useState({});
 
   const getData = async () => {
     try {
@@ -24,23 +24,28 @@ const Disputes = () => {
     }
   };
 
-  const [status, setStatus] = useState("")
-
-  const handleStatusChange = (e) => {
-    setStatus( e.target.value)
-  }
-
-
-  //  const {data, loading, error} = useFetch("/order")
-
-  //  if (loading) return <h1>LOADING ....</h1>
-
-  //  if (error) console.log(error)
-
   const showDetails = (disputeID) => {
-    axios.get(`/dispute/${disputeID}`).then((response) => {
-      setViewDisputes(response.data.data);
-    });
+    try {
+      axios.get(`/dispute/${disputeID}`).then((response) => {
+        console.log(response.data.data)
+        setViewDisputes(response.data.data);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getDispute = async (id) => {
+    try {
+      const { data } = await axios
+        .patch("/dispute", {
+          status: "RESOLVED",
+          disputeID: id,
+        })
+      setViewDisputes(data.data)
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   useEffect(() => {
@@ -148,23 +153,23 @@ const Disputes = () => {
                             <tr>
                               <th>ID</th>
                               <th>Full Name</th>
-                              <th>Dispute</th>
+                              <th>Email</th>
                               <th>Status</th>
-                              <th>PhoneNumber</th>
-                              <th>Country</th>
+                              <th>Subject</th>
+                              <th>Complaint</th>
                               <th className="text-center">Action</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {applicantDatatabless.map((item, index) => {
+                            {disputes.map((item, index) => {
                               return (
                                 <tr key={item.id}>
-                                  <td>{index +1}</td>
-                                  <td>{item.fullName}</td>
-                                  <td>{item.country}</td>
+                                  <td>{index + 1}</td>
+                                  <td>{item.buyer.fullName}</td>
+                                  <td>{item.buyer.email}</td>
                                   <td>{item.status}</td>
-                                  <td>{item.phoneNumber}</td>
-                                  <td>{item.productTraded}</td>
+                                  <td>{item.subject}</td>
+                                  <td>{item.complaint}</td>
 
                                   <td>
                                     {/* <button
@@ -175,15 +180,15 @@ const Disputes = () => {
                                       view
                                     </button> */}
                                     <div className="text-center">
-                                    <button
-                                      onClick={(e) => showDetails(item.id)}
-                                      type="button"
-                                      className="btn btn-primary"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#exampleModal"
-                                    >
-                                      view
-                                    </button>
+                                      <button
+                                        onClick={(e) => showDetails(item.id)}
+                                        type="button"
+                                        className="btn btn-primary"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal"
+                                      >
+                                        view
+                                      </button>
                                     </div>
 
                                     <div
@@ -207,36 +212,19 @@ const Disputes = () => {
                                               className="btn-close text-danger"
                                               data-bs-dismiss="modal"
                                               aria-label="Close"
-                                             
                                             ></button>
                                           </div>
-                                          
-                                          <div className="modal-body px-2 d-flex" style={{justifyContent:'space-between'}}>
+
+                                          <div
+                                            className="modal-body px-2 d-flex"
+                                            style={{
+                                              justifyContent: "space-between",
+                                            }}
+                                          >
                                             <div className="">
-                                            <label>
-                                              Customer Name:{" "}
-                                            </label>
-                                            <br />
-                                            <p>Erhun Abbe</p>
-                                            </div>
-                                            <div className="d-flex">
-                                              <label>Dispute Status</label>
-                                              <select
-                                                className="form-control"
-                                                onChange={handleStatusChange}
-                                                value={status}
-                                                name="status"
-                                                aria-describedby="Default select example"
-                                                placeholder="select status"
-                                              >
-                                                
-                                                <option>....Select Status</option>
-                                                <option value='paid'>Open</option>
-                                                <option value='pending'>
-                                                  Closed
-                                                </option>
-                                                
-                                              </select>
+                                              <label>Customer Name: </label>
+                                              <br />
+                                              <p>{viewDisputes.buyer && viewDisputes.buyer.fullName}</p>
                                             </div>
                                           </div>
                                           <div className="modal-body px-2">
@@ -249,66 +237,41 @@ const Disputes = () => {
 
                                           <div className="modal-body px-2 d-flex">
                                             Dispute Status:
-                                            {status === "pending" && (
-                                              <div
-                                                className="bg-danger rounded-pill text-center mx-2"
-                                                style={{
-                                                  width: "75px",
-                                                  height: "30px",
-                                                }}
-                                              >
-                                                {" "}
-                                                <p className="text-white pt-1">
-                                                  Closed
-                                                </p>{" "}
-                                              </div>
-                                            )}
-                                            {status === "paid" && (
-                                              <div
-                                                className="bg-success rounded-pill text-center mx-2"
-                                                style={{
-                                                  width: "75px",
-                                                  height: "30px",
-                                                }}
-                                              >
-                                                {" "}
-                                                <p className="text-white pt-1">
-                                                  Open
-                                                </p>{" "}
-                                              </div>
-                                            )}
+                                            <div
+                                              className=""
+                                              style={{
+                                                width: "75px",
+                                                height: "30px",
+                                              }}
+                                            >
+                                              <p className="text-white pt-1">
+                                                {viewDisputes.status ==
+                                                "PENDING"
+                                                  ? <div className="bg-danger rounded-pill text-center mx-2">Open</div>
+                                                  : <div className="bg-success rounded-pill text-center mx-2">Resolved</div>}
+                                              </p>
+                                            </div>
                                           </div>
 
                                           <div className=" modal-bodyb px-2">
                                             <label>Subject:</label>
-                                            <p>Pending reversed money </p>
+                                            <p>{viewDisputes.subject} </p>
                                           </div>
                                           <div className="modal-body px-2">
                                             <label>Complaint:</label>
-                                            <p>
-                                              Commodo eget a et dignissim
-                                              dignissim morbi vitae, mi. Mi
-                                              aliquam sit ultrices enim cursus.
-                                              Leo sapien, pretium duis est eu
-                                              volutpat interdum eu non. Odio
-                                              eget nullam elit laoreet. Libero
-                                              at felis nam at orci venenatis
-                                              rutrum nunc. Etiam mattis ornare
-                                              pellentesque iaculis enim. Felis
-                                              eu non in aliquam egestas
-                                              placerat. Eget maecenas ornare
-                                              venenatis lacus nunc{" "}
-                                            </p>
+                                            <p>{viewDisputes.complaint}</p>
                                           </div>
 
-                                         
                                           <div className="modal-footer">
                                             <button
                                               type="button"
                                               className="btn btn-dark"
-                                              data-bs-dismiss="modal"
+                                            
+                                              onClick={(e) =>
+                                                getDispute(viewDisputes.id)
+                                              }
                                             >
-                                              Close
+                                              Resolved
                                             </button>
                                           </div>
                                         </div>

@@ -123,56 +123,10 @@ const Products = () => {
                         id="example wrapper"
                         className="dataTables_wrapper dt_bootstrap4"
                       >
-                        <div className="row">
-                          <div
-                            className="col-sm-12 md-6"
-                            style={{ textAlign: "left" }}
-                          >
-                            <div className="dt-buttons my-3">
-                              <button
-                                className="btn btn-outline-light buttons-copy buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Copy</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-excel buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Excel</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-pdf buttons-html5"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>PDF</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-print"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                              >
-                                <span>Print</span>
-                              </button>
-                              <button
-                                className="btn btn-outline-light buttons-collection dropdown-toggle buttons-colvis"
-                                tabIndex="0"
-                                aria-controls="example"
-                                type="button"
-                                aria-haspopup="true"
-                              >
-                                <span>Column Visibility</span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
+                       
+
+
+
                       </div>
                       <div className="container">
                         <table
@@ -268,15 +222,15 @@ const Products = () => {
                                       aria-labelledby="exampleModalLabel"
                                       aria-hidden="true"
                                     >
-                                      <div className="modal-dialog">
+                                      <div className="modal-dialog modal-xl">
                                         <div className="modal-content">
                                           <div className="modal-header">
-                                            <h5
+                                            <h3
                                               className="modal-title"
                                               id="exampleModalLabel"
                                             >
-                                              Product Information
-                                            </h5>
+                                              Product Details Management
+                                            </h3>
                                             <button
                                               type="button"
                                               className="btn-close"
@@ -284,7 +238,25 @@ const Products = () => {
                                               aria-label="Close"
                                             ></button>
                                           </div>
-                                          <div align="right"></div>
+                                          <div className="">
+                                            <div className="d-flex top-ctn" style={{width:"100%"}}>
+                                              <div className="d-flex top-left-ctn">
+                                                <h5>Featured Product Image: </h5>
+                                                <div className="product-img-ctn" style={{width:"100%"}}>
+                                                  <div className="product-img-ctn-featured" style={{width:"100%"}}>
+                                                    <img src={viewProduct.productImages && viewProduct.productImages.filter(image => image.isMain == true)[0].image} alt='' style={{width:"100%", height:"auto"}} />
+                                                  </div>
+                                                  <div className="product-img-ctn-other" style={{width:"100%"}} >
+                                                    {viewProduct.productImages && viewProduct.productImages.filter(image => image.isMain == false).map((image, index) => <img key={index} src={image.image} alt='' style={{width:"30%", height:"100px", margin: "5px", objectFit: "cover"}}/>)}
+                                              
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div className="d-flex top-right-ctn"></div>
+
+                                            </div>
+                                            <div className="d-flex bottom-ctn"></div>
+                                          </div>
                                           <div className="d-flex ">
                                             <div className="modal-body">
                                               Product Name:{" "}
@@ -300,9 +272,17 @@ const Products = () => {
                                             </div>
                                           </div>
                                           <div className="modal-body">
-                                              Minimum Price:{" "}
-                                              {viewProduct.featuredImage}
+                                              Featured Image:{" "}
+                                              
+                                              {/* {viewProduct.featuredImage} */}
                                             </div>
+
+                                            <div className="modal-body">
+                                              Other Images:{" "}
+                                              
+                                              {/* {viewProduct.featuredImage} */}
+                                            </div>
+                                            
                                           <div className="d-flex">
                                             <div className="modal-body">
                                               Maximum Price Per Unit:{" "}

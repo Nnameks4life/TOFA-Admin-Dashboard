@@ -138,15 +138,15 @@ $(document).ready(function () {
                                       aria-labelledby="exampleModalLabel"
                                       aria-hidden="true"
                                     >
-                                      <div className="modal-dialog">
+                                      <div className="modal-dialog modal-lg">
                                         <div className="modal-content">
                                           <div className="modal-header">
-                                            <h5
+                                            <h3
                                               className="modal-title"
                                               id="exampleModalLabel"
                                             >
-                                              Applications Overview
-                                            </h5>
+                                              Application Details Management
+                                            </h3>
                                             <button
                                               type="button"
                                               className="btn-close text-danger"
@@ -156,73 +156,75 @@ $(document).ready(function () {
                                             ></button>
                                           </div>
 
-                                          <div className="modal-body px-2">
-                                            <label>
-                                              Applicant Image
-                                            </label>
-                                            <br />
-                                            <img src={applicantView.image} alt='applicant' />
+                                          <div className="modal-body"> 
+                                            <div className="d-flex top-ctn">
+                                              <div className="modal-body" >
+                                                <img src={applicantView.image} alt='applicant' style={{width: "125px", height: "125px", borderRadius: "50%"}}/>
+                                              </div>
+                                              <div className="modal-body" >
+                                                <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> First name: </h6>
+                                                {applicantView.firstName}
+                                              </div>
+                                              <div className="modal-body" >
+                                                <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Last name: </h6>
+                                                {applicantView.lastName}
+                                              </div>
+                                              <div className="modal-body" >
+                                                <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Email: </h6>
+                                                {applicantView.email}
+                                              </div>
+                                            </div>
+                                            <div className=" d-flex bottom-ctn" style={{border: "1px solid #000000", width: "100%"}}>
+                                              <div className="bottom-ctn-left" style={{width:"50%", border: "1px solid #DDDDDD"}}>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Country: </h6>
+                                                  {applicantView.country}
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> State: </h6>
+                                                  {applicantView.state}
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Address: </h6>
+                                                  {applicantView.address}
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Gender: </h6>
+                                                  {applicantView.gender}
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Age: </h6>
+                                                  {applicantView.age}
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Phone no: </h6>
+                                                  {applicantView.phoneNumber}
+                                                </div>
+                                              </div>
+                                              <div className="bottom-ctn-right" style={{width:"50%", border: "1px solid #DDDDDD"}}>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Language(s): </h6>
+                                                  {applicantView.language}
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Do you currently trade with any product?</h6>
+                                                  {/* {applicantView.phoneNumber} */} Yes
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> How would you attend the training? </h6>
+                                                  {/* {applicantView.phoneNumber} */} Online
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> State the products you trade on: </h6>
+                                                  {applicantView.products}{" "}
+                                                </div>
+                                                <div className="modal-body" >
+                                                  <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Applicant’s Video</h6>
+                                                  {applicantView.link}
+                                                </div>
+                                              </div>
+                                            </div>
                                           </div>
-                                          
-                                          <div className="modal-body px-2">
-                                            <label>
-                                              Full Name:{" "}
-                                            </label>
-                                            <br />
-                                            <p> {applicantView.firstName} {applicantView.lastName}</p>
-                                          </div>
-
-                                          
-                                          <div className="modal-body px-2">
-                                            <label>Country of Exported Import: </label>
-                                            <p>
-                                              {applicantView.country}
-                                            </p>
-                                          </div>
-
-                                          <div className="modal-body px-2">
-                                            <label>Phone Number: </label>
-                                            <p>
-                                              {applicantView.phoneNumber}
-                                            </p>
-                                          </div>
-
-                                          <div className="modal-body px-2">
-                                            <label>Email: </label>
-                                            <p>
-                                              {applicantView.email}
-                                            </p>
-                                          </div>
-
-                                          <div className="modal-body px-2">
-                                            <label>Gender: </label>
-                                            <p>
-                                              {applicantView.gender}
-                                            </p>
-                                          </div>
-
-                                          <div className=" modal-bodyb px-2">
-                                            <label>Quantity Requested:</label>
-                                            <p>39 Metric Tonnes</p>
-                                          </div>
-                                          <div className="modal-body px-2">
-                                            <label>Product Specification:</label>
-                                            <p>
-                                              Commodo eget a et dignissim
-                                              dignissim morbi vitae, mi. Mi
-                                              aliquam sit ultrices enim cursus.
-                                              Leo sapien, pretium duis est eu
-                                              volutpat interdum eu non. Odio
-                                              eget nullam elit laoreet. Libero
-                                              at felis nam at orci venenatis
-                                              rutrum nunc. Etiam mattis ornare
-                                              pellentesque iaculis enim. Felis
-                                              eu non in aliquam egestas
-                                              placerat. Eget maecenas ornare
-                                              venenatis lacus nunc{" "}
-                                            </p>
-                                          </div>
-
                                          
                                           <div className="modal-footer">
                                             <button

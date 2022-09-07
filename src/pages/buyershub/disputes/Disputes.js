@@ -27,7 +27,7 @@ const Disputes = () => {
   const showDetails = (disputeID) => {
     try {
       axios.get(`/dispute/${disputeID}`).then((response) => {
-        console.log(response.data.data)
+        console.log(response.data.data);
         setViewDisputes(response.data.data);
       });
     } catch (err) {
@@ -37,14 +37,13 @@ const Disputes = () => {
 
   const getDispute = async (id) => {
     try {
-      const { data } = await axios
-        .patch("/dispute", {
-          status: "RESOLVED",
-          disputeID: id,
-        })
-      setViewDisputes(data.data)
+      const { data } = await axios.patch("/dispute", {
+        status: "RESOLVED",
+        disputeID: id,
+      });
+      setViewDisputes(data.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -224,7 +223,10 @@ const Disputes = () => {
                                             <div className="">
                                               <label>Customer Name: </label>
                                               <br />
-                                              <p>{viewDisputes.buyer && viewDisputes.buyer.fullName}</p>
+                                              <p>
+                                                {viewDisputes.buyer &&
+                                                  viewDisputes.buyer.fullName}
+                                              </p>
                                             </div>
                                           </div>
                                           <div className="modal-body px-2">
@@ -244,11 +246,17 @@ const Disputes = () => {
                                                 height: "30px",
                                               }}
                                             >
-                                              <p className="text-white pt-1">
+                                              <p className="text-white  mx-1">
                                                 {viewDisputes.status ==
-                                                "PENDING"
-                                                  ? <div className="bg-danger rounded-pill text-center mx-2">Open</div>
-                                                  : <div className="bg-success rounded-pill text-center mx-2">Resolved</div>}
+                                                "PENDING" ? (
+                                                  <span className="bg-danger rounded-pill text-center px-2 py-1">
+                                                    Open
+                                                  </span>
+                                                ) : (
+                                                  <span className="bg-success rounded-pill text-center px-1 py-1 ">
+                                                    Resolved
+                                                  </span>
+                                                )}
                                               </p>
                                             </div>
                                           </div>
@@ -266,7 +274,10 @@ const Disputes = () => {
                                             <button
                                               type="button"
                                               className="btn btn-dark"
-                                            
+                                              style={{
+                                                background: "#4f4f4f",
+                                                borderRadius: "5px",
+                                              }}
                                               onClick={(e) =>
                                                 getDispute(viewDisputes.id)
                                               }

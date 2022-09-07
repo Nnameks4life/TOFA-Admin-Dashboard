@@ -3,7 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import { Link } from "react-router-dom";
 import { axios } from "../../components/baseUrl";
-
+import * as dayjs from "dayjs";
 const Banners = () => {
   const [banner, setBanner] = useState([]);
   const [viewBanner, setViewBanner] = useState([]);
@@ -82,27 +82,30 @@ const Banners = () => {
                     >
                       <thead>
                         <tr>
-                          <th scope="col">#</th>
+                          <th scope="col">S/N</th>
                           <th scope="col">Banner Image</th>
-                          {/* <th scope="col">Call to Action</th>
-                          <th scope="col">Link</th> */}
+                          <th scope="col">Call to Action</th>
+                          <th scope="col">Link</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {banner.map((item) => {
+                        {banner.map((item, index) => {
                           return (
                             <tr key={item.id}>
-                              <th scope="row">{item.id}</th>
-                              <td>{item.image}</td>
-                              {/* <td>{item.callToAction}</td>
-                              <td>{item.link}</td> */}
+                              <th scope="row">{index + 1}</th>
+                              <td>
+                                {" "}
+                                <img src={item.image} alt="banner" />
+                              </td>
+                              <td>{item.callToAction}</td>
+                              <td>{item.link}</td>
 
                               <td>
                                 <Link to={`/editbanner/${item.id}`}>
                                   <button
                                     type="button"
-                                    className="btn btn-success"
+                                    className="btn btn-success mx-2"
                                     data-dismiss="modal"
                                   >
                                     Edit
@@ -148,17 +151,24 @@ const Banners = () => {
                                         ></button>
                                       </div>
                                       <div align="right">{/* empty */}</div>
-                                      <div className="d-flex ">
-                                        <div className="modal-body">
-                                          Uploaded on: {viewBanner.createdAt}
-                                        </div>
-                                        <div className="modal-body">
-                                          Link: {viewBanner.link}
-                                        </div>
+
+                                      <div className="modal-body">
+                                        Uploaded on:{" "}
+                                        {dayjs[viewBanner.createdAt]}
+                                      </div>
+                                      <div className="modal-body">
+                                        Link: {viewBanner.link}
                                       </div>
                                       <div className="d-flex">
                                         <div className="modal-body">
-                                          Banner: <img src={viewBanner.image} alt='banner' /> 
+                                          <img
+                                            src={viewBanner.image}
+                                            alt="banner"
+                                            style={{
+                                              width: "60%",
+                                              height: "60%",
+                                            }}
+                                          />
                                         </div>
                                       </div>
 

@@ -238,74 +238,99 @@ const Products = () => {
                                               aria-label="Close"
                                             ></button>
                                           </div>
-                                          <div className="">
+                                          <div className="modal-body">
                                             <div className="d-flex top-ctn" style={{width:"100%"}}>
-                                              <div className="d-flex top-left-ctn">
-                                                <h5>Featured Product Image: </h5>
+                                              <div className="top-left-ctn modal-body" style={{width:"50%"}}>
+                                                <h4>Featured Product Image: </h4>
                                                 <div className="product-img-ctn" style={{width:"100%"}}>
                                                   <div className="product-img-ctn-featured" style={{width:"100%"}}>
                                                     <img src={viewProduct.productImages && viewProduct.productImages.filter(image => image.isMain == true)[0].image} alt='' style={{width:"100%", height:"auto"}} />
                                                   </div>
                                                   <div className="product-img-ctn-other" style={{width:"100%"}} >
-                                                    {viewProduct.productImages && viewProduct.productImages.filter(image => image.isMain == false).map((image, index) => <img key={index} src={image.image} alt='' style={{width:"30%", height:"100px", margin: "5px", objectFit: "cover"}}/>)}
-                                              
+                                                    {viewProduct.productImages && viewProduct.productImages.filter(image => image.isMain == false).map((image, index) => <img key={index} src={image.image} alt='' style={{width:"100px", height:"100px", margin: "5px", objectFit: "cover"}}/>)}
                                                   </div>
                                                 </div>
+                                                <Link to={`/editproduct/${item.id}`}> 
+                                                  <h5 style={{color:"#DC4D04"}}>
+                                                    Update images
+                                                  </h5>
+                                                </Link>
                                               </div>
-                                              <div className="d-flex top-right-ctn"></div>
+                                              <div className="top-right-ctn modal-body" style={{width:"50%"}}>
+                                                <h4> Product Details</h4>
+                                                <div className="top-right-ctn-body" style={{width:"100%",  border: "1px solid #000000"}}> 
+                                                  <div className="top-right-ctn-body top-cont d-flex" style={{width: "100%",}}> 
+                                                    <div className="top-right-ctn-body top-cont-left" style={{width:"50%", border: "1px solid #DDDDDD"}}> 
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Product Name: </h6>
+                                                        {viewProduct.productName}
+                                                      </div>
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Subcategory: </h6>
+                                                        {viewProduct.subCategory}
+                                                      </div>
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Min price: </h6>
+                                                        {viewProduct.minPricePerUnit}
+                                                      </div>
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Category: </h6>
+                                                        {viewProduct.subCategory}
+                                                      </div>
+                                                    </div>
+                                                    <div className="top-right-ctn-body top-cont-right" style={{width:"50%", border: "1px solid #DDDDDD"}}> 
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Supply Capacity: </h6>
+                                                        {viewProduct.supplyCapacity}
+                                                      </div>
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Min Duration: </h6>
+                                                        {viewProduct.minDuration}
+                                                      </div>
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Category: </h6>
+                                                        {viewProduct.subCategory}
+                                                      </div>
+                                                      <div className="modal-body">
+                                                        <h6 style={{color: "rgba(0, 0, 0, 0.62)"}}> Subcategory: </h6>
+                                                        {viewProduct.subCategory}
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <div className="top-right-ctn-body bottom-cont"> 
+                                                    <h6 className="modal-body" style={{color: "rgba(0, 0, 0, 0.62)"}}> Cost of product: </h6>
+                                                    <div className="d-flex">
+                                                      <div className="modal-body">
+                                                        Maximum Price Per Unit: <br/>
+                                                        {viewProduct.maxPricePerUnit}
+                                                      </div>
+                                                      <div className="modal-body">
+                                                        Currency: <br/>
+                                                        {viewProduct.currency}
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                <Link to={`/editproduct/${item.id}`}> 
+                                                    <h5 style={{color:"#DC4D04"}}>
+                                                      Update product details
+                                                    </h5>
+                                                </Link>
+                                              </div>
+                                            </div>
+                                            <div className="bottom-ctn modal-body">
+                                              <h4 >Product Information</h4>
+                                              <div className="modal-body" style={{border: "1px solid #000000"}}>
+                                                ToFa has developed partnerships with Vietnam’s top suppliers to provide high-quality cashew nuts to markets worldwide. Vietnam has been producing cashews throughout the country since the early 1980s. 
+                                                Cashew nuts are grown in various regions in Vietnam, including Binh Phuoc, Dak Nong, Dong Nai, Binh Duong provinces. Particularly, Binh Phuoc province is known as the leading region for the growth of cashew nuts, constituting over 50% of the entire cashew nuts production in Vietnam. 
 
-                                            </div>
-                                            <div className="d-flex bottom-ctn"></div>
-                                          </div>
-                                          <div className="d-flex ">
-                                            <div className="modal-body">
-                                              Product Name:{" "}
-                                              {viewProduct.productName}
-                                            </div>
-                                            <div className="modal-body">
-                                              Category:{" "}
-                                              {viewProduct.subCategory}
-                                            </div>
-                                            <div className="modal-body">
-                                              Minimum Price:{" "}
-                                              {viewProduct.minPricePerUnit}
-                                            </div>
-                                          </div>
-                                          <div className="modal-body">
-                                              Featured Image:{" "}
-                                              
-                                              {/* {viewProduct.featuredImage} */}
-                                            </div>
-
-                                            <div className="modal-body">
-                                              Other Images:{" "}
-                                              
-                                              {/* {viewProduct.featuredImage} */}
-                                            </div>
-                                            
-                                          <div className="d-flex">
-                                            <div className="modal-body">
-                                              Maximum Price Per Unit:{" "}
-                                              {viewProduct.maxPricePerUnit}
-                                            </div>
-                                            <div className="modal-body">
-                                              Currency: {viewProduct.currency}
-                                            </div>
-                                          </div>
-                                          <div className="d-flex">
-                                            <div className="modal-body">
-                                              Supply Capacity:{" "}
-                                              {viewProduct.supplyCapacity}
-                                            </div>
-                                            <div className="modal-body">
-                                              Minmum Duration:{" "}
-                                              {viewProduct.minDuration}
-                                            </div>
-                                          </div>
-                                          <div className="mx-auto">
-                                            <div className="modal-body">
-                                              Subcategory:{" "}
-                                              {viewProduct.subCategory}
+                                                Tridge can provide two types of cashew nuts for export: kernel and processed nuts. With kernel cashew nuts, there are various sizes ranging from W180 to W500. For processed nuts, salt-roasted cashew is most popular. Moreover, Tridge can provide organic cashew kernel, which is gaining popularity in the market. he cashew nuts in Vietnam are based on size, color, and degree of rupture.
+                                              </div>
+                                              <Link to={`/editproduct/${item.id}`}> 
+                                                    <h5 style={{color:"#DC4D04"}}>
+                                                      Update product information
+                                                    </h5>
+                                              </Link>
                                             </div>
                                           </div>
                                           <div className="modal-footer">

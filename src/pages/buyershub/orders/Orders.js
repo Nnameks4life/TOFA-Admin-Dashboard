@@ -16,21 +16,20 @@ import $ from "jquery";
 import { axios } from "../../components/baseUrl";
 
 const Orders = () => {
+  const [orders, setOrders] = useState([]);
   const [order, setOrder] = useState([]);
-  const [viewOrder, setViewOrder] = useState([]);
-  const [orderStatus, setOrderStatus] = useState([]);
+  const [status, setStatus] = useState([]);
 
-  const getData = async () => {
+  const getOrders = async () => {
     try {
       axios.get("/order").then((response) => {
         console.log(response.data);
-        setOrder(response.data.data);
+        setOrders(response.data.data);
       });
     } catch (error) {
       console.log(error.response.data.erros);
     }
   };
-  // const [search, setSearch] = useState();
 
   useEffect(() => {
     //initialize datatable
@@ -41,27 +40,26 @@ const Orders = () => {
     });
   }, []);
 
-  const getOrder = async (id) => {
+  const updateOrder = async (id) => {
     try {
-      const { data } = await axios
-        .patch("/order", {
-          status: "DELIVERED",
-          orderID: id,
-        })
-      setViewOrder(data.data)
+      const { data } = await axios.patch("/order", {
+        status: status,
+        orderID: id,
+      });
+      setOrder(data.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
-  const [status, setStatus] = useState("");
+  useEffect(() => {}, [order]);
 
   const handleStatusChange = (e) => {
     setStatus(e.target.value);
   };
 
   useEffect(() => {
-    getData();
+    getOrders();
   }, []);
 
   // const handleDelete = (orderID) => {
@@ -72,15 +70,11 @@ const Orders = () => {
 
   const showDetails = (orderID) => {
     axios.get(`/order/${orderID}`).then((response) => {
-      setViewOrder(response.data.data);
+      setOrder(response.data.data);
+      console.log(response.data.data);
     });
   };
 
-  const showStatus = () => {
-    axios.patch("/order").then((response) => {
-      setOrderStatus(response.data.data);
-    });
-  };
   return (
     <>
       {/* <!-- main wrapper --> */}
@@ -214,7 +208,7 @@ const Orders = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {order.map((item, index) => {
+                            {orders.map((item, index) => {
                               return (
                                 <tr key={item.id}>
                                   {/* <td>{item.id}</td>
@@ -264,18 +258,281 @@ const Orders = () => {
                                       <div className="modal-dialog modal-lg">
                                         <div className="modal-content">
                                           <div className="modal-header">
-                                            <h5
+                                            <h3
                                               className="modal-title"
                                               id="exampleModalLabel"
                                             >
-                                              Product Information
-                                            </h5>
+                                              Order Details
+                                            </h3>
                                             <button
                                               type="button"
                                               className="btn-close"
                                               data-bs-dismiss="modal"
                                               aria-label="Close"
                                             ></button>
+                                          </div>
+                                          <div>
+                                            <div className="top-ctn d-flex">
+                                              <div className="modal-body">
+                                                <img
+                                                  src={order.image}
+                                                  alt="order"
+                                                  style={{
+                                                    width: "125px",
+                                                    height: "125px",
+                                                  }}
+                                                />
+                                              </div>
+                                              <div className="modal-body">
+                                                <h6
+                                                  style={{
+                                                    color:
+                                                      "rgba(0, 0, 0, 0.62)",
+                                                  }}
+                                                >
+                                                  {" "}
+                                                  Product name:{" "}
+                                                </h6>
+                                                <p>{order.productID}</p>
+                                                <h6
+                                                  style={{
+                                                    color:
+                                                      "rgba(0, 0, 0, 0.62)",
+                                                  }}
+                                                >
+                                                  {" "}
+                                                  Date of placed order:{" "}
+                                                  <span>{order.createdAt}</span>
+                                                </h6>
+                                              </div>
+                                              <div className="modal-body">
+                                                <h5
+                                                  style={{
+                                                    color:
+                                                      "rgba(0, 0, 0, 0.62)",
+                                                  }}
+                                                >
+                                                  Order status
+                                                </h5>
+                                                <h6
+                                                  style={{
+                                                    color:
+                                                      "rgba(0, 0, 0, 0.62)",
+                                                  }}
+                                                >
+                                                  {" "}
+                                                  Select from dropdown to update
+                                                  order status
+                                                </h6>
+                                                <select
+                                                  style={{ width: "150px" }}
+                                                  className="form-control"
+                                                  onChange={handleStatusChange}
+                                                  // value={status}
+                                                  name="status"
+                                                  aria-describedby="Default select example"
+                                                  placeholder="select status"
+                                                >
+                                                  <option>
+                                                    {" "}
+                                                    {order.status === "PENDING"
+                                                      ? "...Select Status"
+                                                      : order.status}
+                                                  </option>
+                                                  <option value="PENDING">
+                                                    PENDING
+                                                  </option>
+                                                  <option value="PROCESSING">
+                                                    CONFIRMED PAYMENT
+                                                  </option>
+                                                  <option value="SHIPPED">
+                                                    ORDER SHIPPED
+                                                  </option>
+                                                  <option value="DELIVERED">
+                                                    DELIVERED
+                                                  </option>
+                                                </select>
+                                              </div>
+                                            </div>
+                                            <div
+                                              className="modal-body middle-ctn d-flex"
+                                              style={{ width: "100%" }}
+                                            >
+                                              <div
+                                                className="middle-ctn-left"
+                                                style={{
+                                                  border: "1px solid #DDDDDD",
+                                                  width: "50%",
+                                                }}
+                                              >
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Quantity:{" "}
+                                                  </h6>
+                                                  <p>{order.quantityOrdered}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Origin:{" "}
+                                                  </h6>
+                                                  <p>{order.country}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Incoterms:{" "}
+                                                  </h6>
+                                                  <p>{order.incoterm}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Shipping Type:{" "}
+                                                  </h6>
+                                                  <p>{order.shippingType}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Payment terms:{" "}
+                                                  </h6>
+                                                  <p>{order.paymentTerm}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Payment Status:{" "}
+                                                  </h6>
+                                                  <div
+                                                    style={{ width: "100px" }}
+                                                  >
+                                                    {order.status ===
+                                                    "PENDING" ? (
+                                                      <div className="bg-warning rounded-pill text-center mx-2">
+                                                        PENDING
+                                                      </div>
+                                                    ) : (
+                                                      <div className="bg-success rounded-pill text-center mx-2">
+                                                        PAID
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="middle-ctn-right"
+                                                style={{
+                                                  border: "1px solid #DDDDDD",
+                                                  width: "50%",
+                                                }}
+                                              >
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Buyer's name:{" "}
+                                                  </h6>
+                                                  <p>{order.buyerID}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Company:{" "}
+                                                  </h6>
+                                                  <p>{order.buyerID}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Email:{" "}
+                                                  </h6>
+                                                  <p>{order.email}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Order Number:{" "}
+                                                  </h6>
+                                                  <p>{order.orderNumber}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Destination:{" "}
+                                                  </h6>
+                                                  <p>{order.port}</p>
+                                                </div>
+                                                <div className="modal-body">
+                                                  <h6
+                                                    style={{
+                                                      color:
+                                                        "rgba(0, 0, 0, 0.62)",
+                                                    }}
+                                                  >
+                                                    {" "}
+                                                    Cost:{" "}
+                                                  </h6>
+                                                  <p>{order.cost}</p>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div className="bottom-ctn"></div>
                                           </div>
                                           {/* <div align='right'>
                                        <Link to='/editproduct'> 
@@ -301,117 +558,29 @@ const Orders = () => {
                                           </div> */}
 
                                           <div className="modal-body px-2">
-                                            <label>Cost: </label>
-                                            <p>{viewOrder.cost}</p>
-                                          </div>
-                                          <div
-                                            className="modal-body px-2 d-flex"
-                                            style={{
-                                              justifyContent: "space-between",
-                                            }}
-                                          >
-                                            <div>
-                                              <label>Buyers Id: </label>
-                                              <p>{viewOrder.buyerID}</p>
-                                            </div>
-                                            <div>
-                                              <label>Order Status</label>
-                                              <select
-                                                className="form-control"
-                                                onChange={() => getOrder(viewOrder.id)}
-                                                // value={status}
-                                                name="status"
-                                                aria-describedby="Default select example"
-                                                placeholder="select status"
-                                              >
-                                                {/* <option>
-                                                  ....Select Status
-                                                </option> */}
-                                                <option value="pending">
-                                                  PENDING
-                                                </option>
-                                                <option value="paid">
-                                                  CONFIRMED PAYMENT
-                                                </option>
-                                                <option value="paid">
-                                                  ORDER SHIPPED
-                                                </option>
-                                                <option value="paid">
-                                                  DELIVERED
-                                                </option>
-                                              </select>
-                                            </div>
-
-
-                                          </div>
-
-                                          <div className="modal-body px-2">
-                                            <label>Country: </label>
-                                            <p>{viewOrder.country}</p>
-                                          </div>
-
-                                          <div className="modal-body px-2">
-                                            <label>Created At: </label>
-                                            <p>{viewOrder.createdAt}</p>
-                                          </div>
-
-                                          <div className="modal-body px-2">
-                                            <label>Incoterm: </label>
-                                            <p>{viewOrder.incoterm}</p>
-                                          </div>
-                                          <div className="modal-body px-2">
                                             <label>Note: </label>
-                                            <p>{viewOrder.note}</p>
+                                            <p>{order.note}</p>
                                           </div>
-                                          <div className="modal-body px-2">
-                                            <label>order Number: </label>
-                                            <p>{viewOrder.orderNumber}</p>
-                                          </div>
-                                          <div className="modal-body px-2">
-                                            <label>payment Term: </label>
-                                            <p>{viewOrder.paymentTerm}</p>
-                                          </div>
-
-                                          <div className="modal-body px-2 d-flex">
-                                            Payment Status:
-                                            {viewOrder.status ==
-                                                "DELIVERED"
-                                                  ? <div className="bg-danger rounded-pill text-center mx-2">Pending</div>
-                                                  : <div className="bg-success rounded-pill text-center mx-2">Paid</div>}
-                                          </div>
-                                          
-
-                                          {/* <div className="modal-body px-2">
-                                            <label>Port: </label>
-                                            <p>
-                                             {viewOrder.port}
-                                            </p>
-                                          </div> */}
                                           <div className="modal-body px-2">
                                             <label>Product ID: </label>
-                                            <p>{viewOrder.productID}</p>
+                                            <p>{order.productID}</p>
                                           </div>
-                                          <div className="modal-body px-2">
-                                            <label>Quantity Order: </label>
-                                            <p>{viewOrder.quantityOrdered}</p>
-                                          </div>
-                                          <div className="modal-body px-2">
-                                            <label>Shipping Type: </label>
-                                            <p>{viewOrder.shippingType}</p>
-                                          </div>
-                                          <div className="modal-body px-2">
+
+                                          {/* <div className="modal-body px-2">
                                             <label>Status: </label>
-                                            <p>{viewOrder.status}</p>
-                                          </div>
-                                          <div className="modal-body px-2">
-                                            <label>UpdatedAt: </label>
-                                            <p>{viewOrder.updatedAt}</p>
-                                          </div>
+                                            <p>{order.status === "PENDING" ? "PENDING" : "PAID"}</p>
+                                          </div> */}
 
                                           <div className="modal-footer">
                                             <button
+                                              onClick={() =>
+                                                updateOrder(order.id)
+                                              }
+                                            >
+                                              Update Order
+                                            </button>
+                                            <button
                                               type="button"
-                                              onClick={showStatus}
                                               className="btn btn-secondary"
                                               data-bs-dismiss="modal"
                                             >
